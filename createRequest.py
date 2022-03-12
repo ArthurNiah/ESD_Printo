@@ -15,4 +15,28 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 CORS(app)  
 
-print("hello world")
+class Request(db.Model):
+    __tablename__= 'request'
+
+    request_id = db.Column(db.Integer, primary_key=True)
+    requestor_id = db.Column(db.Integer, nullable=False)
+    doc_id = db.Column(db.Integer, nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    # modified = db.Column(db.DateTime, nullable=False,
+    #                     default=datetime.now, onupdate=datetime.now)
+
+
+    def json(self):
+        dto = {
+            'request_id': self.request_id,
+            'requestor_id': self.requestor_id,
+            'doc_id': self.doc_id,
+            'created': self.created
+        }
+
+        dto['order_item'] = []
+        for oi in self.order_item:
+            dto['order_item'].append(oi.json())
+
+        return dto
+
