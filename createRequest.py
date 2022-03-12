@@ -34,9 +34,28 @@ class Request(db.Model):
             'created': self.created
         }
 
-        dto['order_item'] = []
-        for oi in self.order_item:
-            dto['order_item'].append(oi.json())
+        dto['request_item'] = []
+        for oi in self.request_item:
+            dto['request_item'].append(oi.json())
 
         return dto
+
+
+class Request_item(db.Model):
+    __tablename__ = 'request_item'
+
+    request = db.Column(db.Integer, primary_key=True)
+    request_id = db.Column(db.ForeignKey(
+        'request.request_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True)
+
+    book_id = db.Column(db.String(13), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+
+    # order_id = db.Column(db.String(36), db.ForeignKey('order.order_id'), nullable=False)
+    # order = db.relationship('Order', backref='order_item')
+    order = db.relationship(
+        'Order', primaryjoin='Order_Item.order_id == Order.order_id', backref='order_item')
+
+    def json(self):
+        return {'item_id': self.item_id, 'book_id': self.book_id, 'quantity': self.quantity, 'order_id': self.order_id}
 
