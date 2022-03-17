@@ -32,6 +32,8 @@ class Requestor(db.Model):
         return {"RID": self.RID, "full_name": self.full_name, "last_name": self.last_name, "username": self.username, "password": self.password }
 
 @app.route("/requestor")
+def who_am_i():
+    return "I am me"
 
 
 if __name__ == '__main__':
