@@ -64,23 +64,69 @@ def processRequest(user_request):
     locationResults = invoke_http(googleMaps_URL, method="GET", json=user_request) #Replace with variable 
     print("Current requestor location:", locationResults)
 
+    #====START: Error handeling for Google Maps API======
+    if locationResults['code'] not in range(200, 300):
+
+        # Inform the error microservice
+        print('\n\n-----Google Maps API microservice has failed-----')
+
+        #Return error to UI???
+        return {
+            "code": 500,
+            "message": "Google Maps Microservice API has failed. Please read error message and try again.",
+            "errorMsg": locationResults['message']
+        }
+    #====END: Error handeling for Google Maps API======
+
 
     #Step 2: Invoking Request microservice (Update to be done in the Req Microservice)
     print('\n-----Invoking Request microservice-----')
-    invoke_http(request_URL, method="POST", json=user_request)
+    request_results = invoke_http(request_URL, method="POST", json=user_request)
 
+    #====START: Error handeling for Request Microservice ======
+    if request_results['code'] not in range(200, 300):
+
+        # Inform the error microservice
+        print('\n\n-----Request microservice has failed-----')
+
+        #Return error to UI???
+        return {
+            "code": 500,
+            "message": "Request Microservice API has failed. Please read error message and try again.",
+            "errorMsg": request_results['message']
+        }
+    #====END: Error handeling for Request Microservice ======
 
 
     #Step 3: Updating Google Drive microservice IF update request works
     print('\n-----Invoking GoogleDrive microservice-----')
-    invoke_http(googleDrive_URL, method='POST', json=user_request)
+    drive_result = invoke_http(googleDrive_URL, method='POST', json=user_request)
+
+    #====START: Error handeling for Google Drive API Microservice ======
+    if drive_result['code'] not in range(200, 300):
+
+        print('\n\n-----Google Drive microservice has failed-----')
+
+        #Return error to UI???
+        return {
+            "code": 500,
+            "message": "Google Drive Microservice API has failed. Please read error message and try again.",
+            "errorMsg": drive_result['message']
+        }
+    #====END: Error handeling for Google Drive API Microservice ======
 
 
 
-    return "Placeholder"
+    return{
+        "code": 201,
+        "data": {
+            "message": "Print request was added successfully! Cross your fingers and lets hope for the best!"
+        }
+    }
+
 
 
 
 if __name__ == "__main__":
-    print("This is flask " + os.path.basename(__file__) + " for placing an order...")
+    print("This is flask " + os.path.basename(__file__) + " for placing an request...")
     app.run(port=5000, debug=True)
