@@ -31,7 +31,6 @@ def get_current_location(user_location="NUS"):
         else:
             #Getting a placeID to be used for storage
             place_id = response[0]['place_id']
-            print(place_id)
             #Reverse Geocoding, Takes the place id and returns a location
             url2 = f"https://maps.googleapis.com/maps/api/geocode/json?place_id={place_id}&key={API_KEY}"
             rev_geoencode = invoke_http(url2, method="GET")
