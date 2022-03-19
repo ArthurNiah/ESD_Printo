@@ -10,7 +10,7 @@ app = Flask(__name__)
 API_KEY = 'AIzaSyA2wZe6-CgWyeoEJha5aeZLQp-cpn4kb8k'
 
 #WORKS
-@app.route("/get_current_location", methods=['GET'])
+@app.route("/get_current_location")
 def get_current_location(user_location="NUS"):
 
     try:
