@@ -19,7 +19,7 @@ CORS(app)
 
 request_URL = ""
 googleDrive_URL =  ""
-# googleMaps_URL = f"https://www.googleapis.com/geolocation/v1/geolocate?key={google_maps_API_key}"
+googleMaps_URL = "http://localhost:5001/get_current_request"
 requestDB_URL = ""
 
 
@@ -61,11 +61,11 @@ def processRequest(user_request):
 
     #Step 1: Invoking Google Maps microservice
     print('\n-----Invoking GoogleMaps microservice-----')
-    locationResults = get_current_location(user_request) #Replace with variable 
+    locationResults = invoke_http(googleMaps_URL, method="GET", json=user_request) #Replace with variable 
     print("Current requestor location:", locationResults)
 
 
-    #Step 2: Updating Request microservice
+    #Step 2: Invoking Request microservice (Update to be done in the Req Microservice)
     print('\n-----Invoking Request microservice-----')
     invoke_http(request_URL, method="POST", json=user_request)
 
@@ -76,10 +76,8 @@ def processRequest(user_request):
     invoke_http(googleDrive_URL, method='POST', json=user_request)
 
 
+
     return "Placeholder"
-
-
-
 
 
 
