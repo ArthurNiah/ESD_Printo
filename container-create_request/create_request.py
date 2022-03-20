@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-request_URL = "http://localhost:5001/insert_request"
+request_URL = "http://localhost:5002/insert_request"
 googleDrive_URL = ""
 googleMaps_URL = "http://localhost:5001/get_current_request"
 requestDB_URL = ""
