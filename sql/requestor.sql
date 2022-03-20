@@ -36,22 +36,22 @@ CREATE TABLE IF NOT EXISTS `requestor` (
   `first_name` varchar(64) NOT NULL,
   `last_name` varchar(64) NOT NULL,
   `username` varchar(64) NOT NULL,
-  `REQID` int(12) NOT NULL,
   `tele_id` varchar(64) NOT NULL,
-  PRIMARY KEY (`REQID`)
+  `requestor_id` int(12) NOT NULL,
+  PRIMARY KEY (`requestor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `book`
 --
 
-INSERT INTO `requestor` (`full_name`, `last_name`, `username`, `password`, `REQID`) VALUES
-('Julian', 'Ung', 'julianung', 'iwrotethis:)', 1),
-('Arthur', 'Hain', 'arthurniah', 'ethicalman', 2),
-('ZenYu', 'Ong', 'ozy', 'notsoforeignforeigner', 3),
-('Joseph', 'Alde', 'joseph_alde', 'frontendman', 4),
-('Sabrina', 'Halmi', 'sabbie', 'locked_down', 5),
-('JinLiang', 'Loh', 'LJL', 'poppingoff', 6);
+INSERT INTO `requestor` (`first_name`, `last_name`, `username`, `tele_id`, `requestor_id`) VALUES
+('Julian', 'Ung', 'julianung', 'JulianUng:)', 1),
+('Arthur', 'Hain', 'arthurniah', 'ArthurHain', 2),
+('ZenYu', 'Ong', 'ozy', 'zenyu112', 3),
+('Joseph', 'Alde', 'joseph_alde', 'junioralde', 4),
+('Sabrina', 'Halmi', 'sabbie', 'sabbiedoodle', 5),
+('JinLiang', 'Loh', 'LJL', 'Jin_Loh', 6);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
