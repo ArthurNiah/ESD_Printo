@@ -17,13 +17,15 @@ app = Flask(__name__)
 CORS(app)
 
 
-request_URL = ""
-googleDrive_URL =  ""
+request_URL = "http://localhost:5001/insert_request"
+googleDrive_URL = ""
 googleMaps_URL = "http://localhost:5001/get_current_request"
 requestDB_URL = ""
 
+user_input = {}
 
-@app.route("/create_request", methods=["POST"])
+
+@app.route(f"/create_request", methods=["POST"])
 #For creating a new requestd
 def create_request():
 
@@ -57,7 +59,6 @@ def create_request():
 
 #process the data(adpated from the sldies)
 def processRequest(user_request):
-
 
     #Step 1: Invoking Google Maps microservice
     print('\n-----Invoking GoogleMaps microservice-----')
