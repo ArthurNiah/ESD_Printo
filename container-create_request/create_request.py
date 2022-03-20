@@ -22,10 +22,11 @@ googleDrive_URL = ""
 googleMaps_URL = "http://localhost:5001/get_current_request"
 requestDB_URL = ""
 
+#Info from UI
 user_input = {}
 
 
-@app.route(f"/create_request", methods=["POST"])
+@app.route("/create_request", methods=["POST"])
 #For creating a new requestd
 def create_request():
 
@@ -82,6 +83,7 @@ def processRequest(user_request):
 
     #Step 2: Invoking Request microservice (Update to be done in the Req Microservice)
     print('\n-----Invoking Request microservice-----')
+    # Need to find a way to add new data into a json file
     request_results = invoke_http(request_URL, method="POST", json=user_request)
 
     #====START: Error handeling for Request Microservice ======
