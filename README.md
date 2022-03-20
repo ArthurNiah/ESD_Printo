@@ -1,8 +1,8 @@
 # ESD_Printo
 Need an someone to print your stuff? We got you covered!
 
-## What is Printo?
+### What is Printo?
 
-## Why Printo?
+### Why Printo?
 
-## How to use our application
+### How to use our application
