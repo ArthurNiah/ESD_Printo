@@ -33,11 +33,11 @@ USE `requestor`;
 
 DROP TABLE IF EXISTS `requestor`;
 CREATE TABLE IF NOT EXISTS `requestor` (
-  `full_name` varchar(64) NOT NULL,
+  `first_name` varchar(64) NOT NULL,
   `last_name` varchar(64) NOT NULL,
   `username` varchar(64) NOT NULL,
-  `password` char(13) NOT NULL,
   `REQID` int(12) NOT NULL,
+  `tele_id` varchar(64) NOT NULL,
   PRIMARY KEY (`REQID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
