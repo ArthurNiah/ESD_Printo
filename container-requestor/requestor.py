@@ -16,21 +16,21 @@ CORS(app)
 class Requestor(db.Model):
     __tablename__ = 'requestor'
 
-    REQID = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(64), nullable=False)
+    requestor_id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
     username = db.Column(db.String(64), nullable=False)
-    password = db.Column(db.String(64), nullable=False)
+    tele_id = db.Column(db.String(64), nullable=False)
 
-    def __init__(self, REQID, full_name, last_name, username, password):
-        self.REQID = REQID
-        self.full_name = full_name
+    def __init__(self, requestor_id, first_name, last_name, username, tele_id):
+        self.requestor_id = requestor_id
+        self.first_name = first_name
         self.last_name = last_name
         self.username = username
-        self.password = password
+        self.tele_id = tele_id
 
     def json(self):
-        return {"REQID": self.REQID, "full_name": self.full_name, "last_name": self.last_name, "username": self.username, "password": self.password }
+        return {"requestor_id": self.requestor_id, "first_name": self.first_name, "last_name": self.last_name, "username": self.username, "tele_id": self.tele_id }
 
 # @app.route("/requestor")
 # def who_am_i():
@@ -55,9 +55,9 @@ def get_all():
         }
     ), 404
 
-@app.route("/requestor/<string:REQID>")
-def find_by_REQID(REQID):
-    requestor = Requestor.query.filter_by(REQID=REQID).first()
+@app.route("/requestor/<string:requestor_id>")
+def find_by_requestor_id(requestor_id):
+    requestor = Requestor.query.filter_by(requestor_id=requestor_id).first()
     if requestor:
         return jsonify(
             {
@@ -74,4 +74,4 @@ def find_by_REQID(REQID):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5020, debug=True)
+    app.run(host='0.0.0.0', port=5005, debug=True)
