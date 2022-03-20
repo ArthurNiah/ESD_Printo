@@ -2,6 +2,14 @@ const { google } = require('googleapis');
 const path = require('path');
 const fs = require('fs');
 
+const express = require('express');
+const bodyParser = require("body-parser");
+const app = express();
+const PORT = 3000;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const CLIENT_ID= '424859888376-hvknfsdtc9enfrf45ir85uelqm2flpih.apps.googleusercontent.com';
 const CLIENT_SECRET= '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';
 const REDIRECT_URI= 'https://developers.google.com/oauthplayground';
@@ -21,13 +29,13 @@ const drive= google.drive({
     auth: oauth2Client
 })
 
-const filePath= path.join(__dirname, 'popcat.gif')
 
-async function uploadFile(){
+async function uploadFile(file_name){
+    const filePath= path.join(__dirname, file_name)
     try{
         const response= await drive.files.create({
             requestBody: {
-                name: 'popcat.gif',
+                name: file_name,
                 MimeType: 'image/gif'
             },
             media: {
@@ -35,22 +43,18 @@ async function uploadFile(){
                 body: fs.createReadStream(filePath)
             }
         });
-
         console.log(response.data);
-
     }
     catch(error){
     console.log(error.message)
     }
 };
 
-//uploadFile();
 
-async function generatePublicURL(){
+async function generatePublicURL(document_id){
     try{
-        const fileId = '1pjesGTtP6OZvtid9x2fvXWCF-BPRWLFi';
         await drive.permissions.create({
-            fileId: fileId,
+            fileId: document_id,
             requestBody: {
                 role:'reader',
                 type:'anyone'
@@ -58,7 +62,7 @@ async function generatePublicURL(){
         })
 
         const result = await drive.files.get({
-            fileId: fileId,
+            fileId: document_id,
             fields: 'webViewLink, webContentLink'
         })
         console.log(result.data);
@@ -68,6 +72,21 @@ async function generatePublicURL(){
     }
 }
 
-generatePublicURL()
 
+app.route('/get_document')
+.get((req, res, next) => {
+    res.send('GET request called');
+    doc_id= req.body.doc_id
+    generatePublicURL(doc_id)
+})
 
+app.route('/insert_document')
+.post((req, res, next) => {
+    res.send('POST request called');
+    file_name= req.body.file_name
+    uploadFile(file_name);
+})
+app.listen(PORT, function(err){
+    if (err) console.log(err);
+    console.log("Server listening on PORT", PORT);
+});
