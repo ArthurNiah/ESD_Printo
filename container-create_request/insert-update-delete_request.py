@@ -74,7 +74,10 @@ def insert_request():
     return jsonify(
         {
             "code": 201,
-            "data": request.json(),
+            "data": {
+                "request_id" : request.request_id,
+                "response": request.json()
+            },
             "message": "Request has been inserted!"
         }
     ), 201 
