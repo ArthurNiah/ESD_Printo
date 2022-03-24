@@ -18,12 +18,14 @@ CORS(app)
 
 
 request_URL = "http://localhost:5002/insert_request"
-googleDrive_URL = ""
+googleDrive_URL = "http://localhost:3000/insert_document"
 googleMaps_URL = "http://localhost:5001/get_current_request"
 requestDB_URL = ""
 
 #Info from UI
-user_input = {}
+user_input = {
+    
+}
 
 
 @app.route("/create_request", methods=["POST"])
