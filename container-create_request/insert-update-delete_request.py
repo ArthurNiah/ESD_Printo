@@ -57,6 +57,42 @@ def insert_request():
         }
     ), 201 
 
+@app.route("/edit_request/{request_id}")
+def edit_request(request_id):
+
+    try:
+        response = db.session.query('request').filter_by(request_id = request_id)
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "message": "An error occurred updating the request."
+            }
+        ), 500
+
+    if response:
+ 
+        return jsonify(
+            {
+                "code": 201,
+                "data": request.json(),
+                "message": "Request has been inserted!"
+            }
+        ), 201 
+
+    else:
+
+        return jsonify (
+            {
+                "code": 404,
+                "message" : "Request with that ID was not found. Please try again!"
+            }
+        ) , 404
+
+    
+
+
+
 
 
 if __name__ == '__main__':
