@@ -82,6 +82,7 @@ def insert_request():
         }
     ), 201 
 
+
 @app.route("/search_request/<string:request_id>", methods=['GET'])
 def search_request(request_id):
     # response = db.session.query('request').filter_by(request_id=request_id)
@@ -152,7 +153,6 @@ def update_provider_id(request_id):
         ), 500
 
 
-
 @app.route("/update_status/<string:request_id>", methods=['POST'])
 def update_status(request_id):
 
@@ -193,8 +193,6 @@ def update_status(request_id):
                 "message": "An error occurred while updating the request. " + str(e)
             }
         ), 500
-
-
 
 
 @app.route("/update_document_link/<string:request_id>", methods=['POST'])
@@ -279,7 +277,6 @@ def update_coordinates(request_id):
                 "message": "An error occurred while updating the request. " + str(e)
             }
         ), 500
-
 
 
 @app.route("/update_location_name/<string:request_id>", methods=['POST'])
