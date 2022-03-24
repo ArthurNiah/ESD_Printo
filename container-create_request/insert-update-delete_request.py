@@ -1,6 +1,9 @@
+from ast import JoinedStr
+from crypt import methods
 from email.policy import default
 from flask import Flask, request as req, jsonify
-from flask_sqlalchemy import SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
+from itsdangerous import JSONWebSignatureSerializer 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/request'
@@ -11,14 +14,26 @@ db = SQLAlchemy(app)
 class Request(db.Model):
     __tablename__ = 'request'
 
+    #basic info
     request_id = db.Column(db.Integer, primary_key=True)
     requestor_id = db.Column(db.Integer, nullable= False)
-    provider_id = db.Column(db.Integer, nullable= False)
+    provider_id = db.Column(db.Integer, nullable= True)
     status = db.Column(db.String(32), nullable=False)
     document_link = db.Column(db.String(100), nullable=True)
     # create_datetime= db.Column(db.Timestamp, nullable= False)
-    coordinates = db.Column(db.String(100), nullable=False)
-    location_name = db.Column(db.String(100), nullable=False)
+
+    #gmaps info
+    coordinates = db.Column(db.String(100), nullable=True)
+    location_name = db.Column(db.String(100), nullable=True)
+    # place_id = db.Column(db.String(100), nullable=True)
+
+    # #for printing info
+    # color = db.Column(db.String(32), nullable=True)
+    # no_of_copies = db.Column(db.Integer, nullable=True)
+    # single_or_double = db.Column(db.String(32), nullable=True)
+    # size = db.Column(db.String(10), nullable=True)
+    # comments = db.Column(db.String(100), nullable=True)
+
 
     def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
         self.requestor_id= requestor_id   
@@ -29,7 +44,14 @@ class Request(db.Model):
         self.location_name = location_name
 
     def json(self):
-        return {"requestor_id": self.requestor_id, "provider_id": self.provider_id, "stauts": self.status, "document_link": self.document_link, "location_name": self.location_name}
+        return {
+        "requestor_id": self.requestor_id, 
+        "provider_id": self.provider_id, 
+        "status": self.status, 
+        "document_link": self.document_link,
+        "location_name": self.location_name, 
+        "coordinates" : self.coordinates, 
+        }
 
 
 @app.route("/insert_request", methods=['POST'])
@@ -57,28 +79,23 @@ def insert_request():
         }
     ), 201 
 
-@app.route("/edit_request/{request_id}")
-def edit_request(request_id):
+@app.route("/search_request/<string:request_id>", methods=['GET'])
+def search_request(request_id):
+    # response = db.session.query('request').filter_by(request_id=request_id)
+    request = Request.query.filter_by(request_id=request_id).first()
 
-    try:
-        response = db.session.query('request').filter_by(request_id = request_id)
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "message": "An error occurred updating the request."
-            }
-        ), 500
-
-    if response:
+    if request:
  
         return jsonify(
             {
-                "code": 201,
-                "data": request.json(),
-                "message": "Request has been inserted!"
+                "code": 200,
+                "data": {
+                    "request_id" : request_id,
+                    "response": request.json()
+                },
+                "message": "Request has been found!"
             }
-        ), 201 
+        ), 200
 
     else:
 
@@ -90,10 +107,219 @@ def edit_request(request_id):
         ) , 404
 
     
+@app.route("/update_provider_id/<string:request_id>", methods=['POST'])
+def update_provider_id(request_id):
+
+    try:
+        request = Request.query.filter_by(request_id=request_id).first()
+
+        if not request:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : request.json(),
+                    'message': 'Request not found. Please try again!'
+                }
+            ), 404
+
+        data = req.get_json()
+
+        if data:
+            request.provider_id = data['provider_id']
+            db.session.commit()
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "request_id" : request_id,
+                        "response": request.json()
+                    },
+                    'message' : 'Request has been updated with new provider id.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "request_id": request_id
+                },
+                "message": "An error occurred while updating the request. " + str(e)
+            }
+        ), 500
 
 
 
+@app.route("/update_status/<string:request_id>", methods=['POST'])
+def update_status(request_id):
+
+    try:
+        request = Request.query.filter_by(request_id=request_id).first()
+
+        if not request:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : request.json(),
+                    'message': 'Request not found. Please try again!'
+                }
+            ), 404
+
+        data = req.get_json()
+
+        if data:
+            request.status = data['status']
+            db.session.commit()
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "request_id" : request_id,
+                        "response": request.json()
+                    },
+                    'message' : 'Request has been updated with new status.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "request_id": request_id
+                },
+                "message": "An error occurred while updating the request. " + str(e)
+            }
+        ), 500
+
+
+
+
+@app.route("/update_document_link/<string:request_id>", methods=['POST'])
+def update_document_link(request_id):
+
+    try:
+        request = Request.query.filter_by(request_id=request_id).first()
+
+        if not request:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : request.json(),
+                    'message': 'Request not found. Please try again!'
+                }
+            ), 404
+
+        data = req.get_json()
+
+        if data:
+            request.document_link = data['document_link']
+            db.session.commit()
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "request_id" : request_id,
+                        "response": request.json()
+                    },
+                    'message' : 'Request has been updated with new document link.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "request_id": request_id
+                },
+                "message": "An error occurred while updating the request. " + str(e)
+            }
+        ), 500
+
+
+@app.route("/update_coordinates/<string:request_id>", methods=['POST'])
+def update_coordinates(request_id):
+
+    try:
+        request = Request.query.filter_by(request_id=request_id).first()
+
+        if not request:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : request.json(),
+                    'message': 'Request not found. Please try again!'
+                }
+            ), 404
+
+        data = req.get_json()
+
+        if data:
+            request.coordinates = data['coordinates']
+            db.session.commit()
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "request_id" : request_id,
+                        "response": request.json()
+                    },
+                    'message' : 'Request has been updated with new coordinates.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "request_id": request_id
+                },
+                "message": "An error occurred while updating the request. " + str(e)
+            }
+        ), 500
+
+
+
+@app.route("/update_location_name/<string:request_id>", methods=['POST'])
+def update_location_name(request_id):
+
+    try:
+        request = Request.query.filter_by(request_id=request_id).first()
+
+        if not request:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : request.json(),
+                    'message': 'Request not found. Please try again!'
+                }
+            ), 404
+
+        data = req.get_json()
+
+        if data:
+            request.location_name = data['location_name']
+            db.session.commit()
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "request_id" : request_id,
+                        "response": request.json()
+                    },
+                    'message' : 'Request has been updated with new location name.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "request_id": request_id
+                },
+                "message": "An error occurred while updating the request. " + str(e)
+            }
+        ), 500
 
 
 if __name__ == '__main__':
-    app.run(port=5002, debug=True)
+    app.run(port=5001, debug=True)
