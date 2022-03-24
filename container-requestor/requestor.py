@@ -22,7 +22,7 @@ class Requestor(db.Model):
     username = db.Column(db.String(64), nullable=False)
     tele_id = db.Column(db.String(64), nullable=False)
 
-    def __init__(self, requestor_id, first_name, last_name, username, tele_id):
+    def __init__(self,first_name, last_name, username, tele_id):
         self.requestor_id = requestor_id
         self.first_name = first_name
         self.last_name = last_name
@@ -30,7 +30,7 @@ class Requestor(db.Model):
         self.tele_id = tele_id
 
     def json(self):
-        return {"requestor_id": self.requestor_id, "first_name": self.first_name, "last_name": self.last_name, "username": self.username, "tele_id": self.tele_id }
+        return {"first_name": self.first_name, "last_name": self.last_name, "username": self.username, "tele_id": self.tele_id }
 
 # @app.route("/requestor")
 # def who_am_i():
@@ -71,6 +71,44 @@ def find_by_requestor_id(requestor_id):
             "message": "Requestor not found."
         }
     ), 404
+
+@app.route("/requestor/<string:requestor_id>", methods=['POST'])
+def create_requestor(requestor_id):
+    if (Requestor.query.filter_by(requestor_id=requestor_id).first()):
+        return jsonify(
+            {
+                "code": 400,
+                "data": {
+                    "requestor_id": requestor_id
+                },
+                "message": "Requestor already exists."
+            }
+        ), 400
+ 
+    data = request.get_json()
+    requestor = Requestor(requestor_id, **data)
+ 
+    try:
+        db.session.add(requestor)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "requestor_id": requestor_id
+                },
+                "message": "An error occurred creating the requestor."
+            }
+        ), 500
+ 
+    return jsonify(
+        {
+            "code": 201,
+            "data": requestor.json()
+        }
+    ), 201
+
 
 
 if __name__ == '__main__':
