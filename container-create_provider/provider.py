@@ -18,12 +18,14 @@ class Provider(db.Model):
     tele_id = db.Column(db.String(64), nullable=False)
     coordinates = db.Column(db.String(64), nullable=False)
     location_name = db.Column(db.String(64), nullable=False)
+    place_id = db.Column(db.String(64), nullable=False)
  
-    def __init__(self, username, tele_id, coordinates, location_name):
+    def __init__(self, username, tele_id, coordinates, location_name, place_id):
         self.username = username
         self.tele_id = tele_id
         self.coordinates = coordinates
         self.location_name = location_name
+        self.place_id = place_id
 
  
     def json(self):
@@ -32,6 +34,7 @@ class Provider(db.Model):
         "tele_id": self.tele_id,
         "coordinates": self.coordinates,
         "location_name": self.location_name,
+        "place_id": self.place_id,
         }
  
 @app.route("/provider")
