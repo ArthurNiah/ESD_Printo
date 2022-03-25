@@ -16,14 +16,16 @@ class Provider(db.Model):
     provider_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False)
     tele_id = db.Column(db.String(64), nullable=False)
-    coordinates = db.Column(db.String(64), nullable=False)
+    lat = db.Column(db.String(64), nullable=False)
+    lng = db.Column(db.String(64), nullable=False)
     location_name = db.Column(db.String(64), nullable=False)
     place_id = db.Column(db.String(64), nullable=False)
  
-    def __init__(self, username, tele_id, coordinates, location_name, place_id):
+    def __init__(self, username, tele_id, lat, lng, location_name, place_id):
         self.username = username
         self.tele_id = tele_id
-        self.coordinates = coordinates
+        self.lat = lat
+        self.lng = lng
         self.location_name = location_name
         self.place_id = place_id
 
@@ -32,7 +34,8 @@ class Provider(db.Model):
         return {
         "username": self.username, 
         "tele_id": self.tele_id,
-        "coordinates": self.coordinates,
+        "lat": self.lat,
+        "lng": self.lng,
         "location_name": self.location_name,
         "place_id": self.place_id,
         }
@@ -104,89 +107,6 @@ def insert_provider():
             "data": provider.json()
         }
     ), 201
-
-@app.route("/update_coordinates/<string:provider_id>", methods=['POST'])
-def update_coordinates(provider_id):
-
-    try:
-        provider = Provider.query.filter_by(provider_id=provider_id).first()
-
-        if not provider:
-            return jsonify(
-                {
-                    'code': 404, 
-                    'data' : provider.json(),
-                    'message': 'Provider not found. Please try again!'
-                }
-            ), 404
-
-        data = request.get_json()
-
-        if data:
-            provider.coordinates = data['coordinates']
-            db.session.commit()
-            return jsonify(
-                {
-                    'code': 200,
-                    "data": {
-                        "provider_id" : provider_id,
-                        "response": provider.json()
-                    },
-                    'message' : 'Provider has been updated with new coordinates.'
-                }
-            ), 200
-    except Exception as e:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "provider_id": provider_id
-                },
-                "message": "An error occurred while updating the provider. " + str(e)
-            }
-        ), 500
-
-
-@app.route("/update_location_name/<string:provider_id>", methods=['POST'])
-def update_location_name(provider_id):
-
-    try:
-        provider = Provider.query.filter_by(provider_id=provider_id).first()
-
-        if not provider:
-            return jsonify(
-                {
-                    'code': 404, 
-                    'data' : provider.json(),
-                    'message': 'Provider not found. Please try again!'
-                }
-            ), 404
-
-        data = request.get_json()
-
-        if data:
-            provider.location_name = data['location_name']
-            db.session.commit()
-            return jsonify(
-                {
-                    'code': 200,
-                    "data": {
-                        "provider_id" : provider_id,
-                        "response": provider.json()
-                    },
-                    'message' : 'Provider has been updated with new location name.'
-                }
-            ), 200
-    except Exception as e:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "provider_id": provider_id
-                },
-                "message": "An error occurred while updating the provider. " + str(e)
-            }
-        ), 500
 
 
 if __name__ == '__main__':
