@@ -74,6 +74,36 @@ def find_by_requestor_id(requestor_id):
         }
     ), 404
 
+
+
+@app.route("/verify", methods=['POST'])
+def verify():
+    data = request.get_json()
+    
+    # print(data['username'])
+    # return data['username']
+
+    requestor = Requestor.query.filter_by(tele_id=data['tele_id'], username=data['username'] ).first()
+    
+    # if requestor.username == data['username']:
+    if requestor:
+        return jsonify(
+            {
+                "code": 200,
+                "data": requestor.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Requestor not found."
+        }
+    ), 404
+
+
+
+
+
 @app.route("/register", methods=['POST'])
 def register_requestor():
     # requestor_id = None
