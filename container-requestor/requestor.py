@@ -1,3 +1,5 @@
+from cgi import test
+from re import X
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
@@ -23,7 +25,7 @@ class Requestor(db.Model):
     tele_id = db.Column(db.String(64), nullable=False)
 
     def __init__(self,first_name, last_name, username, tele_id):
-        self.requestor_id = requestor_id
+        # self.requestor_id = requestor_id
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
@@ -72,22 +74,14 @@ def find_by_requestor_id(requestor_id):
         }
     ), 404
 
-@app.route("/requestor/<string:requestor_id>", methods=['POST'])
-def create_requestor(requestor_id):
-    if (Requestor.query.filter_by(requestor_id=requestor_id).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "requestor_id": requestor_id
-                },
-                "message": "Requestor already exists."
-            }
-        ), 400
- 
+@app.route("/register", methods=['POST'])
+def register_requestor():
+    # requestor_id = None
     data = request.get_json()
-    requestor = Requestor(requestor_id, **data)
- 
+    
+    # return(x)
+    # return(request.get_json())
+    requestor = Requestor(**data)
     try:
         db.session.add(requestor)
         db.session.commit()
@@ -95,9 +89,6 @@ def create_requestor(requestor_id):
         return jsonify(
             {
                 "code": 500,
-                "data": {
-                    "requestor_id": requestor_id
-                },
                 "message": "An error occurred creating the requestor."
             }
         ), 500
