@@ -31,7 +31,8 @@ const drive= google.drive({
 
 
 async function uploadFile(file_name){
-    const filePath= path.join(__dirname, file_name)
+    var dir= __dirname + "/temp_files";
+    const filePath= path.join(dir, file_name);
     try{
         const response= await drive.files.create({
             requestBody: {
@@ -60,7 +61,7 @@ async function generatePublicURL(document_id){
                 type:'anyone'
             }
         })
-
+                
         const result = await drive.files.get({
             fileId: document_id,
             fields: 'webViewLink, webContentLink'
@@ -71,7 +72,6 @@ async function generatePublicURL(document_id){
         console.log(error.message)
     }
 }
-
 
 app.route('/get_document')
 .get((req, res, next) => {
@@ -86,7 +86,9 @@ app.route('/insert_document')
     file_name= req.body.file_name
     uploadFile(file_name);
 })
+
 app.listen(PORT, function(err){
     if (err) console.log(err);
     console.log("Server listening on PORT", PORT);
 });
+
