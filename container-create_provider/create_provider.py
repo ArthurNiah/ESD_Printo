@@ -17,10 +17,9 @@ app = Flask(__name__)
 CORS(app)
 
 
-provider_URL = "http://localhost:5007/provider" #take note which localhost number you using and calling
+provider_URL = "http://localhost:5007/insert_provider" #take note which localhost number you using and calling
 googleDrive_URL = ""
 googleMaps_URL = "http://localhost:5002/get_current_location" #take note which localhost number you using and calling
-requestDB_URL = ""
 
 #Info from UI
 user_input = {}
@@ -103,8 +102,6 @@ def processProvider(provider_details):
             "message": "Provider details was added successfully!"
         }
     }
-
-
 
 
 if __name__ == "__main__":

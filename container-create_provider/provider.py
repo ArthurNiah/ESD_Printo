@@ -73,7 +73,7 @@ def find_by_provider_id(provider_id):
         }
     ), 404
  
-@app.route("/provider", methods=['POST'])
+@app.route("/insert_provider", methods=['POST'])
 def insert_provider():
 
     data = request.get_json()
@@ -100,9 +100,93 @@ def insert_provider():
     return jsonify(
         {
             "code": 201,
+            "provider_id" : provider.provider_id,
             "data": provider.json()
         }
     ), 201
+
+@app.route("/update_coordinates/<string:provider_id>", methods=['POST'])
+def update_coordinates(provider_id):
+
+    try:
+        provider = Provider.query.filter_by(provider_id=provider_id).first()
+
+        if not provider:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : provider.json(),
+                    'message': 'Provider not found. Please try again!'
+                }
+            ), 404
+
+        data = request.get_json()
+
+        if data:
+            provider.coordinates = data['coordinates']
+            db.session.commit()
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "provider_id" : provider_id,
+                        "response": provider.json()
+                    },
+                    'message' : 'Provider has been updated with new coordinates.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "provider_id": provider_id
+                },
+                "message": "An error occurred while updating the provider. " + str(e)
+            }
+        ), 500
+
+
+@app.route("/update_location_name/<string:provider_id>", methods=['POST'])
+def update_location_name(provider_id):
+
+    try:
+        provider = Provider.query.filter_by(provider_id=provider_id).first()
+
+        if not provider:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : provider.json(),
+                    'message': 'Provider not found. Please try again!'
+                }
+            ), 404
+
+        data = request.get_json()
+
+        if data:
+            provider.location_name = data['location_name']
+            db.session.commit()
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "provider_id" : provider_id,
+                        "response": provider.json()
+                    },
+                    'message' : 'Provider has been updated with new location name.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "provider_id": provider_id
+                },
+                "message": "An error occurred while updating the provider. " + str(e)
+            }
+        ), 500
 
 
 if __name__ == '__main__':
