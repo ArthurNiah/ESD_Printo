@@ -18,7 +18,7 @@ CORS(app)
 
 
 request_URL = "http://localhost:5003/insert_request"
-update_location_URL = "http://localhost:5003/update_location_name/"
+update_location_URL = "http://localhost:5003/update_location/"
 update_gdrive_URL = "http://localhost:5003/update_document_link/"
 googleDrive_URL = "http://localhost:3000/insert_document"
 googleMaps_URL = "http://localhost:5002/get_current_location"
@@ -91,7 +91,7 @@ def processRequest(user_request):
     print('\n-----Invoking Request microservice-----')
     # Need to find a way to add new data into a json file
     request_results = invoke_http(request_URL, method="POST", json=user_request)
-    invoke_http(update_location_URL+str(request_results['data']['request_id']), method="POST", json=locationResults['data'])
+    invoke_http(update_location_URL+str(request_results['data']['request_id']), method="PUT", json=locationResults['data'])
     #====START: Error handeling for Request Microservice ======
     if request_results['code'] not in range(200, 300):
 
@@ -130,7 +130,7 @@ def processRequest(user_request):
         }
 
     #ADDING GDRIVE LINK TO DB
-    isSuccess = invoke_http(update_gdrive_URL+str(request_results['data']['request_id']), method="POST", json=response.text)
+    isSuccess = invoke_http(update_gdrive_URL+str(request_results['data']['request_id']), method="PUT", json=response.text)
     print(isSuccess)
     #====END: Error handeling for Google Drive API Microservice ======
     print('\n-----GDrive microservice SUCCESS-----')

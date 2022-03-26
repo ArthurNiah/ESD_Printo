@@ -114,7 +114,7 @@ def search_request(request_id):
         ) , 404
 
     
-@app.route("/update_provider_id/<string:request_id>", methods=['POST'])
+@app.route("/update_provider_id/<string:request_id>", methods=['PUT'])
 def update_provider_id(request_id):
 
     try:
@@ -156,7 +156,7 @@ def update_provider_id(request_id):
         ), 500
 
 
-@app.route("/update_status/<string:request_id>", methods=['POST'])
+@app.route("/update_status/<string:request_id>", methods=['PUT'])
 def update_status(request_id):
 
     try:
@@ -198,7 +198,7 @@ def update_status(request_id):
         ), 500
 
 
-@app.route("/update_document_link/<string:request_id>", methods=['POST'])
+@app.route("/update_document_link/<string:request_id>", methods=['PUT'])
 def update_document_link(request_id):
 
     try:
@@ -242,49 +242,8 @@ def update_document_link(request_id):
         ), 500
 
 
-@app.route("/update_coordinates/<string:request_id>", methods=['POST'])
-def update_coordinates(request_id):
 
-    try:
-        request = Request.query.filter_by(request_id=request_id).first()
-
-        if not request:
-            return jsonify(
-                {
-                    'code': 404, 
-                    'data' : request.json(),
-                    'message': 'Request not found. Please try again!'
-                }
-            ), 404
-
-        data = req.get_json()
-
-        if data:
-            request.coordinates = data['coordinates']
-            db.session.commit()
-            return jsonify(
-                {
-                    'code': 200,
-                    "data": {
-                        "request_id" : request_id,
-                        "response": request.json()
-                    },
-                    'message' : 'Request has been updated with new coordinates.'
-                }
-            ), 200
-    except Exception as e:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "request_id": request_id
-                },
-                "message": "An error occurred while updating the request. " + str(e)
-            }
-        ), 500
-
-
-@app.route("/update_location_name/<string:request_id>", methods=['POST'])
+@app.route("/update_location/<string:request_id>", methods=['PUT'])
 def update_location_name(request_id):
 
     try:
