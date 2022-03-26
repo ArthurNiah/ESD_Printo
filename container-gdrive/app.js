@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const express = require('express');
 const bodyParser = require("body-parser");
+const { file } = require('googleapis/build/src/apis/file');
 const app = express();
 const PORT = 3000;
 
@@ -14,7 +15,7 @@ const CLIENT_ID= '424859888376-hvknfsdtc9enfrf45ir85uelqm2flpih.apps.googleuserc
 const CLIENT_SECRET= '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';
 const REDIRECT_URI= 'https://developers.google.com/oauthplayground';
 
-const REFRESH_TOKEN= '1//04gjUdg2qipG_CgYIARAAGAQSNwF-L9Ir5Bnw14xP-ZaB00tdDj3nOAbIxbeTXtCzlQGxNLCBPtrniqTaEJEMqfTYTt8FisPJOoY';
+const REFRESH_TOKEN= '1//04nGStAg06cbhCgYIARAAGAQSNwF-L9IrhlAdhweaG1ZvOKivXJoNTMAiczNpB12aYgnmeSCDQ0nY1gD9qyHCfliJLJ3r2qFCa9w';
 
 const oauth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -22,7 +23,7 @@ const oauth2Client = new google.auth.OAuth2(
     REDIRECT_URI
 );
 
-oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
+oauth2Client.setCredentials({refresh_token  : REFRESH_TOKEN})
 
 const drive= google.drive({
     version: 'v3',
@@ -44,14 +45,13 @@ async function uploadFile(file_name){
                 body: fs.createReadStream(filePath)
             }
         });
-        console.log(response.data);
+        return {'status': response.status, 'doc_id':response.data.id}
+        // return data here 
     }
     catch(error){
     console.log(error.message)
     }
-};
-
-
+}
 async function generatePublicURL(document_id){
     try{
         await drive.permissions.create({
@@ -61,12 +61,14 @@ async function generatePublicURL(document_id){
                 type:'anyone'
             }
         })
-                
+
         const result = await drive.files.get({
             fileId: document_id,
             fields: 'webViewLink, webContentLink'
         })
         console.log(result.data);
+        return {'result': result.data.webContentLink}
+        //return data here
     }
     catch (error){
         console.log(error.message)
@@ -75,16 +77,29 @@ async function generatePublicURL(document_id){
 
 app.route('/get_document')
 .get((req, res, next) => {
-    res.send('GET request called');
     doc_id= req.body.doc_id
-    generatePublicURL(doc_id)
+    var x= generatePublicURL(doc_id)
+    setTimeout(() =>{
+        x.then(function(result){
+            res.send(result)
+        })
+    },4000);
 })
 
 app.route('/insert_document')
 .post((req, res, next) => {
-    res.send('POST request called');
+    // res.send('POST request called');
     file_name= req.body.file_name
-    uploadFile(file_name);
+    var x= uploadFile(file_name)
+    setTimeout(() => {
+        console.log('promise', x); 
+        x.then(function(result){
+            console.log("result", result)
+            res.send(result)
+        })
+        
+    },4000);
+    
 })
 
 app.listen(PORT, function(err){
