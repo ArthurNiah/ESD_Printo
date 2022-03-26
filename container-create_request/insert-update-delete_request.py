@@ -25,14 +25,14 @@ class Request(db.Model):
     #gmaps info
     coordinates = db.Column(db.String(100), nullable=True)
     location_name = db.Column(db.String(100), nullable=True)
-    # place_id = db.Column(db.String(100), nullable=True)
+    place_id = db.Column(db.String(100), nullable=True)
 
-    # #for printing info
-    # color = db.Column(db.String(32), nullable=True)
-    # no_of_copies = db.Column(db.Integer, nullable=True)
-    # single_or_double = db.Column(db.String(32), nullable=True)
-    # size = db.Column(db.String(10), nullable=True)
-    # comments = db.Column(db.String(100), nullable=True)
+    #for printing info
+    color = db.Column(db.String(32), nullable=True)
+    no_of_copies = db.Column(db.Integer, nullable=True)
+    single_or_double = db.Column(db.String(32), nullable=True)
+    size = db.Column(db.String(10), nullable=True)
+    comments = db.Column(db.String(100), nullable=True)
 
 
     def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):

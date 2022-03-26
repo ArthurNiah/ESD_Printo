@@ -38,8 +38,14 @@ CREATE TABLE IF NOT EXISTS `request` (
   `status` varchar(32) NOT NULL DEFAULT 'UNACCEPTED',
   `document_link` varchar(100),
   `create_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `coordinates` varchar(100) NOT NULL ,
-  `location_name` varchar(100) NOT NULL,
+  `coordinates` varchar(100),
+  `location_name` varchar(100) ,
+  `place_id` varchar(100),
+  `color` varchar(32) ,
+  `no_of_copies` int(11),
+  `single_or_double` varchar(32),
+  `size` varchar(10),
+  `comments` varchar(100),
   PRIMARY KEY (`request_id`),
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
