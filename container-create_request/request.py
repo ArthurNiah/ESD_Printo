@@ -56,9 +56,10 @@ class Request(db.Model):
 @app.route("/insert_request", methods=['POST'])
 def insert_request():
 
-    # data = req.get_json()
-    data = {'requestor_id': 321}
-    request = Request(**data)
+    data = req.get_json()
+    print(data)
+    # data = {'requestor_id': 321}
+    request = Request(data['requestor_id'])
 
     print(data)
 

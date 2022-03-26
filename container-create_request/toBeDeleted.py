@@ -33,16 +33,17 @@ user_input = {
 @app.route("/create_request", methods=["POST"])
 #For creating a new requestd
 def create_request():
-    data = request.get_json()
+    user_request = request.get_json()
     if request.is_json:
         try:
-            user_request = request.get_json()
+            # user_request = request.get_json()
+            user_request = {"requestor_id": 123, "location":"SMU", "file_name": "popcat.gif" }
             print("\Created request creation order in JSON:", user_request)
 
             # do the actual work
             # 1. Send order info {cart items}
             # result = processRequest(user_request = {"requestor_id": 123, "location":"SMU", "file_name": "popcat.gif" }
-            result = processRequest(data)
+            result = processRequest(user_request)
             return jsonify(result), result["code"]
 
         except Exception as e:
