@@ -15,7 +15,7 @@ class Request(db.Model):
     request_id = db.Column(db.Integer, primary_key=True)
     requestor_id = db.Column(db.Integer, nullable= False)
     provider_id = db.Column(db.Integer, nullable= True)
-    status = db.Column(db.String(32), nullable=False)
+    status = db.Column(db.String(32), nullable=True)
     document_link = db.Column(db.String(100), nullable=True)
     # create_datetime= db.Column(db.Timestamp, nullable= False)
 
@@ -32,35 +32,41 @@ class Request(db.Model):
     comments = db.Column(db.String(100), nullable=True)
 
 
-    def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
+    # def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
+
+    def __init__(self, requestor_id):
         self.requestor_id= requestor_id   
-        self.provider_id= provider_id
-        self.status= status
-        self.document_link= document_link
-        self.coordinates= coordinates
-        self.location_name = location_name
+        # self.provider_id= provider_id
+        # self.status= status
+        # self.document_link= document_link
+        # self.coordinates= coordinates
+        # self.location_name = location_name
 
     def json(self):
         return {
         "requestor_id": self.requestor_id, 
-        "provider_id": self.provider_id, 
-        "status": self.status, 
-        "document_link": self.document_link,
-        "location_name": self.location_name, 
-        "coordinates" : self.coordinates, 
+        # "provider_id": self.provider_id, 
+        # "status": self.status, 
+        # "document_link": self.document_link,
+        # "location_name": self.location_name, 
+        # "coordinates" : self.coordinates
         }
 
 
 @app.route("/insert_request", methods=['POST'])
 def insert_request():
 
-    data = req.get_json()
+    # data = req.get_json()
+    data = {'requestor_id': 321}
     request = Request(**data)
+
+    print(data)
 
     try:
         db.session.add(request) 
         db.session.commit()
-    except:
+    except Exception as e:
+        print(e)
         return jsonify(
             {
                 "code": 500,
@@ -253,6 +259,8 @@ def update_coordinates(request_id):
 
         if data:
             request.coordinates = data['coordinates']
+            request.place_id = data['place_id']
+            request.location_name = data['location_name']
             db.session.commit()
             return jsonify(
                 {
