@@ -41,19 +41,19 @@ CREATE TABLE IF NOT EXISTS `request` (
   `coordinates` varchar(100),
   `location_name` varchar(100) ,
   `place_id` varchar(100),
-  `color` varchar(32) ,
+  `color` varchar(32),
   `no_of_copies` int(11),
   `single_or_double` varchar(32),
   `size` varchar(10),
   `comments` varchar(100),
-  PRIMARY KEY (`request_id`),
+  PRIMARY KEY (`request_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `data`
 --
 
-INSERT INTO `request` (`request_id`, `requestor_id`, `provider_id`, `status`, `document_link`, 'create_datetime', 'coordinates', 'location_name') VALUES
-(1, 2, 3, "status test", "xxxxxx", '2020-06-12 02:14:55', "coordinates", "toa payoh");
+INSERT INTO `request` (`request_id`, `requestor_id`, `provider_id`, `status`, `document_link`, `create_datetime`, `coordinates`, `location_name`, `place_id`, `color`, `no_of_copies`, `single_or_double`, `size`, `comments`) VALUES
+(1, 2, 3, "status test", "xxxxxx", '2020-06-12 02:14:55', "coordinates", "toa payoh", "1234567890", "Black", 2, "single", "A4", "Yahoo");
 
 -- --------------------------------------------------------

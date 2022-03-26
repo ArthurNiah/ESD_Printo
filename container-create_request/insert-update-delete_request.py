@@ -1,9 +1,6 @@
-from ast import JoinedStr
-from crypt import methods
-from email.policy import default
 from flask import Flask, request as req, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from itsdangerous import JSONWebSignatureSerializer 
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/request'
@@ -322,4 +319,4 @@ def update_location_name(request_id):
 
 
 if __name__ == '__main__':
-    app.run(port=5001, debug=True)
+    app.run(port=5003, debug=True)
