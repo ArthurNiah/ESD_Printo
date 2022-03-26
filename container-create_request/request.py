@@ -214,9 +214,11 @@ def update_document_link(request_id):
             ), 404
 
         data = req.get_json()
+        print(data)
+        data = eval(data)
 
         if data:
-            request.document_link = data['document_link']
+            request.document_link = data['doc_id']
             db.session.commit()
             return jsonify(
                 {

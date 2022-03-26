@@ -19,6 +19,7 @@ CORS(app)
 
 request_URL = "http://localhost:5003/insert_request"
 update_location_URL = "http://localhost:5003/update_location_name/"
+update_gdrive_URL = "http://localhost:5003/update_document_link/"
 googleDrive_URL = "http://localhost:3000/insert_document"
 googleMaps_URL = "http://localhost:5002/get_current_location"
 requestDB_URL = ""
@@ -32,7 +33,7 @@ user_input = {
 @app.route("/create_request", methods=["POST"])
 #For creating a new requestd
 def create_request():
-
+    data = request.get_json()
     if request.is_json:
         try:
             user_request = request.get_json()
@@ -40,7 +41,8 @@ def create_request():
 
             # do the actual work
             # 1. Send order info {cart items}
-            result = processRequest(user_request = {"requestor_id": 619, "location":"SMU" })
+            # result = processRequest(user_request = {"requestor_id": 123, "location":"SMU", "file_name": "popcat.gif" }
+            result = processRequest(data)
             return jsonify(result), result["code"]
 
         except Exception as e:
@@ -67,7 +69,7 @@ def processRequest(user_request):
     #Step 1: Invoking Google Maps microservice
     print('\n-----Invoking GoogleMaps microservice-----')
     locationResults = invoke_http(googleMaps_URL, method="GET", json=user_request) #Replace with variable 
-    print("Current requestor location:", locationResults['data'])
+    # print("Current requestor location:", locationResults['data'])
 
     #====START: Error handeling for Google Maps API======
     if locationResults['code'] not in range(200, 300):
@@ -82,7 +84,7 @@ def processRequest(user_request):
             "errorMsg": locationResults['message']
         }
     #====END: Error handeling for Google Maps API======
-
+    print('\n-----GoogleMaps microservice SUCCESS-----')
 
 
     #Step 2: Invoking Request microservice (Update to be done in the Req Microservice)
@@ -102,29 +104,36 @@ def processRequest(user_request):
             "message": "Request Microservice API has failed. Please read error message and try again.",
             "errorMsg": request_results['message']
         }
+    print('\n-----Request microservice SUCCESS-----')
 
 
 
     
     #====END: Error handeling for Request Microservice ======
 
+    #Step 3: Updating Google Drive microservice IF update request works
+    print('\n-----Invoking GoogleDrive microservice-----')
+    print("request", user_request)
+    #response = invoke_http(googleDrive_URL, method='POST', json=user_request)
+    #print('response', response)
+    response = requests.post(googleDrive_URL, data=user_request)
+    print(response.text)
+    #====START: Error handeling for Google Drive API Microservice ======
+    if response.status_code != 200:
 
-    # #Step 3: Updating Google Drive microservice IF update request works
-    # print('\n-----Invoking GoogleDrive microservice-----')
-    # drive_result = invoke_http(googleDrive_URL, method='POST', json=user_request)
+        print('\n\n-----Google Drive microservice has failed-----')
+        #Return error to UI???
+        return {
+            "code": 500 ,
+            "message": "Google Drive Microservice API has failed. Please read error message and try again.",
+            "errorMsg": "Error"
+        }
 
-    # #====START: Error handeling for Google Drive API Microservice ======
-    # if drive_result['code'] not in range(200, 300):
-
-    #     print('\n\n-----Google Drive microservice has failed-----')
-
-    #     #Return error to UI???
-    #     return {
-    #         "code": 500,
-    #         "message": "Google Drive Microservice API has failed. Please read error message and try again.",
-    #         "errorMsg": drive_result['message']
-    #     }
-    # #====END: Error handeling for Google Drive API Microservice ======
+    #ADDING GDRIVE LINK TO DB
+    isSuccess = invoke_http(update_gdrive_URL+str(request_results['data']['request_id']), method="POST", json=response.text)
+    print(isSuccess)
+    #====END: Error handeling for Google Drive API Microservice ======
+    print('\n-----GDrive microservice SUCCESS-----')
 
 
 
