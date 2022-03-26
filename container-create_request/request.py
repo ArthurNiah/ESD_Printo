@@ -34,10 +34,10 @@ class Request(db.Model):
 
     # def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
 
-    def __init__(self, requestor_id):
+    def __init__(self, requestor_id, status='Unaccepted'):
         self.requestor_id= requestor_id   
         # self.provider_id= provider_id
-        # self.status= status
+        self.status= status
         # self.document_link= document_link
         # self.coordinates= coordinates
         # self.location_name = location_name
@@ -46,7 +46,7 @@ class Request(db.Model):
         return {
         "requestor_id": self.requestor_id, 
         # "provider_id": self.provider_id, 
-        # "status": self.status, 
+        "status": self.status
         # "document_link": self.document_link,
         # "location_name": self.location_name, 
         # "coordinates" : self.coordinates
@@ -259,8 +259,6 @@ def update_coordinates(request_id):
 
         if data:
             request.coordinates = data['coordinates']
-            request.place_id = data['place_id']
-            request.location_name = data['location_name']
             db.session.commit()
             return jsonify(
                 {
@@ -303,6 +301,8 @@ def update_location_name(request_id):
 
         if data:
             request.location_name = data['location_name']
+            request.place_id = data['place_id']
+            request.coordinates = data['coordinates']
             db.session.commit()
             return jsonify(
                 {

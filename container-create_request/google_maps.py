@@ -44,7 +44,7 @@ def get_current_location():
                         "user_input": data['location'],
                         "place_id" : place_id, 
                         "location_name" : formatted_address,
-                        "coordinates": str(user_lat) + str(user_lng)
+                        "coordinates": str(user_lat) + " " + str(user_lng)
                     },
                 }
             ), 200

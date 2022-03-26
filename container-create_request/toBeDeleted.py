@@ -67,7 +67,7 @@ def processRequest(user_request):
     #Step 1: Invoking Google Maps microservice
     print('\n-----Invoking GoogleMaps microservice-----')
     locationResults = invoke_http(googleMaps_URL, method="GET", json=user_request) #Replace with variable 
-    print("Current requestor location:", locationResults)
+    print("Current requestor location:", locationResults['data'])
 
     #====START: Error handeling for Google Maps API======
     if locationResults['code'] not in range(200, 300):
