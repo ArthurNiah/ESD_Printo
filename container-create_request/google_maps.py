@@ -42,10 +42,9 @@ def get_current_location(user_location="NUS"):
                     "code": 201, 
                     "data": {
                         "user_input": user_location,
-                        "placeID" : place_id, 
-                        "locationName" : formatted_address,
-                        "lat": user_lat, 
-                        "lng": user_lng
+                        "place_id" : place_id, 
+                        "location_name" : formatted_address,
+                        "coordinates": user_lat + " " + user_lng
                     },
                 }
             ), 201
