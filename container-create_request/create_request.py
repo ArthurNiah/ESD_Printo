@@ -36,8 +36,8 @@ def create_request():
     user_request = request.get_json()
     if request.is_json:
         try:
-            # user_request = request.get_json()
-            user_request = {"requestor_id": 123, "location":"SMU", "file_name": "popcat.gif" }
+            user_request = request.get_json()
+            # user_request = {"requestor_id": 123, "location":"SMU", "file_name": "popcat.gif" }
             print("\Created request creation order in JSON:", user_request)
 
             # do the actual work
