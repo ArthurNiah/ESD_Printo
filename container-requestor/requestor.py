@@ -1,3 +1,5 @@
+from cgi import test
+from re import X
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
@@ -23,7 +25,7 @@ class Requestor(db.Model):
     tele_id = db.Column(db.String(64), nullable=False)
 
     def __init__(self,first_name, last_name, username, tele_id):
-        self.requestor_id = requestor_id
+        # self.requestor_id = requestor_id
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
@@ -72,22 +74,44 @@ def find_by_requestor_id(requestor_id):
         }
     ), 404
 
-@app.route("/requestor/<string:requestor_id>", methods=['POST'])
-def create_requestor(requestor_id):
-    if (Requestor.query.filter_by(requestor_id=requestor_id).first()):
+
+
+@app.route("/verify", methods=['POST'])
+def verify():
+    data = request.get_json()
+    
+    # print(data['username'])
+    # return data['username']
+
+    requestor = Requestor.query.filter_by(tele_id=data['tele_id'], username=data['username'] ).first()
+    
+    # if requestor.username == data['username']:
+    if requestor:
         return jsonify(
             {
-                "code": 400,
-                "data": {
-                    "requestor_id": requestor_id
-                },
-                "message": "Requestor already exists."
+                "code": 200,
+                "data": requestor.json()
             }
-        ), 400
- 
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Requestor not found."
+        }
+    ), 404
+
+
+
+
+
+@app.route("/register", methods=['POST'])
+def register_requestor():
+    # requestor_id = None
     data = request.get_json()
-    requestor = Requestor(requestor_id, **data)
- 
+    
+    # return(x)
+    # return(request.get_json())
+    requestor = Requestor(**data)
     try:
         db.session.add(requestor)
         db.session.commit()
@@ -95,9 +119,6 @@ def create_requestor(requestor_id):
         return jsonify(
             {
                 "code": 500,
-                "data": {
-                    "requestor_id": requestor_id
-                },
                 "message": "An error occurred creating the requestor."
             }
         ), 500

@@ -17,10 +17,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-provider_URL = "http://localhost:5007/provider" #take note which localhost number you using and calling
-googleDrive_URL = ""
+insert_provider_URL = "http://localhost:5007/insert_provider" #take note which localhost number you using and calling
 googleMaps_URL = "http://localhost:5002/get_current_location" #take note which localhost number you using and calling
-requestDB_URL = ""
 
 #Info from UI
 user_input = {}
@@ -64,7 +62,6 @@ def processProvider(provider_details):
     #Step 1: Invoking Google Maps microservice
     print('\n-----Invoking GoogleMaps microservice-----')
     locationResults = invoke_http(googleMaps_URL, method="GET", json=provider_details) #Replace with variable 
-    print("Current provider location:", locationResults)
 
     #====START: Error handeling for Google Maps API======
     if locationResults['code'] not in range(200, 300):
@@ -80,14 +77,18 @@ def processProvider(provider_details):
         }
     #====END: Error handeling for Google Maps API======
 
+    #update to provider_details
+    provider_details['lat'] = locationResults['data']['lat']
+    provider_details['lng'] = locationResults['data']['lng']
+    provider_details['place_id'] = locationResults['data']['placeID']
+    provider_details['location_name'] = locationResults['data']['locationName']
 
     #Step 2: Invoking Provider microservice (Update to be done in the Provider Microservice)
     print('\n-----Invoking Provider microservice-----')
-    # Need to find a way to add new data into a json file
-    print(provider_details)
-    provider_results = invoke_http(provider_URL, method="POST", json=provider_details)
+    provider_results = invoke_http(insert_provider_URL, method="POST", json=provider_details)
 
     #====START: Error handeling for Provider Microservice======
+    #Error for creating provider
     if provider_results['code'] == 500:
 
         #Return error to UI???
@@ -95,7 +96,9 @@ def processProvider(provider_details):
             "code": 500,
             "message": "An error occurred in creating the Provider.",
         }
+
     #====END: Error handeling for Provider Microservice======
+
 
     return{
         "code": 201,
@@ -103,8 +106,6 @@ def processProvider(provider_details):
             "message": "Provider details was added successfully!"
         }
     }
-
-
 
 
 if __name__ == "__main__":
