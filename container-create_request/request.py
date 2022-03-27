@@ -16,7 +16,7 @@ class Request(db.Model):
     requestor_id = db.Column(db.Integer, nullable= False)
     provider_id = db.Column(db.Integer, nullable= True)
     status = db.Column(db.String(32), nullable=True)
-    document_link = db.Column(db.String(100), nullable=True)
+    document_id = db.Column(db.String(100), nullable=True)
     # create_datetime= db.Column(db.Timestamp, nullable= False)
 
     #gmaps info
@@ -199,8 +199,8 @@ def update_status(request_id):
         ), 500
 
 
-@app.route("/update_document_link/<string:request_id>", methods=['PUT'])
-def update_document_link(request_id):
+@app.route("/update_document_id/<string:request_id>", methods=['PUT'])
+def update_document_id(request_id):
 
     try:
         request = Request.query.filter_by(request_id=request_id).first()
@@ -219,7 +219,7 @@ def update_document_link(request_id):
         data = eval(data)
 
         if data:
-            request.document_link = data['doc_id']
+            request.document_id = data['doc_id']
             db.session.commit()
             return jsonify(
                 {
