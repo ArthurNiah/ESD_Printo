@@ -87,9 +87,46 @@ def insert_request():
     ), 201 
 
 
+@app.route("/get_all_request", methods=['GET'])
+def get_all_request():
+
+    try:
+        requestList = Request.query.all()
+    
+        if len(requestList):
+            # all_request: []
+            # for item in request:
+            #     all_request.append(item)
+            return jsonify (
+                {
+                    "code": 200, 
+                    "data": {
+                        "request":[request.json() for request in requestList]
+                    }
+                }), 200
+        
+        return jsonify (
+            {
+                "code": 404,
+                "message": "No requests found in the database."
+            }
+        ), 404
+
+    except Exception as e:
+
+        return jsonify (
+            {
+                "code" : 500, 
+                "message": "Unable to retrieve requests. Please check error message and try again.",
+                "error_message" : str(e)
+            }
+        ), 500
+
 @app.route("/search_request/<string:request_id>", methods=['GET'])
 def search_request(request_id):
     # response = db.session.query('request').filter_by(request_id=request_id)
+    
+    
     request = Request.query.filter_by(request_id=request_id).first()
 
     if request:
