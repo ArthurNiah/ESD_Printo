@@ -77,7 +77,8 @@ def update_requestor():
         \nSize: A4
         \nComments: Nil"""
         )
-    return {"code": 200, "request_id": 1, "provider_id":1}
+    return {"code": 200,
+"request_id": 1, "provider_id":1}
 
 
 
@@ -104,7 +105,7 @@ def update_provider():
         \nSize: A4
         \nComments: Nil"""
         )
-        
+
     return {"code": 200, "request_id": 1, "provider_id":1}
 
 
