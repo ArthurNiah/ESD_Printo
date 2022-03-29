@@ -34,12 +34,13 @@ bot = Bot(TOKEN)
 
 TEXT = 'Hello World'
 # bot.send_message(CHAT_ID, TEXT)
-# bot.send_message(puja_id, "I CAN SPAM YOU NOW!!!!")
+bot.send_message(658037091, ")
 
 #When user first starts their message
 def start_msg(update: Update, context: CallbackContext):
     update.message.reply_text('Hey there! Welcome to WeatherBot! Just start by typing /start in the chat!')
     tele_id = update.message.chat.id #TODO: Update requestor database with new teleid
+    print(tele_id)
     return tele_id
 
 #When user clicks start on Message
@@ -50,6 +51,7 @@ You will be able to view you requests here.
     Additionally, you'll receive updates when your active requests have been accepted!"""
     )
     tele_id = update.message.chat.id #TODO: Update requestor database with new teleid
+    print(tele_id)
     return tele_id
 
 
@@ -121,6 +123,6 @@ def main():
     updater.idle()
 
 if __name__ == "__main__":
-    app.run(port=5010, debug=True)
+    # app.run(port=5010, debug=True)
     main()
 
