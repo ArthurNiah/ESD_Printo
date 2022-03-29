@@ -34,7 +34,7 @@ bot = Bot(TOKEN)
 
 TEXT = 'Hello World'
 # bot.send_message(CHAT_ID, TEXT)
-bot.send_message(658037091, ")
+# bot.send_message(182604325, "HELLO HOW R U? DON'T BOTHER REPLYING I CANNOT SEE IT.")
 
 #When user first starts their message
 def start_msg(update: Update, context: CallbackContext):
