@@ -38,7 +38,7 @@ TEXT = 'Hello World'
 
 #When user first starts their message
 def start_msg(update: Update, context: CallbackContext):
-    update.message.reply_text('Hey there! Welcome to WeatherBot! Just start by typing /start in the chat!')
+    update.message.reply_text('Hey there! Welcome to Printo! Just start by typing /start in the chat!')
     tele_id = update.message.chat.id #TODO: Update requestor database with new teleid
     print(tele_id)
     return tele_id
