@@ -61,7 +61,7 @@ x = {
         "last_name":"Niah",
         "tele_id": "@ArthurHain",
         "chat_id":"263595696", 
-        "location_name": "Bishan"
+        "location_name": ""
     }
 }
 # bot.send_message(CHAT_ID, TEXT)
@@ -76,23 +76,39 @@ def update_requestor():
     data = req.get_json()
     CHAT_ID = data['provider']['chat_id']
 
-    bot.send_message(
-        CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
-        \nRequest ID: f{data['request']['request_id']}
-        \nProvider Name: f{data['provider']['first_name'] + " " + data['provider']['last_name']}
-        \nProvider ID: f{data['provider']['provider_id']}
-        \nProvider Location: f{data['provider']['location_name']}
-        \nProvider Telegram: f{data['provider']['tele_id']}
-        \n
-        \nDetails of your print requests is as follows:
-        \nColor:f{data['request']['color']}
-        \nCopies: f{data['request']['no_of_copies']}
-        \nSide: f{data['request']['single_or_double']}
-        \nSize: f{data['request']['size']}
-        \nComments: f{data['request']['comments']}"""
-        )
-    return {"code": 200,
-"request_id": 1, "provider_id":1}
+
+    try:
+        bot.send_message(
+            CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
+            \nRequest ID: f{data['request']['request_id']}
+            \nProvider Name: f{data['provider']['first_name'] + " " + data['provider']['last_name']}
+            \nProvider ID: f{data['provider']['provider_id']}
+            \nProvider Location: f{data['provider']['location_name']}
+            \nProvider Telegram: f{data['provider']['tele_id']}
+            \n
+            \nDetails of your print requests is as follows:
+            \nColor:f{data['request']['color']}
+            \nCopies: f{data['request']['no_of_copies']}
+            \nSide: f{data['request']['single_or_double']}
+            \nSize: f{data['request']['size']}
+            \nComments: f{data['request']['comments']}"""
+            )
+        return jsonify(
+            {
+                "code": 200,
+                "request_id": data['request']['request_id'],
+                "provider_id":1
+            }), 200
+
+    except Exception as e:
+        return jsonify (
+            {
+                "code": 500,
+                "message":"Could not send tele message to requestor.", 
+                "error_msg": str(e), 
+                "request_id": data['request']['request_id']
+            }
+        ), 500
 
 
 
@@ -104,23 +120,39 @@ def update_provider():
     data = req.get_json()
     CHAT_ID = data['provider']['chat_id']
 
-    bot.send_message(
-        CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
-        \nRequest ID: f{data['request']['request_id']}
-        \nRequestor Name: f{data['requestor']['first_name'] + " " + data['requestor']['last_name']}
-        \nRequestor ID: f{data['requestor']['provider_id']}
-        \nRequestor Location: f{data['requestor']['location_name']}
-        \nRequestor Telegram: f{data['requestor']['tele_id']}
-        \n
-        \nDetails of your print requests is as follows:
-        \nColor:f{data['request']['color']}
-        \nCopies: f{data['request']['no_of_copies']}
-        \nSide: f{data['request']['single_or_double']}
-        \nSize: f{data['request']['size']}
-        \nComments: f{data['request']['comments']}"""
-        )
 
-    return {"code": 200, "request_id": 1, "provider_id":1}
+    try:
+        bot.send_message(
+            CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
+            \nRequest ID: f{data['request']['request_id']}
+            \nRequestor Name: f{data['requestor']['first_name'] + " " + data['requestor']['last_name']}
+            \nRequestor ID: f{data['requestor']['requestor_id']}
+            \nRequestor Location: f{data['request']['location_name']}
+            \nRequestor Telegram: f{data['requestor']['tele_id']}
+            \n
+            \nDetails of your print requests is as follows:
+            \nColor:f{data['request']['color']}
+            \nCopies: f{data['request']['no_of_copies']}
+            \nSide: f{data['request']['single_or_double']}
+            \nSize: f{data['request']['size']}
+            \nComments: f{data['request']['comments']}"""
+            )
+
+        return jsonify(
+            {
+                "code": 200,
+                "request_id": data['request']['request_id'],
+                "provider_id":1
+            }), 200
+
+    except Exception as e:
+        return jsonify (
+            {
+                "code": 200,
+                "message": "Could not send tele message to provider.", 
+                "error_msg": str(e)
+            }
+        ), 500
 
 
 if __name__ == "__main__":
