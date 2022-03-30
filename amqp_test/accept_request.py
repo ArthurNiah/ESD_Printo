@@ -11,18 +11,12 @@ import json
 
 #import internal files
 from invokes import invoke_http
-# from google_maps import get_current_location
+from google_maps import get_current_location
 
 app = Flask(__name__)
 CORS(app)
 
 
-request_URL = "http://localhost:5003/insert_request"
-update_location_URL = "http://localhost:5003/update_location/"
-update_gdrive_URL = "http://localhost:5003/update_document_id/"
-googleDrive_URL = "http://localhost:3000/insert_document"
-googleMaps_URL = "http://localhost:5002/get_current_location"
-requestDB_URL = ""
 
 #Info from UI
 user_input = {
@@ -30,19 +24,17 @@ user_input = {
 }
 
 
-@app.route("/create_request", methods=["POST"])
+@app.route("/accept_request", methods=["POST"])
 #For creating a new requestd
 def create_request():
-    user_request = request.get_json()
+
     if request.is_json:
         try:
             user_request = request.get_json()
-            # user_request = {"requestor_id": 123, "location":"SMU", "file_name": "popcat.gif" }
             print("\Created request creation order in JSON:", user_request)
 
             # do the actual work
             # 1. Send order info {cart items}
-            # result = processRequest(user_request = {"requestor_id": 123, "location":"SMU", "file_name": "popcat.gif" }
             result = processRequest(user_request)
             return jsonify(result), result["code"]
 
@@ -70,7 +62,7 @@ def processRequest(user_request):
     #Step 1: Invoking Google Maps microservice
     print('\n-----Invoking GoogleMaps microservice-----')
     locationResults = invoke_http(googleMaps_URL, method="GET", json=user_request) #Replace with variable 
-    # print("Current requestor location:", locationResults['data'])
+    print("Current requestor location:", locationResults)
 
     #====START: Error handeling for Google Maps API======
     if locationResults['code'] not in range(200, 300):
@@ -85,14 +77,13 @@ def processRequest(user_request):
             "errorMsg": locationResults['message']
         }
     #====END: Error handeling for Google Maps API======
-    print('\n-----GoogleMaps microservice SUCCESS-----')
 
 
     #Step 2: Invoking Request microservice (Update to be done in the Req Microservice)
     print('\n-----Invoking Request microservice-----')
     # Need to find a way to add new data into a json file
     request_results = invoke_http(request_URL, method="POST", json=user_request)
-    invoke_http(update_location_URL+str(request_results['data']['request_id']), method="PUT", json=locationResults['data'])
+
     #====START: Error handeling for Request Microservice ======
     if request_results['code'] not in range(200, 300):
 
@@ -105,36 +96,25 @@ def processRequest(user_request):
             "message": "Request Microservice API has failed. Please read error message and try again.",
             "errorMsg": request_results['message']
         }
-    print('\n-----Request microservice SUCCESS-----')
-
-
-
-    
     #====END: Error handeling for Request Microservice ======
+
 
     #Step 3: Updating Google Drive microservice IF update request works
     print('\n-----Invoking GoogleDrive microservice-----')
-    print("request", user_request)
-    #response = invoke_http(googleDrive_URL, method='POST', json=user_request)
-    #print('response', response)
-    response = requests.post(googleDrive_URL, data=user_request)
-    print(response.text)
+    drive_result = invoke_http(googleDrive_URL, method='POST', json=user_request)
+
     #====START: Error handeling for Google Drive API Microservice ======
-    if response.status_code != 200:
+    if drive_result['code'] not in range(200, 300):
 
         print('\n\n-----Google Drive microservice has failed-----')
+
         #Return error to UI???
         return {
-            "code": 500 ,
+            "code": 500,
             "message": "Google Drive Microservice API has failed. Please read error message and try again.",
-            "errorMsg": "Error"
+            "errorMsg": drive_result['message']
         }
-
-    #ADDING GDRIVE LINK TO DB
-    isSuccess = invoke_http(update_gdrive_URL+str(request_results['data']['request_id']), method="PUT", json=response.text)
-    print(isSuccess)
     #====END: Error handeling for Google Drive API Microservice ======
-    print('\n-----GDrive microservice SUCCESS-----')
 
 
 
@@ -147,6 +127,7 @@ def processRequest(user_request):
 
 
 
+
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) + " for placing an request...")
-    app.run(port=5001, debug=True)
+    app.run(port=5000, debug=True)

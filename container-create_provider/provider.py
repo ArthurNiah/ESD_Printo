@@ -16,22 +16,28 @@ class Provider(db.Model):
     provider_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False)
     tele_id = db.Column(db.String(64), nullable=False)
-    coordinates = db.Column(db.String(64), nullable=False)
+    lat = db.Column(db.String(64), nullable=False)
+    lng = db.Column(db.String(64), nullable=False)
     location_name = db.Column(db.String(64), nullable=False)
+    place_id = db.Column(db.String(64), nullable=False)
  
-    def __init__(self, username, tele_id, coordinates, location_name):
+    def __init__(self, username, tele_id, lat, lng, location_name, place_id):
         self.username = username
         self.tele_id = tele_id
-        self.coordinates = coordinates
+        self.lat = lat
+        self.lng = lng
         self.location_name = location_name
+        self.place_id = place_id
 
  
     def json(self):
         return {
         "username": self.username, 
         "tele_id": self.tele_id,
-        "coordinates": self.coordinates,
+        "lat": self.lat,
+        "lng": self.lng,
         "location_name": self.location_name,
+        "place_id": self.place_id,
         }
  
 @app.route("/provider")
@@ -70,7 +76,7 @@ def find_by_provider_id(provider_id):
         }
     ), 404
  
-@app.route("/provider", methods=['POST'])
+@app.route("/insert_provider", methods=['POST'])
 def insert_provider():
 
     data = request.get_json()
@@ -97,6 +103,7 @@ def insert_provider():
     return jsonify(
         {
             "code": 201,
+            "provider_id" : provider.provider_id,
             "data": provider.json()
         }
     ), 201
