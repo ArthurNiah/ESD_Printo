@@ -23,16 +23,18 @@ class Requestor(db.Model):
     last_name = db.Column(db.String(64), nullable=False)
     username = db.Column(db.String(64), nullable=False)
     tele_id = db.Column(db.String(64), nullable=False)
+    chat_id = db.Column(db.Integer, nullable=False)
 
-    def __init__(self,first_name, last_name, username, tele_id):
+    def __init__(self,first_name, last_name, username, tele_id, chat_id):
         # self.requestor_id = requestor_id
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
         self.tele_id = tele_id
+        self.chat_id = chat_id
 
     def json(self):
-        return {"first_name": self.first_name, "last_name": self.last_name, "username": self.username, "tele_id": self.tele_id }
+        return {"first_name": self.first_name, "last_name": self.last_name, "username": self.username, "tele_id": self.tele_id, "chat_id":self.chat_id }
 
 # @app.route("/requestor")
 # def who_am_i():
@@ -90,7 +92,9 @@ def verify():
         return jsonify(
             {
                 "code": 200,
-                "data": requestor.json()
+                "data": {
+                    "requestor_id": requestor.requestor_id
+                }
             }
         )
     return jsonify(
