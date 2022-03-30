@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `requestor` (
   `last_name` varchar(64) NOT NULL,
   `username` varchar(64) NOT NULL,
   `tele_id` varchar(64) NOT NULL,
+  `chat_id` int(64) NOT NULL,
   `requestor_id` int(12) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`requestor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -45,13 +46,9 @@ CREATE TABLE IF NOT EXISTS `requestor` (
 -- Dumping data for table `book`
 --
 
-INSERT INTO `requestor` (`first_name`, `last_name`, `username`, `tele_id`, `requestor_id`) VALUES
-('Julian', 'Ung', 'julianung', 'JulianUng:)', 1),
-('Arthur', 'Hain', 'arthurniah', 'ArthurHain', 2),
-('ZenYu', 'Ong', 'ozy', 'zenyu112', 3),
-('Joseph', 'Alde', 'joseph_alde', 'junioralde', 4),
-('Sabrina', 'Halmi', 'sabbie', 'sabbiedoodle', 5),
-('JinLiang', 'Loh', 'LJL', 'Jin_Loh', 6);
+INSERT INTO `requestor` (`first_name`, `last_name`, `username`, `tele_id`, `chat_id`, `requestor_id`) VALUES
+('Julian', 'Ung', 'julianung','@JulianUng', '263595696',1);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

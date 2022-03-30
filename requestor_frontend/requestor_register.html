@@ -34,6 +34,11 @@
     <div class='container' style='margin-top:100px;'>
 
         <form id='requestor_register_form'>
+            <div style="text-align: center;">
+                <p>The following link will direct you to telegram, please click start bot and copy the ID assigned to you to the Chat_ID field in the form below</p>
+                <a href="https://t.me/ESDPrintoBot" target="_blank">Printo Chat Bot</a>
+
+            </div>
             
                 <div class="mb-3">
                     <label for="firstname" class="form-label">First Name</label>
@@ -57,6 +62,13 @@
                     <label for="teleid" class="form-label">Tele Handle</label>
                     <input type="text" class="form-control" id="teleid" aria-describedby="emailHelp" name='teleid'>
                     <div id="emailHelp" class="form-text">Your Telegram handle with the @, e.g. @MikeOxlaung</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="chatid" class="form-label">Chat ID </label>
+                    <input type="text" class="form-control" id="chatid" aria-describedby="emailHelp" name='chatid'>
+                    <div id="emailHelp" class="form-text">The following link will direct you to telegram, please click start bot and copy the ID assigned to you </div>
+                    <div><a href="https://t.me/ESDPrintoBot" target="_blank">Printo Chat Bot</a></div>
                 </div>
 
             <button type="submit" class="btn btn-primary" value='Register'>Register</button>
@@ -87,17 +99,18 @@
             var lastname = $('#lastname').val();
             var username = $('#username').val();
             var teleid = $("#teleid").val();
+            var chatid = $('#chatid').val()
             var requestor_id = null;
 
             // form the POST url which includes the dynamic isbnNumber
-            console.log(JSON.stringify({ firstname: firstname, lastname: lastname, username: username, tele_id: teleid }))
+            console.log(JSON.stringify({ firstname: firstname, lastname: lastname, username: username, tele_id: teleid, chat_id:chatid }))
             try {
                 const response =
                     await fetch(
                         serviceURL, {
                         method: 'POST',
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({first_name: firstname, last_name: lastname, username: username, tele_id: teleid })
+                        body: JSON.stringify({first_name: firstname, last_name: lastname, username: username, tele_id: teleid, chat_id:chatid })
                     });
                 const data = await response.json();
 
