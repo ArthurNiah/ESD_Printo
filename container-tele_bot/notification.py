@@ -28,13 +28,12 @@ logger = logging.getLogger(__name__)
 
 # load_dotenv(".env")
 TOKEN = token
-CHAT_ID = chat_id
+# CHAT_ID = chat_id
 bot = Bot(TOKEN)
 
 
 
 TEXT = 'Hello World'
-
 x = {
     "request": {
         "request_id": 1,
@@ -60,10 +59,11 @@ x = {
         "first_name":"Ruthra",
         "last_name":"Niah",
         "tele_id": "@ArthurHain",
-        "chat_id":"263595696", 
+        "chat_id":"853733285", 
         "location_name": ""
     }
 }
+
 # bot.send_message(CHAT_ID, TEXT)
 # bot.send_message(182604325, "HELLO HOW R U? DON'T BOTHER REPLYING I CANNOT SEE IT.")
 
@@ -77,21 +77,23 @@ def update_requestor():
     CHAT_ID = data['provider']['chat_id']
 
 
+    bot.send_message(CHAT_ID, "Testing")
+
     try:
         bot.send_message(
-            CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
-            \nRequest ID: f{data['request']['request_id']}
-            \nProvider Name: f{data['provider']['first_name'] + " " + data['provider']['last_name']}
-            \nProvider ID: f{data['provider']['provider_id']}
-            \nProvider Location: f{data['provider']['location_name']}
-            \nProvider Telegram: f{data['provider']['tele_id']}
+            CHAT_ID, f'''A provider has accepted your request! \nProvider details are as follows: 
+            \nRequest ID: {data['request']['request_id']}
+            \nProvider Name: {data['provider']['first_name'] + " " + data['provider']['last_name']}
+            \nProvider ID: {data['provider']['provider_id']}
+            \nProvider Location: {data['provider']['location_name']}
+            \nProvider Telegram: {data['provider']['tele_id']}
             \n
             \nDetails of your print requests is as follows:
-            \nColor:f{data['request']['color']}
-            \nCopies: f{data['request']['no_of_copies']}
-            \nSide: f{data['request']['single_or_double']}
-            \nSize: f{data['request']['size']}
-            \nComments: f{data['request']['comments']}"""
+            \nColor: {data['request']['color']}
+            \nCopies: {data['request']['no_of_copies']}
+            \nSide: {data['request']['single_or_double']}
+            \nSize: {data['request']['size']}
+            \nComments: {data['request']['comments']}'''
             )
         return jsonify(
             {
@@ -119,23 +121,24 @@ def update_provider():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
     data = req.get_json()
     CHAT_ID = data['provider']['chat_id']
+    print(CHAT_ID)
 
-
+    bot.send_message(CHAT_ID, "Testing")
     try:
         bot.send_message(
             CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
-            \nRequest ID: f{data['request']['request_id']}
-            \nRequestor Name: f{data['requestor']['first_name'] + " " + data['requestor']['last_name']}
-            \nRequestor ID: f{data['requestor']['requestor_id']}
-            \nRequestor Location: f{data['request']['location_name']}
-            \nRequestor Telegram: f{data['requestor']['tele_id']}
+            \nRequest ID: {data['request']['request_id']}
+            \nRequestor Name: {data['requestor']['first_name'] + " " + data['requestor']['last_name']}
+            \nRequestor ID: {data['requestor']['requestor_id']}
+            \nRequestor Location: {data['request']['location_name']}
+            \nRequestor Telegram: {data['requestor']['tele_id']}
             \n
             \nDetails of your print requests is as follows:
-            \nColor:f{data['request']['color']}
-            \nCopies: f{data['request']['no_of_copies']}
-            \nSide: f{data['request']['single_or_double']}
-            \nSize: f{data['request']['size']}
-            \nComments: f{data['request']['comments']}"""
+            \nColor: {data['request']['color']}
+            \nCopies: {data['request']['no_of_copies']}
+            \nSide: {data['request']['single_or_double']}
+            \nSize: {data['request']['size']}
+            \nComments: {data['request']['comments']}"""
             )
 
         return jsonify(
