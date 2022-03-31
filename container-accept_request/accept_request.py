@@ -112,17 +112,19 @@ def accept_request(request_id):
         "provider": get_provider_res['data'],
         "requestor": get_requestor_res['data']
     }
+
     notify_requestor_res = invoke_http(notification_update_requestor_URL, json = collated_info, method = 'POST')
     notify_provider_res = invoke_http(notification_update_provider_URL, json=collated_info, method = 'POST')
-    
+    print(notify_provider_res)
+    print(notify_requestor_res['code'])
     if notify_provider_res['code'] not in range(200,300) or notify_requestor_res['code'] not in range(200, 300):
         print("\n-----FAILED: Invoking Telegram Notification microservice-----")
         return jsonify (
             {
                 "code":500, 
                 "message" :{
-                    "requestor_side": notify_requestor_res['message'], 
-                    "provider_side": notify_provider_res['message']
+                    "requestor_side": "hello", 
+                    "provider_side": "hello"
                 }
             }
         )
