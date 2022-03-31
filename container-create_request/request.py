@@ -157,7 +157,6 @@ def update_provider_id(request_id):
 
     try:
         request = Request.query.filter_by(request_id=request_id).first()
-
         if not request:
             return jsonify(
                 {
@@ -324,6 +323,50 @@ def update_location_name(request_id):
             }
         ), 500
 
+
+@app.route("/update_print_details/<string:request_id>", methods=['PUT'])
+def update_print_status(request_id):
+
+    try:
+        request = Request.query.filter_by(request_id=request_id).first()
+        if not request:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : request.json(),
+                    'message': 'Request not found. Please try again!'
+                }
+            ), 404
+
+        data = req.get_json()
+
+        if data:
+            request.color = data['color']
+            request.no_of_copies = data['no_of_copies']
+            request.single_or_double = data['single_or_double']
+            request.size = data['size']
+            request.comments = data['comments']
+
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "request_id" : request_id,
+                        "response": request.json()
+                    },
+                    'message' : 'Request has been updated with new printing information.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500, 
+                "data": {
+                    "reqeust_id":request_id
+                },
+                "message": "An error occurred while updating the request. " + str(e)
+            }
+            ), 500
 
 if __name__ == '__main__':
     app.run(port=5003, debug=True)
