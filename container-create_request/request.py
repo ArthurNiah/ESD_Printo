@@ -363,11 +363,13 @@ def update_print_status(request_id):
         data = req.get_json()
 
         if data:
+            print(data['color'])
             request.color = data['color']
             request.no_of_copies = data['no_of_copies']
             request.single_or_double = data['single_or_double']
             request.size = data['size']
             request.comments = data['comments']
+            db.session.commit()
 
             return jsonify(
                 {
