@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `requestor` (
   `last_name` varchar(64) NOT NULL,
   `username` varchar(64) NOT NULL,
   `tele_id` varchar(64) NOT NULL,
-  `chat_id` int(64) NOT NULL,
+  `chat_id` varchar(64) NOT NULL,
   `requestor_id` int(12) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`requestor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
