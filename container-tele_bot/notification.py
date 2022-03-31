@@ -35,7 +35,8 @@ bot = Bot(TOKEN)
 def update_requestor():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
     data = req.get_json()
-    CHAT_ID = data['provider']['chat_id']
+    # CHAT_ID = data['provider']['chat_id'] TODO: UNCOMMENT LATER
+    CHAT_ID = 853733285
 
     try:
         bot.send_message(
@@ -47,11 +48,11 @@ def update_requestor():
             \nProvider Telegram: {data['provider']['tele_id']}
             \n
             \nDetails of your print requests is as follows:
-            \nColor: {data['request']['color']}
-            \nCopies: {data['request']['no_of_copies']}
-            \nSide: {data['request']['single_or_double']}
-            \nSize: {data['request']['size']}
-            \nComments: {data['request']['comments']}'''
+            \nColor: {data['request']['data']['color']}
+            \nCopies: {data['request']['data']['no_of_copies']}
+            \nSide: {data['request']['data']['single_or_double']}
+            \nSize: {data['request']['data']['size']}
+            \nComments: {data['request']['data']['comments']}'''
             )
         return jsonify(
             {
@@ -77,7 +78,8 @@ def update_requestor():
 def update_provider():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
     data = req.get_json()
-    CHAT_ID = data['provider']['chat_id']
+    # CHAT_ID = data['provider']['chat_id'] TODO: UNCOMMENT LATER
+    CHAT_ID = 853733285
 
     try:
         bot.send_message(
@@ -85,21 +87,21 @@ def update_provider():
             \nRequest ID: {data['request']['request_id']}
             \nRequestor Name: {data['requestor']['first_name'] + " " + data['requestor']['last_name']}
             \nRequestor ID: {data['requestor']['requestor_id']}
-            \nRequestor Location: {data['request']['location_name']}
+            \nRequestor Location: {data['request']['data']['location_name']}
             \nRequestor Telegram: {data['requestor']['tele_id']}
             \n
             \nDetails of your print requests is as follows:
-            \nColor: {data['request']['color']}
-            \nCopies: {data['request']['no_of_copies']}
-            \nSide: {data['request']['single_or_double']}
-            \nSize: {data['request']['size']}
-            \nComments: {data['request']['comments']}"""
+            \nColor: {data['request']['data']['color']}
+            \nCopies: {data['request']['data']['no_of_copies']}
+            \nSide: {data['request']['data']['single_or_double']}
+            \nSize: {data['request']['data']['size']}
+            \nComments: {data['request']['data']['comments']}"""
             )
 
         return jsonify(
             {
                 "code": 200,
-                "request_id": data['request']['request_id'],
+                "request_id": data['request']['data']['request_id'],
                 "provider_id":1
             }), 200
 
