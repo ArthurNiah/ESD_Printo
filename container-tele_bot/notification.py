@@ -35,15 +35,14 @@ bot = Bot(TOKEN)
 def update_requestor():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
     data = req.get_json()
-    # CHAT_ID = data['provider']['chat_id'] TODO: UNCOMMENT LATER
-    CHAT_ID = 853733285
+    CHAT_ID = data['requestor']['chat_id'] 
+    # CHAT_ID = 853733285
 
     try:
         bot.send_message(
             CHAT_ID, f'''A provider has accepted your request! \nProvider details are as follows: 
             \nRequest ID: {data['request']['request_id']}
             \nProvider Name: {data['provider']['first_name'] + " " + data['provider']['last_name']}
-            \nProvider ID: {data['provider']['provider_id']}
             \nProvider Location: {data['provider']['location_name']}
             \nProvider Telegram: {data['provider']['tele_id']}
             \n
@@ -57,8 +56,8 @@ def update_requestor():
         return jsonify(
             {
                 "code": 200,
-                "request_id": data['request']['request_id'],
-                "provider_id":1
+                "request_id": data['request']['request_id']
+                # "provider_id":1
             }), 200
 
     except Exception as e:
@@ -78,15 +77,15 @@ def update_requestor():
 def update_provider():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
     data = req.get_json()
-    # CHAT_ID = data['provider']['chat_id'] TODO: UNCOMMENT LATER
-    CHAT_ID = 853733285
+    CHAT_ID = data['provider']['chat_id']
+    # CHAT_ID = 853733285
 
     try:
         bot.send_message(
-            CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
+            CHAT_ID, f"""You accepted a request! \nRequestor details are as follows: 
             \nRequest ID: {data['request']['request_id']}
             \nRequestor Name: {data['requestor']['first_name'] + " " + data['requestor']['last_name']}
-            \nRequestor ID: {data['requestor']['requestor_id']}
+            \nRequestor ID: {data['request']['data']['requestor_id']}
             \nRequestor Location: {data['request']['data']['location_name']}
             \nRequestor Telegram: {data['requestor']['tele_id']}
             \n
@@ -101,14 +100,14 @@ def update_provider():
         return jsonify(
             {
                 "code": 200,
-                "request_id": data['request']['data']['request_id'],
-                "provider_id":1
+                "request_id": data['request']['request_id']
+                # "provider_id":1
             }), 200
 
     except Exception as e:
         return jsonify (
             {
-                "code": 200,
+                "code": 500,
                 "message": "Could not send tele message to provider.", 
                 "error_msg": str(e)
             }
