@@ -70,6 +70,7 @@ def accept_request(request_id):
         )
 
     #STEP 3: Update request with provider_id + status + print_details
+    #TODO: Update request with print details
     print('\n-----Invoking Update Request microservice-----')
     update_provider_id_res= invoke_http(update_provider_id_URL + str(data['request_id']), json = data, method='PUT')
     update_status= invoke_http(update_status_URL + str(data['request_id']), json = {"status":"Accepted"}, method='PUT')

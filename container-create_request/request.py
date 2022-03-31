@@ -33,7 +33,7 @@ class Request(db.Model):
 
 
     # def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
-
+#TODO: Try changing the database to Null values upon init
     def __init__(self, requestor_id, status='Unaccepted'):
         self.requestor_id= requestor_id   
         # self.provider_id= provider_id
