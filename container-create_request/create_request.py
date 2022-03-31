@@ -22,7 +22,6 @@ update_location_URL = "http://localhost:5003/update_location/"
 update_gdrive_URL = "http://localhost:5003/update_document_id/"
 googleDrive_URL = "http://localhost:3000/insert_document"
 googleMaps_URL = "http://localhost:5002/get_current_location"
-requestDB_URL = ""
 
 #Info from UI
 user_input = {
