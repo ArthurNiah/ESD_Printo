@@ -1,9 +1,10 @@
+import os
 from flask import Flask, request as req, jsonify
 from flask_sqlalchemy import SQLAlchemy
-
+from os import environ
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/request'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root:root@localhost:3306/request'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -393,4 +394,4 @@ def update_print_status(request_id):
             ), 500
 
 if __name__ == '__main__':
-    app.run(port=5003, debug=True)
+    app.run(host='0.0.0.0',port=5003, debug=True)
