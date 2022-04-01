@@ -9,6 +9,7 @@ http.createServer(function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
       console.log(files);
+      console.log(fields)
       file_name= files.filetoupload.originalFilename;
       mime_type= files.filetoupload.mimetype
       var info= JSON.stringify({
@@ -16,7 +17,7 @@ http.createServer(function (req, res) {
           'comment': fields.comment, 'file_name': file_name, 'mime_type': mime_type
 
       });
-      
+      console.log(info)
       const options = {
         hostname: 'localhost',
         port: 5001,
