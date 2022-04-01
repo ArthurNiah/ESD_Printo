@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "express": "^4.17.3",
+    "formidable": "^2.0.1",
     "google-auth-library": "^7.14.0",
     "googleapis": "^97.0.0"
   }

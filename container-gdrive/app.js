@@ -31,17 +31,17 @@ const drive= google.drive({
 })
 
 
-async function uploadFile(file_name){
+async function uploadFile(file_name, mime_type){
     var dir= __dirname + "/temp_files";
     const filePath= path.join(dir, file_name);
     try{
         const response= await drive.files.create({
             requestBody: {
                 name: file_name,
-                MimeType: 'image/gif'
+                MimeType: mime_type
             },
             media: {
-                mimeType: 'image/gif',
+                mimeType: mime_type,
                 body: fs.createReadStream(filePath)
             }
         });
@@ -52,6 +52,7 @@ async function uploadFile(file_name){
     console.log(error.message)
     }
 }
+
 async function generatePublicURL(document_id){
     try{
         await drive.permissions.create({
@@ -90,14 +91,15 @@ app.route('/insert_document')
 .post((req, res, next) => {
     // res.send('POST request called');
     file_name= req.body.file_name
-    var x= uploadFile(file_name)
+    mime_type= req.body.mime_type
+    var x= uploadFile(file_name, mime_type)
     setTimeout(() => {
         console.log('promise', x); 
         x.then(function(result){
             console.log("result", result)
             res.send(result)
         })
-        
+    
     },4000);
     
 })

@@ -1,4 +1,4 @@
-from crypt import methods
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os, sys
@@ -25,7 +25,6 @@ googleMaps_URL = "http://localhost:5002/get_current_location"
 
 #Info from UI
 user_input = {
-    
 }
 
 
@@ -33,6 +32,7 @@ user_input = {
 #For creating a new requestd
 def create_request():
     user_request = request.get_json()
+    print(user_request)
     if request.is_json:
         try:
             user_request = request.get_json()
@@ -65,7 +65,6 @@ def create_request():
 
 #process the data(adpated from the sldies)
 def processRequest(user_request):
-
     #Step 1: Invoking Google Maps microservice
     print('\n-----Invoking GoogleMaps microservice-----')
     locationResults = invoke_http(googleMaps_URL, method="GET", json=user_request) #Replace with variable 
