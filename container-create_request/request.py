@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import environ
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root:root@localhost:3306/request'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/request'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -51,7 +51,7 @@ class Request(db.Model):
         self.requestor_id= requestor_id   
         self.provider_id= provider_id
         self.status= status
-        self.document_id= document_
+        self.document_id= document_id
         self.coordinates= coordinates
         self.location_name = location_name
         self.color = color
