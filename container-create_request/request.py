@@ -80,8 +80,6 @@ class Request(db.Model):
 def insert_request():
 
     data = req.get_json()
-    print(data)
-    # data = {'requestor_id': 321}
     request = Request(data['requestor_id'])
 
     print(data)
