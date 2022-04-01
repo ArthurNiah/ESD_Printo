@@ -17,7 +17,7 @@ services:
     image: junioralde/request:printo
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://root:root@localhost:3306/request
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
       PYTHONUNBUFFERED: 1
     ports:
       - "5003:5003"
