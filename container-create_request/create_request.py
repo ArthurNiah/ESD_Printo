@@ -22,6 +22,7 @@ update_location_URL = "http://localhost:5003/update_location/"
 update_gdrive_URL = "http://localhost:5003/update_document_id/"
 googleDrive_URL = "http://localhost:3000/insert_document"
 googleMaps_URL = "http://localhost:5002/get_current_location"
+print_details_URL = "http://localhost:5003/update_print_details/"
 
 #Info from UI
 user_input = {
@@ -91,6 +92,7 @@ def processRequest(user_request):
     # Need to find a way to add new data into a json file
     request_results = invoke_http(request_URL, method="POST", json=user_request)
     invoke_http(update_location_URL+str(request_results['data']['request_id']), method="PUT", json=locationResults['data'])
+    invoke_http(print_details_URL+str(request_results['data']['request_id']), method="PUT", json=user_request)
     #====START: Error handeling for Request Microservice ======
     if request_results['code'] not in range(200, 300):
 
