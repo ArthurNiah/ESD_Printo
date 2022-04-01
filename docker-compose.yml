@@ -1,0 +1,23 @@
+#PRINTO DCOMPOSE
+
+version: "3.8"
+
+volumes:
+  rabbitmq_data:
+
+services:
+ 
+  ###################################
+  # Request: Request microservice
+  ###################################
+  request:
+    build:
+      context: ./container-create_request/
+      dockerfile: request.dockerfile
+    image: junioralde/request:printo
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://root:root@localhost:3306/request
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5003:5003"

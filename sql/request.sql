@@ -30,7 +30,7 @@ USE `request`;
 -- Table structure for table `request`
 --
 
-DROP TABLE IF EXISTS `requst`;
+DROP TABLE IF EXISTS `request`;
 CREATE TABLE IF NOT EXISTS `request` (
   `request_id` int(11) NOT NULL AUTO_INCREMENT,
   `requestor_id` int(11) NOT NULL,

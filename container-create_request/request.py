@@ -1,9 +1,10 @@
+import os
 from flask import Flask, request as req, jsonify
 from flask_sqlalchemy import SQLAlchemy
-
+from os import environ
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/request'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root:root@localhost:3306/request'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -33,23 +34,45 @@ class Request(db.Model):
 
 
     # def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
-
-    def __init__(self, requestor_id, status='Unaccepted'):
+#TODO: Try changing the database to Null values upon init
+    def __init__(self, 
+    requestor_id, 
+    status='Unaccepted', 
+    provider_id= None, 
+    document_id = None, 
+    coordinates = None, 
+    location_name=None, 
+    color = None, 
+    no_of_copies = 0, 
+    single_or_double = None, 
+    size = None, 
+    comments = None
+    ):
         self.requestor_id= requestor_id   
-        # self.provider_id= provider_id
+        self.provider_id= provider_id
         self.status= status
-        # self.document_link= document_link
-        # self.coordinates= coordinates
-        # self.location_name = location_name
+        self.document_id= document_
+        self.coordinates= coordinates
+        self.location_name = location_name
+        self.color = color
+        self.no_of_copies = no_of_copies
+        self.single_or_double = single_or_double
+        self.size = size
+        self.comments = comments
 
     def json(self):
         return {
         "requestor_id": self.requestor_id, 
-        # "provider_id": self.provider_id, 
-        "status": self.status
-        # "document_link": self.document_link,
-        # "location_name": self.location_name, 
-        # "coordinates" : self.coordinates
+        "provider_id": self.provider_id, 
+        "status": self.status,
+        "document_id": self.document_id,
+        "location_name": self.location_name, 
+        "coordinates" : self.coordinates,
+        "color": self.color, 
+        "no_of_copies": self.no_of_copies, 
+        "single_or_double": self.single_or_double, 
+        "size": self.size,
+        "comments":self.comments
         }
 
 
@@ -157,7 +180,6 @@ def update_provider_id(request_id):
 
     try:
         request = Request.query.filter_by(request_id=request_id).first()
-
         if not request:
             return jsonify(
                 {
@@ -325,5 +347,51 @@ def update_location_name(request_id):
         ), 500
 
 
+@app.route("/update_print_details/<string:request_id>", methods=['PUT'])
+def update_print_status(request_id):
+
+    try:
+        request = Request.query.filter_by(request_id=request_id).first()
+        if not request:
+            return jsonify(
+                {
+                    'code': 404, 
+                    'data' : request.json(),
+                    'message': 'Request not found. Please try again!'
+                }
+            ), 404
+
+        data = req.get_json()
+
+        if data:
+            print(data['color'])
+            request.color = data['color']
+            request.no_of_copies = data['no_of_copies']
+            request.single_or_double = data['single_or_double']
+            request.size = data['size']
+            request.comments = data['comments']
+            db.session.commit()
+
+            return jsonify(
+                {
+                    'code': 200,
+                    "data": {
+                        "request_id" : request_id,
+                        "response": request.json()
+                    },
+                    'message' : 'Request has been updated with new printing information.'
+                }
+            ), 200
+    except Exception as e:
+        return jsonify(
+            {
+                "code": 500, 
+                "data": {
+                    "reqeust_id":request_id
+                },
+                "message": "An error occurred while updating the request. " + str(e)
+            }
+            ), 500
+
 if __name__ == '__main__':
-    app.run(port=5003, debug=True)
+    app.run(host='0.0.0.0',port=5003, debug=True)

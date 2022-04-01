@@ -26,103 +26,95 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-# load_dotenv(".env")
 TOKEN = token
-CHAT_ID = chat_id
 bot = Bot(TOKEN)
 
-
-TEXT = 'Hello World'
-# bot.send_message(CHAT_ID, TEXT)
-# bot.send_message(182604325, "HELLO HOW R U? DON'T BOTHER REPLYING I CANNOT SEE IT.")
-
 #When user first starts their message
-def start_msg(update: Update, context: CallbackContext):
-    update.message.reply_text('Hey there! Welcome to Printo! Just start by typing /start in the chat!')
-    tele_id = update.message.chat.id #TODO: Update requestor database with new teleid
-    print(tele_id)
-    return tele_id
-
-#When user clicks start on Message
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text(
-"""Hello! Thank you for using Printo! 
-You will be able to view you requests here. 
-    Additionally, you'll receive updates when your active requests have been accepted!"""
-    )
-    tele_id = update.message.chat.id #TODO: Update requestor database with new teleid
-    print(tele_id)
-    return tele_id
-
-
-
 #TODO: FOR  REQUESTOR: update requestor when their request has been accepted.
-#TODO: Change code to take in **data from where ever
 @app.route('/update_requestor', methods=['POST'])
 def update_requestor():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
-    # data = req.get_json()
-    #CHAT_ID = data['tele_id']
+    data = req.get_json()
+    CHAT_ID = data['requestor']['chat_id'] 
+    # CHAT_ID = 853733285
 
-    bot.send_message(
-        CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
-        \nRequest ID: 1
-        \nProvider Name: Arthur Hain 
-        \nProvider ID: 1
-        \nProvider Location: Toa Payoh
-        \nProvider Telegram: @ArthurHain
-        \n
-        \nDetails of your print requests is as follows:
-        \nColor: Black
-        \nCopies: 21
-        \nSide: Single
-        \nSize: A4
-        \nComments: Nil"""
-        )
-    return {"code": 200,
-"request_id": 1, "provider_id":1}
+    try:
+        bot.send_message(
+            CHAT_ID, f'''A provider has accepted your request! \nProvider details are as follows: 
+            \nRequest ID: {data['request']['request_id']}
+            \nProvider Name: {data['provider']['first_name'] + " " + data['provider']['last_name']}
+            \nProvider Location: {data['provider']['location_name']}
+            \nProvider Telegram: {data['provider']['tele_id']}
+            \n
+            \nDetails of your print requests is as follows:
+            \nColor: {data['request']['data']['color']}
+            \nCopies: {data['request']['data']['no_of_copies']}
+            \nSide: {data['request']['data']['single_or_double']}
+            \nSize: {data['request']['data']['size']}
+            \nComments: {data['request']['data']['comments']}'''
+            )
+        return jsonify(
+            {
+                "code": 200,
+                "request_id": data['request']['request_id']
+                # "provider_id":1
+            }), 200
+
+    except Exception as e:
+        return jsonify (
+            {
+                "code": 500,
+                "message":"Could not send tele message to requestor.", 
+                "error_msg": str(e), 
+                "request_id": data['request']['request_id']
+            }
+        ), 500
 
 
 
 #TODO: FOR  PROVIDER: update requestor when their request has been accepted.
-#TODO: Change code to take in **data from where ever
 @app.route('/update_provider', methods=['POST'])
 def update_provider():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
-    # data = req.get_json()
-    #CHAT_ID = data['tele_id']
+    data = req.get_json()
+    CHAT_ID = data['provider']['chat_id']
+    # CHAT_ID = 853733285
 
-    bot.send_message(
-        CHAT_ID, f"""A provider has accepted your request! \Provider details are as follows: 
-        \nRequest ID: 1
-        \nRequetor Name: Arthur Hain 
-        \nRequestor ID: 1
-        \nRequestor Location: Toa Payoh
-        \nRequestor Telegram: @ArthurHain
-        \n
-        \nDetails of the accepted print requests is as follows:
-        \nColor: Black
-        \nCopies: 21
-        \nSide: Single
-        \nSize: A4
-        \nComments: Nil"""
-        )
+    try:
+        bot.send_message(
+            CHAT_ID, f"""You accepted a request! \nRequestor details are as follows: 
+            \nRequest ID: {data['request']['request_id']}
+            \nRequestor Name: {data['requestor']['first_name'] + " " + data['requestor']['last_name']}
+            \nRequestor ID: {data['request']['data']['requestor_id']}
+            \nRequestor Location: {data['request']['data']['location_name']}
+            \nRequestor Telegram: {data['requestor']['tele_id']}
+            \n
+            \nDetails of your print requests is as follows:
+            \nColor: {data['request']['data']['color']}
+            \nCopies: {data['request']['data']['no_of_copies']}
+            \nSide: {data['request']['data']['single_or_double']}
+            \nSize: {data['request']['data']['size']}
+            \nComments: {data['request']['data']['comments']}"""
+            )
 
-    return {"code": 200, "request_id": 1, "provider_id":1}
+        return jsonify(
+            {
+                "code": 200,
+                "request_id": data['request']['request_id']
+                # "provider_id":1
+            }), 200
 
+    except Exception as e:
+        return jsonify (
+            {
+                "code": 500,
+                "message": "Could not send tele message to provider.", 
+                "error_msg": str(e)
+            }
+        ), 500
 
-def main():
-    updater = Updater(TOKEN, use_context=True)
-    dp = updater.dispatcher
-
-    dp.add_handler(CommandHandler('start', start))
- 
-    updater.start_polling()
-
-    # run the bot until interrupted (e.g. using Ctrl + c)
-    updater.idle()
 
 if __name__ == "__main__":
-    # app.run(port=5010, debug=True)
-    main()
+    app.run(port=5010, debug=True)
+
 
