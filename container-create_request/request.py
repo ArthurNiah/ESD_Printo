@@ -361,6 +361,8 @@ def update_print_status(request_id):
             ), 404
 
         data = req.get_json()
+        print("print Details", data)
+        print("request", request)
 
         if data:
             print(data['color'])
