@@ -66,10 +66,14 @@
                         body: JSON.stringify({username: username, tele_id: teleid })
                     });
                 const data = await response.json();
-
+                requestor = data.data;
                 if (response.ok) {
                     // relocate to home page
-                    window.location.replace("requestor_home.html"); //will return to requestor home page
+                    // console.log(requestor.requestor_id)
+                    // new_url = "requestor_home/".concat(requestor.requestor_id).concat(".html")
+                    // console.log(new_url)
+                    //window.location.replace(new_url); //will return to requestor home page with id
+                    window.location.replace("requestor_home.html");
                     return false;
                 } else {
                     console.log(data);

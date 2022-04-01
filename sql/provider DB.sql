@@ -39,6 +39,9 @@ CREATE TABLE IF NOT EXISTS `provider` (
   `lng` varchar(64) NOT NULL,
   `location_name` varchar(64) NOT NULL,
   `place_id` varchar(64) NOT NULL,
+  `chat_id` varchar(64) NOT NULL,
+  `first_name` varchar(64) NOT NULL, 
+  `last_name` varchar(64) NOT NULL,
   PRIMARY KEY (`provider_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -46,10 +49,10 @@ CREATE TABLE IF NOT EXISTS `provider` (
 -- Dumping data for table `provider`
 --
 
-INSERT INTO `provider` (`provider_id`, `username`, `tele_id`, `lat`, `lng`, `location_name`, `place_id`) VALUES
-('1', 'arthur', '@arthur', '550', '400','smu', 'tochange'),
-('2', 'julian', '@julian', '550', '400','bedok', 'tochange'),
-('3', 'joseph', '@joseph', '550', '400','bencoolen', 'tochange');
+INSERT INTO `provider` (`provider_id`, `username`, `first_name`, `last_name`, `tele_id`, `lat`, `lng`, `location_name`, `place_id`, `chat_id`) VALUES
+('1', 'arthur', 'Arthur', 'Hain', '@arthur', '550', '400','smu', 'tochange', '853733285'),
+('2', 'julian', 'Julian', 'Ung', '@julian', '550', '400','bedok', 'tochange', '853733285'),
+('3', 'joseph', 'Joseph', 'Alde', '@joseph', '550', '400','bencoolen', 'tochange',' 853733285');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
