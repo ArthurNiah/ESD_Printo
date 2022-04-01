@@ -12,8 +12,8 @@ http.createServer(function (req, res) {
       file_name= files.filetoupload.originalFilename;
       mime_type= files.filetoupload.mimetype
       var info= JSON.stringify({
-          'location': fields.location, 'requestor_id': 2, 'no_of_copies': fields.no_of_copies, 'bwc': fields.bwc, 'size': fields.size, 'single_or_double': fields.single_or_double, 
-          'comment': fields.comment, 'file_name': file_name, 'mime_type': mime_type
+          'location': fields.location, 'requestor_id': 2, 'no_of_copies': fields.no_of_copies, 'color': fields.color, 'size': fields.size, 'single_or_double': fields.single_or_double, 
+          'comments': fields.comments, 'file_name': file_name, 'mime_type': mime_type
 
       });
       
@@ -57,11 +57,10 @@ http.createServer(function (req, res) {
 
   } else if (req.url == '/fileuploadui'){
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./request.html');
+    var html= fs.readFileSync('./container-gdrive/request.html');
     res.write(html);
     return res.end();
   }
 
 }).listen(8080);
-
 

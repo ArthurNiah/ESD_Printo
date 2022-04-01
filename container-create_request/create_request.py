@@ -92,7 +92,8 @@ def processRequest(user_request):
     # Need to find a way to add new data into a json file
     request_results = invoke_http(request_URL, method="POST", json=user_request)
     invoke_http(update_location_URL+str(request_results['data']['request_id']), method="PUT", json=locationResults['data'])
-    invoke_http(print_details_URL+str(request_results['data']['request_id']), method="PUT", json=user_request)
+    test = invoke_http(print_details_URL+str(request_results['data']['request_id']), method="PUT", json=user_request)
+    print("\n\n HELLOE CHECKKCKCKCK", user_request)
     #====START: Error handeling for Request Microservice ======
     if request_results['code'] not in range(200, 300):
 
@@ -118,7 +119,7 @@ def processRequest(user_request):
     #response = invoke_http(googleDrive_URL, method='POST', json=user_request)
     #print('response', response)
     response = requests.post(googleDrive_URL, data=user_request)
-    print(response.text)
+    # print(response.text)
     #====START: Error handeling for Google Drive API Microservice ======
     if response.status_code != 200:
 
@@ -132,7 +133,7 @@ def processRequest(user_request):
 
     #ADDING GDRIVE LINK TO DB
     isSuccess = invoke_http(update_gdrive_URL+str(request_results['data']['request_id']), method="PUT", json=response.text)
-    print(isSuccess)
+    print("HELLO ATTENTION HERE", isSuccess)
     #====END: Error handeling for Google Drive API Microservice ======
     print('\n-----GDrive microservice SUCCESS-----')
 
