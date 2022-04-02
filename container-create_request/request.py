@@ -36,8 +36,9 @@ class Request(db.Model):
 
     # def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
 #TODO: Try changing the database to Null values upon init
-    def __init__(self, 
+    def __init__(self,
     requestor_id, 
+    request_id = None,
     status='Unaccepted', 
     provider_id= None, 
     document_id = None, 
@@ -49,6 +50,7 @@ class Request(db.Model):
     size = None, 
     comments = None
     ):
+        self.request_id = request_id
         self.requestor_id= requestor_id   
         self.provider_id= provider_id
         self.status= status
@@ -63,6 +65,7 @@ class Request(db.Model):
 
     def json(self):
         return {
+        "request_id": self.request_id,
         "requestor_id": self.requestor_id, 
         "provider_id": self.provider_id, 
         "status": self.status,
