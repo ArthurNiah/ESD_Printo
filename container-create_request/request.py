@@ -433,6 +433,41 @@ def get_all_request_by_id(requestor_id):
                 "error_message" : str(e)
             }
         ), 500
+
+@app.route("/get_request_by_status", methods=['GET'])
+#GET ALL UNACCEPTED REQUEST
+def get_request_by_status():
+
+    try:
+        requestList = Request.query.filter_by(status="Unaccepted")
+    
+        if requestList:
+
+            return jsonify (
+                {
+                    "code": 200, 
+                    "data": {
+                        "request":[request.json() for request in requestList]
+                    }
+                }), 200
+        
+        return jsonify (
+            {
+                "code": 404,
+                "message": "No unaccepted requests found! Hooray!."
+            }
+        ), 404
+
+    except Exception as e:
+
+        return jsonify (
+            {
+                "code" : 500, 
+                "message": "Unable to retrieve requests. Please check error message and try again.",
+                "error_message" : str(e)
+            }
+        ), 500
+
         
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5003, debug=True)
