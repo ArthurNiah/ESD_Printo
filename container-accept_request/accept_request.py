@@ -31,6 +31,7 @@ get_provider_URL = "http://localhost:5007/provider/"
 get_requestor_URL = "http://localhost:5005/requestor/"
 notification_update_requestor_URL = "http://localhost:5010/update_requestor"
 notification_update_provider_URL = "http://localhost:5010/update_provider"
+payment_URL = "http://localhost:5123/payment"
 
 
 
@@ -104,10 +105,12 @@ def accept_request(request_id):
 
     #STEP 5: Collate info and invoke Notification.py
     print("\n-----Invoking Telegram Notification microservice-----")
+    payment_res = invoke_http(payment_URL, json= data)
     collated_info = {
         "request": {
             "request_id": get_request_res['data']['request_id'], 
-            "data": get_request_res['data']['response']
+            "data": get_request_res['data']['response'], 
+            "price": payment_res['final_price']
         },
         "provider": get_provider_res['data'],
         "requestor": get_requestor_res['data']

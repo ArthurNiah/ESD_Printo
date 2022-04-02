@@ -44,8 +44,8 @@ def cal_payment():
                     "code": 200, 
                     "message": "Final price microservice success", 
                     "data": {
-                        "final_price":final_price, 
-                        "response": request.json()
+                        "final_price": final_price, 
+                        "response": request
                     }
                 }
             ), 200
@@ -54,11 +54,12 @@ def cal_payment():
 
             return jsonify({
                 "code": 500, 
-                "message": "Final price microservice failed", 
+                "message": "Final price microservice failed:" + str(e), 
                 "data": {
-                    "response":request.json()
+                    "response":request
                 }
             }), 500
 
 
-    return "hello"
+if __name__ == '__main__':
+    app.run(port=5123, debug=True)
