@@ -21,3 +21,57 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5003:5003"
+
+
+  ###################################
+  # GoogleMaps: GoogleMaps microservice
+  ###################################
+  google_maps:
+    build:
+      context: ./container-create_request/
+      dockerfile: google_maps.dockerfile
+    image: junioralde/google_maps:printo
+    restart: always
+    environment:
+      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5002:5002"
+
+  ###################################
+  # Gdrive: GoogleDrive microservice
+  ###################################
+
+  google_drive:
+    build:
+      context: ./container-gdrive/
+      dockerfile: app.dockerfile
+    image: junioralde/gdrive:printo
+    restart: always
+    environment:
+      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "3000:3000"
+
+ ###############################################
+  # Create Request: Create a Request COMPLEX microservice
+  ###############################################
+  create_request:
+    build:
+      context: ./container-create_request/
+      dockerfile: create_request.dockerfile
+    image: junioralde/create_request:printo
+    restart: always
+    #networks:
+    #  - kong-net
+    depends_on:
+      - request
+      - google_maps
+      - google_drive
+    environment:
+      # customer_URL: http://customer:5000/customer/name/
+      # order_URL: http://order:5001/order
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5001:5001"
