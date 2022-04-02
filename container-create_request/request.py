@@ -2,6 +2,7 @@ import os
 from flask import Flask, request as req, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root:root@localhost:3306/request'
@@ -9,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconn
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+CORS(app)
 
 class Request(db.Model):
     __tablename__ = 'request'
