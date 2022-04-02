@@ -397,5 +397,40 @@ def update_print_status(request_id):
             }
             ), 500
 
+@app.route("/get_all_request_by_id/<string:requestor_id>", methods=['GET'])
+def get_all_request_by_id(requestor_id):
+
+    try:
+        requestList = Request.query.filter_by(requestor_id=2)
+    
+        if requestList:
+            # all_request: []
+            # for item in request:
+            #     all_request.append(item)
+            return jsonify (
+                {
+                    "code": 200, 
+                    "data": {
+                        "request":[request.json() for request in requestList]
+                    }
+                }), 200
+        
+        return jsonify (
+            {
+                "code": 404,
+                "message": "No requests found in the database."
+            }
+        ), 404
+
+    except Exception as e:
+
+        return jsonify (
+            {
+                "code" : 500, 
+                "message": "Unable to retrieve requests. Please check error message and try again.",
+                "error_message" : str(e)
+            }
+        ), 500
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5003, debug=True)
