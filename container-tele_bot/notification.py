@@ -52,7 +52,7 @@ def update_requestor():
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
             \nComments: {data['request']['data']['comments']}
-            \n\nThe final price of the request will amount to {data['']}'''
+            \n\nThe final price of the request will amount to {data['request']['price']}'''
             )
         return jsonify(
             {
