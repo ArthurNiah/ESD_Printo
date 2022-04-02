@@ -92,7 +92,13 @@ def get_provider_location(provider_id):
     provider = Provider.query.filter_by(provider_id=provider_id).first()
 
     if provider:
-        return provider.place_id
+        return jsonify(
+            {
+                "code": 200,
+                "place_id": "place_id:"+provider.place_id
+
+            }
+        )
     
     return jsonify(
         {
