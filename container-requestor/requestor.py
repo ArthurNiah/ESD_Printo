@@ -25,8 +25,8 @@ class Requestor(db.Model):
     tele_id = db.Column(db.String(64), nullable=False)
     chat_id = db.Column(db.Integer, nullable=False)
 
-    def __init__(self,first_name, last_name, username, tele_id, chat_id):
-        # self.requestor_id = requestor_id
+    def __init__(self,first_name, last_name, username, tele_id, chat_id, requestor_id=None):
+        self.requestor_id= requestor_id
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
@@ -34,7 +34,7 @@ class Requestor(db.Model):
         self.chat_id = chat_id
 
     def json(self):
-        return {"first_name": self.first_name, "last_name": self.last_name, "username": self.username, "tele_id": self.tele_id, "chat_id":self.chat_id }
+        return {"requestor_id": self.requestor_id, "first_name": self.first_name, "last_name": self.last_name, "username": self.username, "tele_id": self.tele_id, "chat_id":self.chat_id }
 
 # @app.route("/requestor")
 # def who_am_i():
@@ -76,7 +76,22 @@ def find_by_requestor_id(requestor_id):
         }
     ), 404
 
-
+@app.route("/find_by_requestor_username/<string:requestor_username>")
+def find_by_requestor_username(requestor_username):
+    requestor = Requestor.query.filter_by(username=requestor_username).first()
+    if requestor:   
+        return jsonify(
+            {
+                "code": 200,
+                "data": requestor.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Requestor not found."
+        }
+    ), 404
 
 @app.route("/verify", methods=['POST'])
 def verify():
