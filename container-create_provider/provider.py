@@ -84,6 +84,22 @@ def find_by_provider_id(provider_id):
             "message": "Provider not found."
         }
     ), 404
+
+# for view_request complex microservice
+@app.route("/get_provider_location/<string:provider_id>")
+def get_provider_location(provider_id):
+
+    provider = Provider.query.filter_by(provider_id=provider_id).first()
+
+    if provider:
+        return provider.place_id
+    
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Provider not found."
+        }
+    ), 404
  
 @app.route("/provider", methods=['POST'])
 def insert_provider():

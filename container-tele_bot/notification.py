@@ -33,10 +33,8 @@ bot = Bot(TOKEN)
 #TODO: FOR  REQUESTOR: update requestor when their request has been accepted.
 @app.route('/update_requestor', methods=['POST'])
 def update_requestor():
-    #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
     data = req.get_json()
     CHAT_ID = data['requestor']['chat_id'] 
-    # CHAT_ID = 853733285
 
     try:
         bot.send_message(
@@ -51,13 +49,13 @@ def update_requestor():
             \nCopies: {data['request']['data']['no_of_copies']}
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
-            \nComments: {data['request']['data']['comments']}'''
+            \nComments: {data['request']['data']['comments']}
+            \n\nThe final price of the request will amount to ${data['request']['price']}'''
             )
         return jsonify(
             {
                 "code": 200,
                 "request_id": data['request']['request_id']
-                # "provider_id":1
             }), 200
 
     except Exception as e:
@@ -78,7 +76,6 @@ def update_provider():
     #UNCOMMENT LATER - Data that is passed should be ALL provider, request and requestor details
     data = req.get_json()
     CHAT_ID = data['provider']['chat_id']
-    # CHAT_ID = 853733285
 
     try:
         bot.send_message(
@@ -94,14 +91,14 @@ def update_provider():
             \nCopies: {data['request']['data']['no_of_copies']}
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
-            \nComments: {data['request']['data']['comments']}"""
+            \nComments: {data['request']['data']['comments']}
+            \n\nThe final price of the request will amount to ${data['request']['price']}"""
             )
 
         return jsonify(
             {
                 "code": 200,
                 "request_id": data['request']['request_id']
-                # "provider_id":1
             }), 200
 
     except Exception as e:

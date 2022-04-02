@@ -2,6 +2,7 @@ import os
 from flask import Flask, request as req, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root:root@localhost:3306/request'
@@ -9,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconn
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+CORS(app)
 
 class Request(db.Model):
     __tablename__ = 'request'
@@ -36,12 +38,14 @@ class Request(db.Model):
 
     # def __init__(self, requestor_id, provider_id, status, document_link, coordinates, location_name):
 #TODO: Try changing the database to Null values upon init
-    def __init__(self, 
+    def __init__(self,
     requestor_id, 
+    request_id = None,
     status='Unaccepted', 
     provider_id= None, 
     document_id = None, 
-    coordinates = None, 
+    coordinates = None,
+    place_id = None, 
     location_name=None, 
     color = None, 
     no_of_copies = 0, 
@@ -49,6 +53,7 @@ class Request(db.Model):
     size = None, 
     comments = None
     ):
+        self.request_id = request_id
         self.requestor_id= requestor_id   
         self.provider_id= provider_id
         self.status= status
@@ -60,9 +65,11 @@ class Request(db.Model):
         self.single_or_double = single_or_double
         self.size = size
         self.comments = comments
+        self.place_id = place_id
 
     def json(self):
         return {
+        "request_id": self.request_id,
         "requestor_id": self.requestor_id, 
         "provider_id": self.provider_id, 
         "status": self.status,
@@ -73,7 +80,8 @@ class Request(db.Model):
         "no_of_copies": self.no_of_copies, 
         "single_or_double": self.single_or_double, 
         "size": self.size,
-        "comments":self.comments
+        "comments":self.comments, 
+        "place_id" :self.place_id
         }
 
 
@@ -394,5 +402,75 @@ def update_print_status(request_id):
             }
             ), 500
 
+@app.route("/get_all_request_by_id/<string:requestor_id>", methods=['GET'])
+def get_all_request_by_id(requestor_id):
+
+    try:
+        requestList = Request.query.filter_by(requestor_id=2)
+    
+        if requestList:
+            # all_request: []
+            # for item in request:
+            #     all_request.append(item)
+            return jsonify (
+                {
+                    "code": 200, 
+                    "data": {
+                        "request":[request.json() for request in requestList]
+                    }
+                }), 200
+        
+        return jsonify (
+            {
+                "code": 404,
+                "message": "No requests found in the database."
+            }
+        ), 404
+
+    except Exception as e:
+
+        return jsonify (
+            {
+                "code" : 500, 
+                "message": "Unable to retrieve requests. Please check error message and try again.",
+                "error_message" : str(e)
+            }
+        ), 500
+
+@app.route("/get_request_by_status", methods=['GET'])
+#GET ALL UNACCEPTED REQUEST
+def get_request_by_status():
+
+    try:
+        requestList = Request.query.filter_by(status="Unaccepted")
+    
+        if requestList:
+
+            return jsonify (
+                {
+                    "code": 200, 
+                    "data": {
+                        "request":[request.json() for request in requestList]
+                    }
+                }), 200
+        
+        return jsonify (
+            {
+                "code": 404,
+                "message": "No unaccepted requests found! Hooray!."
+            }
+        ), 404
+
+    except Exception as e:
+
+        return jsonify (
+            {
+                "code" : 500, 
+                "message": "Unable to retrieve requests. Please check error message and try again.",
+                "error_message" : str(e)
+            }
+        ), 500
+
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5003, debug=True)
