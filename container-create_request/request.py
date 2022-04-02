@@ -44,7 +44,8 @@ class Request(db.Model):
     status='Unaccepted', 
     provider_id= None, 
     document_id = None, 
-    coordinates = None, 
+    coordinates = None,
+    place_id = None, 
     location_name=None, 
     color = None, 
     no_of_copies = 0, 
@@ -64,6 +65,7 @@ class Request(db.Model):
         self.single_or_double = single_or_double
         self.size = size
         self.comments = comments
+        self.place_id = place_id
 
     def json(self):
         return {
@@ -78,7 +80,8 @@ class Request(db.Model):
         "no_of_copies": self.no_of_copies, 
         "single_or_double": self.single_or_double, 
         "size": self.size,
-        "comments":self.comments
+        "comments":self.comments, 
+        "place_id" :self.place_id
         }
 
 
