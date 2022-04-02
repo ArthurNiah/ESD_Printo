@@ -50,7 +50,7 @@ def update_requestor():
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
             \nComments: {data['request']['data']['comments']}
-            \n\nThe final price of the request will amount to {data['request']['price']}'''
+            \n\nThe final price of the request will amount to ${data['request']['price']}'''
             )
         return jsonify(
             {
@@ -91,7 +91,8 @@ def update_provider():
             \nCopies: {data['request']['data']['no_of_copies']}
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
-            \nComments: {data['request']['data']['comments']}"""
+            \nComments: {data['request']['data']['comments']}
+            \n\nThe final price of the request will amount to ${data['request']['price']}"""
             )
 
         return jsonify(
