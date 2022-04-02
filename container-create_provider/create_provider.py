@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-insert_provider_URL = "http://localhost:5007/insert_provider" #take note which localhost number you using and calling
+insert_provider_URL = "http://localhost:5007/provider" #take note which localhost number you using and calling
 googleMaps_URL = "http://localhost:5002/get_current_location" #take note which localhost number you using and calling
 
 #Info from UI
@@ -25,7 +25,7 @@ user_input = {}
 
 
 @app.route("/create_provider", methods=["POST"])
-#For creating a new requestd
+#For creating a new request
 def create_provider():
 
     if request.is_json:

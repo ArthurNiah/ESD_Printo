@@ -85,7 +85,7 @@ def find_by_provider_id(provider_id):
         }
     ), 404
  
-@app.route("/insert_provider", methods=['POST'])
+@app.route("/provider", methods=['POST'])
 def insert_provider():
 
     data = request.get_json()
