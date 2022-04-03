@@ -80,7 +80,6 @@ app.get('/requestor_home', (req, res)=>{
     return res.end();
 })
 
-
 app.get('/provider_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -98,23 +97,22 @@ app.get('/provider_signup', (req, res)=>{
 })
 
 app.post('/provider_login_action', (req, res)=>{
-    // console.log(req.body)
-    // var username= req.body.username
-
-    // const getRequests = async() => {
-    //     return await axios({
-    //         url: 'http://localhost:5005/find_by_requestor_username/' + username
-    //     })
-    // }
+    console.log(req.body)
+    var username= req.body.username
+    console.log(username)
+    const getRequests = async() => {
+        return await axios({
+            url: 'http://localhost:5007/find_by_provider_username/' + username
+        })
+    }
     
-    // (async()=>{
-    //     const requests= await getRequests()
-    //     console.log(requests.data)
-    //     console.log(requests.data.data.requestor_id)
-    //     requestor_id= requests.data.data.requestor_id
-    //     res.redirect('/requestor_home' + '?requestor_id =' + requestor_id)
-    // })()
-    return res.end()
+    (async()=>{
+        const requests= await getRequests()
+        console.log(requests.data)
+        provider_id= requests.data.data.provider_id
+        res.redirect('/provider_home' + '?provider_id =' + provider_id)
+    })() 
+
 
 })
 

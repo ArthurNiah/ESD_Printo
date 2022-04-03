@@ -13,7 +13,7 @@ CORS(app)
  
 class Provider(db.Model):
     __tablename__ = 'provider'
- 
+    
     provider_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False)
     tele_id = db.Column(db.String(64), nullable=False)
@@ -24,7 +24,8 @@ class Provider(db.Model):
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
  
-    def __init__(self, username, tele_id, coordinates, location, place_id, chat_id, first_name, last_name):
+    def __init__(self, username, tele_id, coordinates, location, place_id, chat_id, first_name, last_name, provider_id=None):
+        self.provider_id= provider_id
         self.username = username
         self.tele_id = tele_id
         self.coordinates = coordinates
@@ -37,6 +38,7 @@ class Provider(db.Model):
  
     def json(self):
         return {
+        "provider_id": self.provider_id,
         "username": self.username, 
         "tele_id": self.tele_id,
         "coordinates": self.coordinates,
@@ -85,7 +87,7 @@ def find_by_provider_id(provider_id):
 
 @app.route("/find_by_provider_username/<string:provider_username>")
 def find_by_provider_username(provider_username):
-    provider = Provider.query.filter_by(provider_username=provider_username).first()
+    provider = Provider.query.filter_by(username=provider_username).first()
     if provider:
         return jsonify(
             {
