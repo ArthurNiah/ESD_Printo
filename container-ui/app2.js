@@ -6,6 +6,8 @@ app.use(express.json())
 
 app.use(express.urlencoded())
 
+app.use(express.static(__dirname+'/public'));
+
 app.get('/home', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
