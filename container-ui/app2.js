@@ -123,7 +123,7 @@ app.post('/provider_signup_action', (req, res)=>{
             url: 'http://localhost:5006/create_provider',
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id, 
-            'location_name': req.body.location_name
+            'location': req.body.location
             }
         })
 
