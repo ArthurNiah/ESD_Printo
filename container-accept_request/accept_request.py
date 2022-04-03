@@ -31,6 +31,7 @@ get_provider_URL = "http://localhost:5007/provider/"
 get_requestor_URL = "http://localhost:5005/requestor/"
 notification_update_requestor_URL = "http://localhost:5010/update_requestor"
 notification_update_provider_URL = "http://localhost:5010/update_provider"
+payment_URL = "http://localhost:5123/payment"
 
 
 
@@ -41,6 +42,7 @@ def accept_request(request_id):
 
     #STEP 1: Get Provider Info
     print('\n-----Invoking Provider microservice-----')
+    print(data)
     get_provider_res = invoke_http(get_provider_URL + str(data['provider_id']), json = data)
     print(get_provider_res)
     if get_provider_res['code'] not in range(200,300):
@@ -53,7 +55,7 @@ def accept_request(request_id):
                 "message": "Failed to invoke provider microservice."
             }
         )
-
+ 
     #STEP 2: Get request Info
     get_request_res = invoke_http(get_request_URL + str(request_id), json = data)
     print('\n-----Invoking Request microservice-----')
@@ -71,7 +73,7 @@ def accept_request(request_id):
 
     #STEP 3: Update request with provider_id + status + print_details
     #TODO: Update request with print details
-    print('\n-----Invoking Update Request microservice-----')
+    print('\n-----Invoking Update Provider microservice-----')
     update_provider_id_res= invoke_http(update_provider_id_URL + str(data['request_id']), json = data, method='PUT')
     update_status= invoke_http(update_status_URL + str(data['request_id']), json = {"status":"Accepted"}, method='PUT')
     print(update_provider_id_res)
@@ -104,10 +106,25 @@ def accept_request(request_id):
 
     #STEP 5: Collate info and invoke Notification.py
     print("\n-----Invoking Telegram Notification microservice-----")
-    collated_info = {
+
+    collated_info_1 = {
         "request": {
             "request_id": get_request_res['data']['request_id'], 
             "data": get_request_res['data']['response']
+        },
+        "provider": get_provider_res['data'],
+        "requestor": get_requestor_res['data']
+    }
+
+    print("\n-----Invoking Payment microservice-----")
+    payment_res = invoke_http(payment_URL, json= collated_info_1['request']['data'])
+    print("\n-----END: Invoking Payment microservice-----")
+    print(payment_res)
+    collated_info = {
+        "request": {
+            "request_id": get_request_res['data']['request_id'], 
+            "data": get_request_res['data']['response'], 
+            "price": payment_res['data']['final_price']
         },
         "provider": get_provider_res['data'],
         "requestor": get_requestor_res['data']

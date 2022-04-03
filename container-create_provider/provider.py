@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS 
+from os import environ
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/provider'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
  
 db = SQLAlchemy(app)
@@ -16,20 +17,18 @@ class Provider(db.Model):
     provider_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False)
     tele_id = db.Column(db.String(64), nullable=False)
-    lat = db.Column(db.String(64), nullable=False)
-    lng = db.Column(db.String(64), nullable=False)
-    location_name = db.Column(db.String(64), nullable=False)
+    coordinates = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(64), nullable=False)
     place_id = db.Column(db.String(64), nullable=False)
     chat_id = db.Column(db.String(64), nullable=False)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
  
-    def __init__(self, username, tele_id, lat, lng, location_name, place_id, chat_id, first_name, last_name):
+    def __init__(self, username, tele_id, coordinates, location, place_id, chat_id, first_name, last_name):
         self.username = username
         self.tele_id = tele_id
-        self.lat = lat
-        self.lng = lng
-        self.location_name = location_name
+        self.coordinates = coordinates
+        self.location = location
         self.place_id = place_id
         self.chat_id = chat_id
         self.first_name = first_name
@@ -40,9 +39,8 @@ class Provider(db.Model):
         return {
         "username": self.username, 
         "tele_id": self.tele_id,
-        "lat": self.lat,
-        "lng": self.lng,
-        "location_name": self.location_name,
+        "coordinates": self.coordinates,
+        "location": self.location,
         "place_id": self.place_id,
         "chat_id": self.chat_id,
         "first_name": self.first_name,
@@ -78,22 +76,6 @@ def find_by_provider_id(provider_id):
                 "data": provider.json()
             }
         )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Provider not found."
-        }
-    ), 404
-
-# for view_request complex microservice
-@app.route("/get_provider_location/<string:provider_id>")
-def get_provider_location(provider_id):
-
-    provider = Provider.query.filter_by(provider_id=provider_id).first()
-
-    if provider:
-        return provider.place_id
-    
     return jsonify(
         {
             "code": 404,

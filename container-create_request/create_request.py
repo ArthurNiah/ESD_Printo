@@ -3,26 +3,21 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os, sys
 import requests
-
-
-# import amqp_setup
-import pika
-import json
+from os import environ
 
 #import internal files
 from invokes import invoke_http
-# from google_maps import get_current_location
 
 app = Flask(__name__)
 CORS(app)
 
 
-request_URL = "http://localhost:5003/insert_request"
-update_location_URL = "http://localhost:5003/update_location/"
-update_gdrive_URL = "http://localhost:5003/update_document_id/"
-googleDrive_URL = "http://localhost:3000/insert_document"
-googleMaps_URL = "http://localhost:5002/get_current_location"
-print_details_URL = "http://localhost:5003/update_print_details/"
+request_URL = environ.get('request_URL') 
+update_location_URL = environ.get('update_location_URL') 
+update_gdrive_URL = environ.get('update_gdrive_URL') 
+googleDrive_URL = environ.get('googleDrive_URL') 
+googleMaps_URL = environ.get('googleMaps_URL') 
+print_details_URL = environ.get('print_details_URL') 
 
 #Info from UI
 user_input = {
@@ -150,4 +145,4 @@ def processRequest(user_request):
 
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) + " for placing an request...")
-    app.run(port=5001, debug=True)
+    app.run(host='0.0.0.0',port=5001, debug=True)

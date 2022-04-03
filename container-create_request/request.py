@@ -5,14 +5,13 @@ from os import environ
 from flask_cors import CORS
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root:root@localhost:3306/request'
-# app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/request'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 CORS(app)
 
-class Request(db.Model):
+class Request(db.Model): 
     __tablename__ = 'request'
 
     #basic info
@@ -44,7 +43,8 @@ class Request(db.Model):
     status='Unaccepted', 
     provider_id= None, 
     document_id = None, 
-    coordinates = None, 
+    coordinates = None,
+    place_id = None, 
     location_name=None, 
     color = None, 
     no_of_copies = 0, 
@@ -64,6 +64,7 @@ class Request(db.Model):
         self.single_or_double = single_or_double
         self.size = size
         self.comments = comments
+        self.place_id = place_id
 
     def json(self):
         return {
@@ -78,7 +79,8 @@ class Request(db.Model):
         "no_of_copies": self.no_of_copies, 
         "single_or_double": self.single_or_double, 
         "size": self.size,
-        "comments":self.comments
+        "comments":self.comments, 
+        "place_id" :self.place_id
         }
 
 

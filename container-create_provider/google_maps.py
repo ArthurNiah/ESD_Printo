@@ -1,8 +1,5 @@
 import googlemaps
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-
-import requests
+from flask import Flask, request as req, jsonify
 from invokes import invoke_http
 
 app = Flask(__name__)
@@ -11,18 +8,18 @@ API_KEY = 'AIzaSyA2wZe6-CgWyeoEJha5aeZLQp-cpn4kb8k'
 
 # #WORKS
 @app.route("/get_current_location", methods=['GET'])
-def get_current_location(user_location="NUS"):
+def get_current_location():
 
+    map_client = googlemaps.Client(API_KEY)
+    data = req.get_json()
+    response = map_client.geocode(data['location'])
     try:
-
-        map_client = googlemaps.Client(API_KEY)
-        response = map_client.geocode(user_location)
 
         if response == []:
             return jsonify(
                 {
                     "code": 404, 
-                    "data": user_location,
+                    "data": data['location'],
                     "message": "Location was not valid. Please try again!"
                 }, 
             ), 404
@@ -39,30 +36,27 @@ def get_current_location(user_location="NUS"):
             user_lng = response[0]['geometry']['location']['lng']
             return jsonify(
                 {
-                    "code": 201, 
+                    "code": 200, 
                     "data": {
-                        "user_input": user_location,
-                        "placeID" : place_id, 
-                        "locationName" : formatted_address,
-                        "lat": user_lat, 
-                        "lng": user_lng
+                        "user_input": data['location'],
+                        "place_id" : place_id, 
+                        "location" : formatted_address,
+                        "coordinates": str(user_lat) + " " + str(user_lng)
                     },
                 }
-            ), 201
+            ), 200
 
-        
 
     except Exception as e:
         return jsonify(
             {
                 'code': 500, 
-                "data": user_location,
                 "message": "An error occurred while fetching your location. " + str(e)
             },
         ), 500
 
 if __name__ == '__main__':
-    app.run(port=5002, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
 
 
 
