@@ -405,8 +405,7 @@ def update_print_status(request_id):
 def get_all_request_by_id(requestor_id):
 
     try:
-        requestList = Request.query.filter_by(requestor_id=2)
-    
+        requestList = Request.query.filter_by(requestor_id=requestor_id)
         if requestList:
             # all_request: []
             # for item in request:
@@ -439,10 +438,8 @@ def get_all_request_by_id(requestor_id):
 @app.route("/get_request_by_status", methods=['GET'])
 #GET ALL UNACCEPTED REQUEST
 def get_request_by_status():
-
     try:
-        requestList = Request.query.filter_by(status="Unaccepted")
-    
+        requestList = Request.query.filter_by(status="Accepted")
         if requestList:
 
             return jsonify (
