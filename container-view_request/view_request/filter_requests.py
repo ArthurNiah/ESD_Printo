@@ -1,12 +1,10 @@
-# COMPLEX MICROSERVICE
-# SCENARIO 3 STEP 6: FILTER REQUEST LOCATIONS BASED ON DISTANCE
+# FILTER_REQUESTS COMPLEX MICROSERVICE
 from operator import index
 from flask import Flask, request as req, jsonify
 
 # to read requests/retrieve data from other APIs
 import requests
 from invokes import invoke_http
-from get_provider_location import get_provider_location
 
 # for database
 from flask_cors import CORS
@@ -19,9 +17,10 @@ from os import environ
 api_key = 'AIzaSyAtQumxZP0XtDgLgYSV8Fcb8heVm5VRlJE'
 # ---------------------------------------------------------------------------------------------------------------- #
 app = Flask(__name__)
+CORS(app)
 
+# URLs for invoke_http
 get_all_request_locations_url = "http://localhost:5003/get_request_by_status"
-# CURRENTLY HARDCODED
 get_provider_location_url = "http://localhost:5007/provider/"
 
 
