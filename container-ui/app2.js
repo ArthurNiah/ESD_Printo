@@ -16,7 +16,7 @@ app.get('/home', (req, res)=>{
     return res.end();
 })
 
-app.post('/requestor_login', (req, res)=>{
+app.get('/requestor_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
     var html= fs.readFileSync('./requestor_login.html');
@@ -24,7 +24,7 @@ app.post('/requestor_login', (req, res)=>{
     return res.end();
 })
 
-app.post('/requestor_signup', (req, res)=>{
+app.get('/requestor_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
     var html= fs.readFileSync('./requestor_signup.html');
@@ -81,7 +81,7 @@ app.get('/requestor_home', (req, res)=>{
 })
 
 
-app.post('/provider_login', (req, res)=>{
+app.get('/provider_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
     var html= fs.readFileSync('./provider_login.html');
@@ -89,7 +89,7 @@ app.post('/provider_login', (req, res)=>{
     return res.end();
 })
 
-app.post('/provider_signup', (req, res)=>{
+app.get('/provider_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
     var html= fs.readFileSync('./provider_signup.html');
