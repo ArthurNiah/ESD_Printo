@@ -140,8 +140,8 @@ def accept_request(request_id):
             {
                 "code":500, 
                 "message" :{
-                    "requestor_side": "hello", 
-                    "provider_side": "hello"
+                    "requestor_side": notify_requestor_res, 
+                    "provider_side": notify_provider_res
                 }
             }
         )
