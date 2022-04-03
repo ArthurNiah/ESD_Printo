@@ -25,6 +25,7 @@ def create_provider():
     if request.is_json:
         try:
             provider_details = request.get_json()
+            print(provider_details)
             print("\Created provider details in JSON:", provider_details)
 
             # do the actual work
