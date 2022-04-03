@@ -1,6 +1,7 @@
+# COMPLEX MICROSERVICE
 # SCENARIO 3 STEP 6: FILTER REQUEST LOCATIONS BASED ON DISTANCE
 from operator import index
-from flask import Flask, request, jsonify
+from flask import Flask, request as req, jsonify
 
 # to read requests/retrieve data from other APIs
 import requests
@@ -14,46 +15,76 @@ from flask_sqlalchemy import SQLAlchemy
 # for containerization later on
 from os import environ
 
-
 # api key (Sabbie's)
 api_key = 'AIzaSyAtQumxZP0XtDgLgYSV8Fcb8heVm5VRlJE'
 # ---------------------------------------------------------------------------------------------------------------- #
 app = Flask(__name__)
 
-# 1. get location_name, request_id, place_id of all requests in database
-get_all_request_locations_url = "http://localhost:5003/get_all_request"
-resp = invoke_http(get_all_request_locations_url, method="GET")
-
-
-# 2. store in obtained details in list
-all_req = []
-for i in range(len(resp["data"]["request"])):
-    single_request = { 
-        "request_id": resp["data"]["request"][i]["request_id"], 
-        "location_name": resp["data"]["request"][i]["location_name"], 
-        "place_id": resp["data"]["request"][i]["place_id"]
-        }
-    all_req.append(single_request)
-
-
-# 3. format string for API and list for comparison later on
-request_place_id_str = ""
-
-for i in range(len(all_req)):
-    request_place_id_str += "place_id:"+all_req[i]["place_id"]+"|"
-
-request_locations = request_place_id_str
-
-
-# 4. get provider's place_id (CURRENTLY HARD CODED)
-get_provider_location_url = "http://localhost:5007/get_provider_location/2"
-provider_results = invoke_http(get_provider_location_url, method="GET")
-provider_location = provider_results["place_id"]
+get_all_request_locations_url = "http://localhost:5003/get_request_by_status"
+# CURRENTLY HARDCODED
+get_provider_location_url = "http://localhost:5007/provider/"
 
 
 @app.route("/filter_requests", methods=['GET'])
-def filter_requests(pLoc=provider_location, rLoc=request_locations):
+def filter_requests():
 
+    data = req.get_json()
+    
+    # 1. Get location_name, request_id, place_id of all requests in database
+    print('\n-----Invoking Request microservice-----')
+    resp = invoke_http(get_all_request_locations_url, method="GET")
+
+    # Error Handling
+    if resp['code'] not in range(200,300):
+        
+        print("\n-----FAILED: Invoking Request microservice-----")
+
+        return jsonify(
+            {
+                "code": 500, 
+                "message": "Failed to invoke request microservice."
+            }
+        )
+
+
+    # 2. Store in obtained details in list
+    all_req = []
+    for i in range(len(resp["data"]["request"])):
+        single_request = { 
+            "request_id": resp["data"]["request"][i]["request_id"], 
+            "location_name": resp["data"]["request"][i]["location_name"], 
+            "place_id": resp["data"]["request"][i]["place_id"]
+            }
+        all_req.append(single_request)
+
+
+    # 3. Format string for API and list for comparison later on
+    request_place_id_str = ""
+    for i in range(len(all_req)):
+        request_place_id_str += "place_id:"+all_req[i]["place_id"]+"|"
+    request_locations = request_place_id_str
+
+
+    # 4. Get provider's place_id (PROVIDER_ID CURRENTLY HARDCODED)
+    print('\n-----Invoking Provider microservice-----')
+    provider_results = invoke_http(get_provider_location_url+str(data['provider_id']), json = data, method="GET")
+
+    # Error Handling
+    if provider_results['code'] not in range(200,300):
+            
+            print("\n-----FAILED: Invoking Provider microservice-----")
+
+            return jsonify(
+                {
+                    "code": 500, 
+                    "message": "Failed to invoke provider microservice."
+                }
+            )    
+
+    provider_place_id = provider_results["data"]["place_id"]
+    provider_location = "place_id:"+provider_place_id+"|"
+
+    # ------------------------------------------------------------------------------ #
     origin = provider_location
     destinations = request_locations
 
@@ -76,10 +107,12 @@ def filter_requests(pLoc=provider_location, rLoc=request_locations):
         else:
             # dict of all places >500m away (walking)
             index_list = []
-            nearby_requests = {}
+            nearby_requests = {} 
 
+            # list of distance and travel duration for all requests
             dist_dur_elements = output_json["rows"][0]["elements"]
             
+            # reiterate through list to get distance and index of locations that are nearby
             for i in range(len(dist_dur_elements)):
                 if dist_dur_elements[i]["distance"]["value"] < 501:
                     index_list.append(i)
@@ -99,6 +132,7 @@ def filter_requests(pLoc=provider_location, rLoc=request_locations):
                 nearby_requests[i+1] = all_req[index_list[i]]
 
             return nearby_requests
+            #return output_json
 
     except Exception as e:
         return jsonify(
@@ -110,5 +144,4 @@ def filter_requests(pLoc=provider_location, rLoc=request_locations):
 
 
 if __name__ == '__main__':
-    # NEED TO CHANGE PORT NUM
     app.run(port=5008, debug=True)
