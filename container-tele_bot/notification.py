@@ -41,7 +41,7 @@ def update_requestor():
             CHAT_ID, f'''A provider has accepted your request! \nProvider details are as follows: 
             \nRequest ID: {data['request']['request_id']}
             \nProvider Name: {data['provider']['first_name'] + " " + data['provider']['last_name']}
-            \nProvider Location: {data['provider']['location_name']}
+            \nProvider Location: {data['provider']['location']}
             \nProvider Telegram: {data['provider']['tele_id']}
             \n
             \nDetails of your print requests is as follows:
@@ -50,7 +50,7 @@ def update_requestor():
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
             \nComments: {data['request']['data']['comments']}
-            \n\nThe final price of the request will amount to ${data['request']['price']}'''
+            \n\nThe final price of the request will amount to ${data['request']['price']}0. Please ensure that payments are settled with the other party!'''
             )
         return jsonify(
             {
@@ -92,7 +92,7 @@ def update_provider():
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
             \nComments: {data['request']['data']['comments']}
-            \n\nThe final price of the request will amount to ${data['request']['price']}"""
+            \n\nThe final price of the request will amount to ${data['request']['price']}0.  Please ensure that payments are settled with the other party!"""
             )
 
         return jsonify(
