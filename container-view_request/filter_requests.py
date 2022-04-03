@@ -64,7 +64,6 @@ def filter_requests():
     request_locations = request_place_id_str
 
 
-    # 4. Get provider's place_id (PROVIDER_ID CURRENTLY HARDCODED)
     print('\n-----Invoking Provider microservice-----')
     provider_results = invoke_http(get_provider_location_url+str(data['provider_id']), json = data, method="GET")
 
