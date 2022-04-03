@@ -5,8 +5,7 @@ from os import environ
 from flask_cors import CORS
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root:root@localhost:3306/request'
-# app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/request'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -328,7 +327,7 @@ def update_location_name(request_id):
         data = req.get_json()
 
         if data:
-            request.location_name = data['location_name']
+            request.location_name = data['location']
             request.place_id = data['place_id']
             request.coordinates = data['coordinates']
             db.session.commit()

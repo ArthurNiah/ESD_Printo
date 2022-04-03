@@ -2,23 +2,17 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os, sys
-import requests
-
-
-# import amqp_setup
-import pika
-import json
+from os import environ
 
 #import internal files
 from invokes import invoke_http
-from google_maps import get_current_location
 
 app = Flask(__name__)
 CORS(app)
 
 
-insert_provider_URL = "http://localhost:5007/provider" #take note which localhost number you using and calling
-googleMaps_URL = "http://localhost:5002/get_current_location" #take note which localhost number you using and calling
+insert_provider_URL = environ.get('provider_URL') 
+googleMaps_URL = environ.get('google_maps_URL') 
 
 #Info from UI
 user_input = {}
@@ -78,10 +72,9 @@ def processProvider(provider_details):
     #====END: Error handeling for Google Maps API======
 
     #update to provider_details
-    provider_details['lat'] = locationResults['data']['lat']
-    provider_details['lng'] = locationResults['data']['lng']
-    provider_details['place_id'] = locationResults['data']['placeID']
-    provider_details['location_name'] = locationResults['data']['locationName']
+    provider_details['coordinates'] = locationResults['data']['coordinates']
+    provider_details['place_id'] = locationResults['data']['place_id']
+    provider_details['location'] = locationResults['data']['location']
 
     #Step 2: Invoking Provider microservice (Update to be done in the Provider Microservice)
     print('\n-----Invoking Provider microservice-----')
@@ -110,4 +103,4 @@ def processProvider(provider_details):
 
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) + " for placing an request...")
-    app.run(port=5006, debug=True)
+    app.run(host='0.0.0.0', port=5006, debug=True)

@@ -6,7 +6,55 @@ volumes:
   rabbitmq_data:
 
 services:
- 
+
+  ###################################
+  # Provider: provider microservice
+  ###################################
+  provider:
+    build:
+      context: ./container-create_provider/
+      dockerfile: provider.dockerfile
+    image: jinloh/provider:printo
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/provider
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5007:5007"
+
+  ###################################
+  # Google Maps: google_maps microservice
+  ###################################
+  google_maps:
+    build:
+      context: ./container-create_provider/
+      dockerfile: google_maps.dockerfile
+    image: jinloh/google_maps:printo
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5002:5002"
+
+  ###############################################
+  # Create Provider: create_provider complex microservice
+  ###############################################
+  create_provider:
+    build:
+      context: ./container-create_provider/
+      dockerfile: create_provider.dockerfile
+    image: jinloh/create_provider:printo
+    restart: always
+    depends_on:
+      - provider
+      - google_maps
+    environment:
+      provider_URL: http://provider:5007/provider
+      google_maps_URL: http://google_maps:5002/get_current_location
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5006:5006"
+
   ###################################
   # Request: Request microservice
   ###################################
@@ -14,7 +62,7 @@ services:
     build:
       context: ./container-create_request/
       dockerfile: request.dockerfile
-    image: junioralde/request:printo
+    image: jinloh/request:printo
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
@@ -22,31 +70,15 @@ services:
     ports:
       - "5003:5003"
 
-
-  ###################################
-  # GoogleMaps: GoogleMaps microservice
-  ###################################
-  google_maps:
-    build:
-      context: ./container-create_request/
-      dockerfile: google_maps.dockerfile
-    image: junioralde/google_maps:printo
-    restart: always
-    environment:
-      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "5002:5002"
-
   ###################################
   # Gdrive: GoogleDrive microservice
   ###################################
 
   google_drive:
     build:
-      context: ./container-gdrive/
+      context: ./container-create_request/container-gdrive/
       dockerfile: app.dockerfile
-    image: junioralde/gdrive:printo
+    image: jinloh/gdrive:printo
     restart: always
     environment:
       #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
@@ -61,7 +93,7 @@ services:
     build:
       context: ./container-create_request/
       dockerfile: create_request.dockerfile
-    image: junioralde/create_request:printo
+    image: jinloh/create_request:printo
     restart: always
     #networks:
     #  - kong-net
@@ -70,8 +102,12 @@ services:
       - google_maps
       - google_drive
     environment:
-      # customer_URL: http://customer:5000/customer/name/
-      # order_URL: http://order:5001/order
+      request_URL : "http://request:5003/insert_request"
+      update_location_URL : "http://request:5003/update_location/"
+      update_gdrive_URL : "http://request:5003/update_document_id/"
+      googleDrive_URL : "http://google_drive:3000/insert_document"
+      googleMaps_URL : "http://google_maps:5002/get_current_location"
+      print_details_URL : "http://request:5003/update_print_details/"
       PYTHONUNBUFFERED: 1
     ports:
       - "5001:5001"
