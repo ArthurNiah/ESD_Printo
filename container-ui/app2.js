@@ -53,7 +53,6 @@ app.post('/requestor_login_action', (req, res)=>{
 app.post('/requestor_signup_action', (req, res)=>{
     console.log(req.body)
 
-    // return res.end()
     axios({
             method: 'post',
             url: 'http://localhost:5005/register',
@@ -97,22 +96,22 @@ app.post('/provider_signup', (req, res)=>{
 })
 
 app.post('/provider_login_action', (req, res)=>{
-    console.log(req.body)
-    var username= req.body.username
+    // console.log(req.body)
+    // var username= req.body.username
 
-    const getRequests = async() => {
-        return await axios({
-            url: 'http://localhost:5005/find_by_requestor_username/' + username
-        })
-    }
+    // const getRequests = async() => {
+    //     return await axios({
+    //         url: 'http://localhost:5005/find_by_requestor_username/' + username
+    //     })
+    // }
     
-    (async()=>{
-        const requests= await getRequests()
-        console.log(requests.data)
-        console.log(requests.data.data.requestor_id)
-        requestor_id= requests.data.data.requestor_id
-        res.redirect('/requestor_home' + '?requestor_id =' + requestor_id)
-    })()
+    // (async()=>{
+    //     const requests= await getRequests()
+    //     console.log(requests.data)
+    //     console.log(requests.data.data.requestor_id)
+    //     requestor_id= requests.data.data.requestor_id
+    //     res.redirect('/requestor_home' + '?requestor_id =' + requestor_id)
+    // })()
 
 })
 
@@ -136,6 +135,7 @@ app.post('/provider_signup_action', (req, res)=>{
     var html= fs.readFileSync('./provider_signup_action.html');
     res.write(html);
     return res.end();
+    return res.end()
 })
 
 app.get('/provider_home', (req, res)=>{
