@@ -82,7 +82,25 @@ def find_by_provider_id(provider_id):
             "message": "Provider not found."
         }
     ), 404
- 
+
+@app.route("/find_by_provider_username/<string:provider_username>")
+def find_by_provider_username(provider_username):
+    provider = Provider.query.filter_by(provider_username=provider_username).first()
+    if provider:
+        return jsonify(
+            {
+                "code": 200,
+                "data": provider.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Provider not found."
+        }
+    ), 404
+
+
 @app.route("/provider", methods=['POST'])
 def insert_provider():
 
