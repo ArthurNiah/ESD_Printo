@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 CORS(app)
 
-class Request(db.Model):
+class Request(db.Model): 
     __tablename__ = 'request'
 
     #basic info
@@ -327,7 +327,7 @@ def update_location_name(request_id):
         data = req.get_json()
 
         if data:
-            request.location_name = data['location']
+            request.location_name = data['location_name']
             request.place_id = data['place_id']
             request.coordinates = data['coordinates']
             db.session.commit()
