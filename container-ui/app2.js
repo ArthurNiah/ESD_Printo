@@ -96,7 +96,6 @@ app.post('/provider_signup', (req, res)=>{
 })
 
 app.post('/provider_login_action', (req, res)=>{
-    return res.end()
     // console.log(req.body)
     // var username= req.body.username
 
@@ -113,6 +112,7 @@ app.post('/provider_login_action', (req, res)=>{
     //     requestor_id= requests.data.data.requestor_id
     //     res.redirect('/requestor_home' + '?requestor_id =' + requestor_id)
     // })()
+    return res.end()
 
 })
 
