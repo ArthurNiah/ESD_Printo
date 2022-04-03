@@ -45,7 +45,7 @@ for i in range(len(all_req)):
 request_locations = request_place_id_str
 
 
-# 4. get provider's place_id
+# 4. get provider's place_id (CURRENTLY HARD CODED)
 get_provider_location_url = "http://localhost:5007/get_provider_location/2"
 provider_results = invoke_http(get_provider_location_url, method="GET")
 provider_location = provider_results["place_id"]
