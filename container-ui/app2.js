@@ -6,7 +6,7 @@ app.use(express.json())
 
 app.use(express.urlencoded())
 
-app.post('/home', (req, res)=>{
+app.get('/home', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
     var html= fs.readFileSync('./home.html');
@@ -123,7 +123,7 @@ app.post('/provider_signup_action', (req, res)=>{
             url: 'http://localhost:5006/create_provider',
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id, 
-            'location_name': req.body.location
+            'location_name': req.body.location_name
             }
         })
 
