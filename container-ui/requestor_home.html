@@ -102,8 +102,8 @@
         console.log(requestor_id)
         $(async() => {          
             // Change serviceURL to your own
-            // var serviceURL = "http://localhost:5003/get_all_request_by_id/" + sessionStorage.requestor_id;
-            var serviceURL = "http://localhost:5003/get_request_by_status";
+            var serviceURL = "http://localhost:5003/get_all_request_by_id/" + sessionStorage.requestor_id;
+            // var serviceURL = "http://localhost:5003/get_request_by_status";
             try {
                 const response =
                  await fetch(
