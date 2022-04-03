@@ -96,6 +96,7 @@ app.post('/provider_signup', (req, res)=>{
 })
 
 app.post('/provider_login_action', (req, res)=>{
+    return res.end()
     // console.log(req.body)
     // var username= req.body.username
 
@@ -135,7 +136,6 @@ app.post('/provider_signup_action', (req, res)=>{
     var html= fs.readFileSync('./provider_signup_action.html');
     res.write(html);
     return res.end();
-    return res.end()
 })
 
 app.get('/provider_home', (req, res)=>{
