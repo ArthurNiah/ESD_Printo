@@ -43,8 +43,19 @@
         overflow: auto;
         }
 
+
+        span{
+            margin-bottom: 20%;
+            margin-top: 20%;
+        }
+
         .card{
             margin-top:20%;
+        }
+
+        .btn{
+            margin-left: 10%;
+            margin-right: 10%;
         }
 
     </style>
@@ -54,7 +65,7 @@
 
     <body>
         <div id="main-container" class="container">
-            <h1 class="display-4">Request Listings Near You</h1>
+            <h1 class="display-4 text-center">Request Listings Near You</h1>
             <div id="request-results" class="row">
     
             </div>
@@ -136,7 +147,7 @@
 
 
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     Details
                                     </button>
 
@@ -156,7 +167,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button href="#" type="button" onclick="accept_request(${request.request_id},1)" class="btn btn-primary">Accept Request!</button>
+                                            <button href="#" type="button" onclick="accept_request(${request.request_id})" class="btn btn-primary">Accept Request!</button>
                                         </div>
                                         </div>
                                     </div>
