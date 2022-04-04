@@ -71,6 +71,10 @@
 
         }
 
+        .no-request{
+            margin-bottom: 20%;
+        }
+
     </style>
 </head>
 
@@ -147,55 +151,70 @@
                     if (rand_code === 200) {
                         // success case
                         var requests = result; //the array is in books within data of the returned result
-                        console.log(requests.data)
+                        var size = Object.keys(requests).length;
+                        console.log(size)
                         sessionStorage.setItem("hello", "bye")
                         // // for loop to setup all table rows with obtained book data
-
-                        // TODO: find a way to put in provider_id into the function
-                        for (let i = 1; i < 5; i++) {
+                        if (size== 1){
                             html = `
-                            <div class="col d-flex justify-content-center text-center mt-2" id=${requests[i].request_id} value=${requests[i].request_id}>
-                            
-                            <div >
-                            <div class="animate__animated animate__fadeInDown animate__delay-${i}s card " style="width: 18rem;>
-                                <div class="card-body ms-3">
-                                    <h2 class="card-title ms-2 text-success">New Request</h2>
-                                    <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
-                                    <span class="fs-4 text card-text ms-2" style="text-align:center;">${requests[i].comments}</span>
-                                    <a href="#" class="btn btn-success" onclick="accept_request(${requests[i].request_id},1)">Accept Request</a>
+                        <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title d-flex justify-content-center">No Request Found</h5>
+                            <p class="card-text d-flex justify-content-center">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary d-flex justify-content-center">Button</a>
+                        </div>
+                        </div>
+                            `
+                        document.getElementById("request-results").innerHTML = html
+                        }
+                        // TODO: find a way to put in provider_id into the function
+                        else{
 
-
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    Details
-                                    </button>
-                            </div>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                        <div class="modal-header d-flex justify-content-center">
-                                            <h5 class="modal-title" id="exampleModalLabel">Your Request Details</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-                                        <div class="modal-body d-flex flex-column">
-                                            <h3 class="card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${requests[i].color}</strong></h3>
-                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].no_of_copies}</strong> copies</h3>
-                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].size}</strong> size</h3>
-                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].single_or_double}</strong> sided printing</h3>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button href="#" type="button" onclick="accept_request(${requests[i].request_id},4)" class="btn btn-primary">Accept Request!</button>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
+                            for (let i = 1; i = size; i++) {
+                                html = `
+                                <div class="col d-flex justify-content-center text-center mt-2" id=${requests[i].request_id} value=${requests[i].request_id}>
+                                
+                                <div >
+                                <div class="animate__animated animate__fadeInDown animate__delay-${i}s card " style="width: 18rem;>
+                                    <div class="card-body ms-3">
+                                        <h2 class="card-title ms-2 text-success">New Request</h2>
+                                        <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
+                                        <span class="fs-4 text card-text ms-2" style="text-align:center;">${requests[i].comments}</span>
+                                        <a href="#" class="btn btn-success" onclick="accept_request(${requests[i].request_id},1)">Accept Request</a>
+    
+    
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Details
+                                        </button>
                                 </div>
-                                </div>`
-                            document.getElementById("request-results").innerHTML += html
+    
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <div class="modal-header d-flex justify-content-center">
+                                                <h5 class="modal-title" id="exampleModalLabel">Your Request Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+    
+                                            <div class="modal-body d-flex flex-column">
+                                                <h3 class="card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${requests[i].color}</strong></h3>
+                                                <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].no_of_copies}</strong> copies</h3>
+                                                <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].size}</strong> size</h3>
+                                                <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].single_or_double}</strong> sided printing</h3>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button href="#" type="button" onclick="accept_request(${requests[i].request_id},4)" class="btn btn-primary">Accept Request!</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>`
+                                document.getElementById("request-results").innerHTML += html
+                            }
                         }
                         // add all the rows to the table
                         // $('#requestTable').append(rows);
