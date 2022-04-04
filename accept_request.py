@@ -1,3 +1,4 @@
+from hashlib import new
 from flask import Flask, request as req, jsonify
 from flask_cors import CORS
 import os, sys
@@ -30,6 +31,7 @@ get_provider_URL = environ.get('get_provider_URL')
 get_requestor_URL = environ.get('get_requestor_URL')
 notification_update_requestor_URL = environ.get('notification_update_requestor_URL')
 notification_update_provider_URL = environ.get('notification_update_provider_URL')
+get_gdrive_URL= environ.get('get_gdrive_URL')
 payment_URL = environ.get('payment_URL')
 
 
@@ -115,7 +117,25 @@ def accept_request(request_id):
         "provider": get_provider_res['data'],
         "requestor": get_requestor_res['data']
     }
+  #STEP 5: Get Document Download Link
+    print('\n-----Invoking Google Drive microservice-----')
+    print(get_request_res['data']['response'])
+    get_gdrive_res= invoke_http(get_gdrive_URL, json = get_request_res['data']['response'], method='GET')
+    print("DRIVE RES", get_gdrive_res)
+    if get_gdrive_res['data']['code'] not in range(200,300):
+        
+        print("\n-----FAILED: Invoking Google Drive microservice-----")
 
+        return jsonify(
+            {   
+                "code": 500, 
+                "message": "Failed to invoke Google Drive microservice."
+            }
+        )
+
+    new_document_link = get_gdrive_res['data']['document_id']
+    
+    # STEP 6: Collate info and invoke Notification.py
     print("\n-----Invoking Payment microservice-----")
     payment_res = invoke_http(payment_URL, json= collated_info_1['request']['data'])
     print("\n-----END: Invoking Payment microservice-----")
@@ -126,7 +146,8 @@ def accept_request(request_id):
         "request": {
             "request_id": get_request_res['data']['request_id'], 
             "data": get_request_res['data']['response'], 
-            "price": payment_res['data']['final_price']
+            "price": payment_res['data']['final_price'], 
+            "document_link" : new_document_link
         },
         "provider": get_provider_res['data'],
         "requestor": get_requestor_res['data']

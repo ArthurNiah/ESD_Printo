@@ -46,7 +46,7 @@ async function uploadFile(file_name, mime_type){
                 body: fs.createReadStream(filePath)
             }
         });
-        return {'status': response.status, 'doc_id':response.data.id}
+        return {'status': 200, 'doc_id':response.data.id}
         // return data here 
     }
     catch(error){
@@ -69,7 +69,10 @@ async function generatePublicURL(document_id){
             fields: 'webViewLink, webContentLink'
         })
         console.log(result.data);
-        return {'result': result.data.webContentLink}
+        return {data: {
+            "code": 200, 
+            "document_id": result.data.webContentLink
+        }}
         //return data here
     }
     catch (error){
@@ -79,8 +82,8 @@ async function generatePublicURL(document_id){
 
 app.route('/get_document')
 .get((req, res, next) => {
-    doc_id= req.body.doc_id
-    var x= generatePublicURL(doc_id)
+    document_id= req.body.document_id
+    var x= generatePublicURL(document_id)
     setTimeout(() =>{
         x.then(function(result){
             res.send(result)
@@ -109,4 +112,3 @@ app.listen(PORT, function(err){
     if (err) console.log(err);
     console.log("Server listening on PORT", PORT);
 });
-

@@ -232,6 +232,7 @@ services:
       notification_update_requestor_URL : "http://notification:5010/update_requestor"
       notification_update_provider_URL : "http://notification:5010/update_provider"
       payment_URL : "http://payment:5123/payment"
+      get_gdrive_URL : "http://google_drive:3000/get_document"
       #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
       PYTHONUNBUFFERED: 1
     ports:

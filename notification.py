@@ -92,6 +92,7 @@ def update_provider():
             \nSide: {data['request']['data']['single_or_double']}
             \nSize: {data['request']['data']['size']}
             \nComments: {data['request']['data']['comments']}
+            \n\nDocument to be printed can be found here: {data['request']['document_link']}
             \n\nThe final price of the request will amount to ${data['request']['price']}0.  Please ensure that payments are settled with the other party!"""
             )
 
