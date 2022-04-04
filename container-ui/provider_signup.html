@@ -58,18 +58,18 @@
       <div class="container-fluid border p-4 w-75 mb-0">
 
         <!-- FORM -->
-        <form action="requestor_signup_action" method="post" class="mb-0">
+        <form action="provider_signup_action" method="post" class="mb-0">
           
           <!-- first name -->
           <div class="mb-3">
             <label for="first_name" class="form-label display-6 m-0" style="font-size: 18px;"><strong>First Name</strong></label>
-            <input type="text" class="form-control rounded-3" id="first_name" placeholder="Enter First Name" name="firstname" required>
+            <input type="text" class="form-control rounded-3" id="first_name" placeholder="Enter First Name" name="first_name" required>
           </div>
 
           <!-- last name -->
           <div class="mb-3">
             <label for="last_name" class="form-label display-6 m-0" style="font-size: 18px;"><strong>Last Name</strong></label>
-            <input type="text" class="form-control rounded-3" id="last_name" placeholder="Enter Last Name" name="lastname" required>
+            <input type="text" class="form-control rounded-3" id="last_name" placeholder="Enter Last Name" name="last_name" required>
           </div>
 
           <!-- username -->
@@ -80,7 +80,7 @@
 
           <!-- Telegram ID -->
           <div class="mb-3">
-            <label for="tele_id" class="form-label display-6 m-0" style="font-size: 18px;"><strong>Telegram ID</strong></label>
+            <label for="tele_id" class="form-label display-6 m-0" style="font-size: 18px;"><strong>Telegram ID (add @ in front)</strong></label>
             <input type="text" class="form-control rounded-3" id="tele_id" placeholder="Enter Telegram ID" name="tele_id" required>
           </div>
 
@@ -116,7 +116,7 @@
                     <div class="modal-body">
                       A Chat ID is needed to accept requests. To obtain a Chat ID, please follow these instructions:
 
-                      <br>1. Go to this <a href="https://t.me/myidbot">IDBot</a> on Telegram.
+                      <br>1. Go to this <a href="https://t.me/myidbot" target="_blank">IDBot</a> on Telegram.
                       <br>2. Type "/getid" to obtain a Chat ID.
                       <br>3. Copy the given Chat ID into the textbox below.
                     </div>

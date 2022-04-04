@@ -7,6 +7,19 @@ volumes:
 
 services:
 
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
+
   ###################################
   # Provider: provider microservice X
   ###################################
@@ -172,7 +185,11 @@ services:
       dockerfile: notification.dockerfile
     image: junioralde/notification:printo
     restart: always
+    depends_on:
+      - rabbitmq
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       PYTHONUNBUFFERED: 1
     ports:
       - "5010:5010"  
@@ -207,7 +224,10 @@ services:
       - provider 
       - payment
       - request
+      - rabbitmq
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       get_request_URL : "http://request:5003/search_request/"
       update_provider_id_URL : "http://request:5003/update_provider_id/"
       update_status_URL : "http://request:5003/update_status/"
