@@ -29,6 +29,7 @@ def callback(channel, method, properties, body): # required signature for the ca
     print("\ SUCCESSFULLY RECEIVED AN ORDER " + __file__)
     # processOrderLog(json.loads(body))
     print(json.loads(body))
+    
     # print() # print a new line feed
 
 # def processOrderLog(order):
