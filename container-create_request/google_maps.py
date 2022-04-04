@@ -23,7 +23,7 @@ def get_current_location():
                 {
                     "code": 404, 
                     "data": data['location'],
-                    "message": "Location was not valid. Please try again!"
+                    "message": "Location was not valid. Please try again!" 
                 }, 
             ), 404
 
