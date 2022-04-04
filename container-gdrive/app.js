@@ -50,6 +50,7 @@ async function uploadFile(file_name, mime_type){
     }
     catch(error){
     console.log(error.message)
+    return {'status': error.status, 'error_message': error.message}
     }
 }
 
@@ -68,11 +69,12 @@ async function generatePublicURL(document_id){
             fields: 'webViewLink, webContentLink'
         })
         console.log(result.data);
-        return {'result': result.data.webContentLink}
+        return {'status': result.status, 'result': result.data.webContentLink}
         //return data here
     }
     catch (error){
         console.log(error.message)
+        return {'status': error.status,'error_message': error.message}
     }
 }
 
