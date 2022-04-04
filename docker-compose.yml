@@ -190,21 +190,6 @@ services:
     ports:
       - "5010:5010"  
 
-  ###################################
-  # create_request_ui.js: Micro microservice X
-  ###################################
-  create_request_ui:
-    build:
-      context: ./
-      dockerfile: create_request_ui.dockerfile
-    image: junioralde/create_request_ui:printo
-    restart: always
-    environment:
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "8080:8080"  
-
-
   #################################################
   # Activity Log: The Activity Log microservice
   #################################################
@@ -269,4 +254,33 @@ services:
     ports:
       - "5009:5009"
 
+
+  # ###################################
+  # # app2.js Request: Accept request Microservice
+  # ###################################
+
+  app2:
+    build:
+      context: ./
+      dockerfile: app2.dockerfile
+    image: junioralde/app2:printo
+    restart: always
+    depends_on:
+      - requestor
+      - provider 
+      - create_request
+    environment:
+      # get_request_URL : "http://request:5003/search_request/"
+      # update_provider_id_URL : "http://request:5003/update_provider_id/"
+      # update_status_URL : "http://request:5003/update_status/"
+      # get_provider_URL : "http://provider:5007/provider/"
+      # get_requestor_URL : "http://requestor:5005/requestor/"
+      # notification_update_requestor_URL : "http://notification:5010/update_requestor"
+      # notification_update_provider_URL : "http://notification:5010/update_provider"
+      # payment_URL : "http://payment:5123/payment"
+      # get_gdrive_URL : "http://google_drive:3000/get_document"
+      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "3030:3030"
 
