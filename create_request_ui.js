@@ -47,6 +47,7 @@ http.createServer(function (req, res) {
       if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
       }
+      
       var oldpath = files.filetoupload.filepath;
       var newpath = dir + "/" + file_name;
       fs.rename(oldpath, newpath, function (err) {
