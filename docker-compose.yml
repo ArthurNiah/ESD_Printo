@@ -185,11 +185,7 @@ services:
       dockerfile: notification.dockerfile
     image: junioralde/notification:printo
     restart: always
-    depends_on:
-      - rabbitmq
     environment:
-      rabbit_host: rabbitmq
-      rabbit_port: 5672
       PYTHONUNBUFFERED: 1
     ports:
       - "5010:5010"  
