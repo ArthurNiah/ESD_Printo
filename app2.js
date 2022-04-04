@@ -62,21 +62,21 @@ app.post('/requestor_signup_action', (req, res)=>{
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id
             }
-        })
+        })  
 
     .then((response)=>{
         console.log(response)
     })
 
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_signup_action.html');
+    var html= fs.readFileSync('./container-ui/requestor_signup_action.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/requestor_home', (req, res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_home.html');
+    var html= fs.readFileSync('./container-ui/requestor_home.html');
     res.write(html);
     return res.end();
 })
@@ -84,7 +84,7 @@ app.get('/requestor_home', (req, res)=>{
 app.get('/provider_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_login.html');
+    var html= fs.readFileSync('./container-ui/provider_login.html');
     res.write(html);
     return res.end();
 })
@@ -92,7 +92,7 @@ app.get('/provider_login', (req, res)=>{
 app.get('/provider_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_signup.html');
+    var html= fs.readFileSync('./container-ui/provider_signup.html');
     res.write(html);
     return res.end();
 })
@@ -134,21 +134,21 @@ app.post('/provider_signup_action', (req, res)=>{
     })
 
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_signup_action.html');
+    var html= fs.readFileSync('./container-ui/provider_signup_action.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/provider_home', (req, res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_home.html');
+    var html= fs.readFileSync('./container-ui/provider_home.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/fileuploadui', (req,res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./request.html');
+    var html= fs.readFileSync('./container-ui/request.html');
     res.write(html);
     return res.end();
 })
