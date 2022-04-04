@@ -4,11 +4,11 @@ import os, sys
 from pkg_resources import get_provider
 import requests
 from os import environ
-
+import json
 
 # import amqp_setup
 import pika
-import json
+import amqp_setup
 
 #import internal files
 from invokes import invoke_http
@@ -148,8 +148,11 @@ def accept_request(request_id):
             }
         )
     #return success of failure code
-
+    
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="accept_request.success", body=message)
+    #AMQP calls notifications
     return jsonify(
+        
         {
             "code": 200, 
             "message": "Succesfully accepted request. Please refer to the detail sent on Telegram."
