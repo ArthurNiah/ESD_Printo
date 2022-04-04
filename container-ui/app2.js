@@ -1,11 +1,12 @@
 const express= require('express')
 const axios= require('axios')
+const formidable= require('formidable')
 const app= express()
 var fs = require('fs');
+
 app.use(express.json())
 
 app.use(express.urlencoded())
-
 app.use(express.static(__dirname+'/public'));
 
 app.get('/home', (req, res)=>{
@@ -145,6 +146,58 @@ app.get('/provider_home', (req, res)=>{
     return res.end();
 })
 
+app.get('/fileuploadui', (req,res)=>{
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    var html= fs.readFileSync('./request.html');
+    res.write(html);
+    return res.end();
+})
+
+app.post('/fileupload',(req,res)=>{
+    console.log(req.body)
+    var form= new formidable.IncomingForm();
+
+    form.parse(req, function(err, fields, files){
+        console.log(files)
+        console.log('2')
+        file_name= files.filetoupload.originalFilename;
+        mime_type= files.filetoupload.mimetype
+        var info= JSON.stringify({
+        'location': fields.location, 'requestor_id': fields.requestor_id, 'no_of_copies': fields.no_of_copies, 'color': fields.color, 'size': fields.size, 'single_or_double': fields.single_or_double, 
+        'comments': fields.comments, 'file_name': file_name, 'mime_type': mime_type});
+
+        console.log(info)
+
+        axios({
+            method: 'post',
+            url: 'http://localhost:5001/create_request',
+            data: {
+                'location': fields.location, 'requestor_id': fields.requestor_id, 'no_of_copies': fields.no_of_copies, 'color': fields.color, 'size': fields.size, 'single_or_double': fields.single_or_double, 
+                'comments': fields.comments, 'file_name': file_name, 'mime_type': mime_type}
+        })
+
+    
+        .then((response)=>{
+            console.log(response)
+        })
+    
+
+        var dir= __dirname + "/temp_files"
+        if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+        }
+        
+        var oldpath = files.filetoupload.filepath;
+        var newpath = dir + "/" + file_name;
+        fs.rename(oldpath, newpath, function (err) {
+        if (err) throw err;
+        res.write('Your request has been posted!');
+        res.end();
+        });
+    return res.end()
+})
+
+})
 app.listen(3030, ()=>{
     console.log('Server started at http:localhost:3030')
 })
