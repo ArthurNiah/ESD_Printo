@@ -29,7 +29,6 @@ update_provider_id_URL = "http://localhost:5003/update_provider_id/"
 update_status_URL = "http://localhost:5003/update_status/"
 get_provider_URL = "http://localhost:5007/provider/"
 get_requestor_URL = "http://localhost:5005/requestor/"
-get_gdrive_URL= "http://localhost:3000/get_document"
 notification_update_requestor_URL = "http://localhost:5010/update_requestor"
 notification_update_provider_URL = "http://localhost:5010/update_provider"
 payment_URL = "http://localhost:5123/payment"
@@ -105,23 +104,7 @@ def accept_request(request_id):
             }
         )
 
-    #STEP 5: Get Document Download Link
-    # print('\n-----Invoking Google Drive microservice-----')
-    # get_gdrive_res= invoke_http(get_gdrive_URL, json = data, method='GET')
-    # print(get_gdrive_URL, get_gdrive_res['result'])
-    # print(get_gdrive_res)
-    # if get_gdrive_res['code'] not in range(200,300):
-        
-    #     print("\n-----FAILED: Invoking Google Drive microservice-----")
-
-    #     return jsonify(
-    #         {   
-    #             "code": 500, 
-    #             "message": "Failed to invoke Google Drive microservice."
-    #         }
-    #     )
-    
-    # STEP 6: Collate info and invoke Notification.py
+    #STEP 5: Collate info and invoke Notification.py
     print("\n-----Invoking Telegram Notification microservice-----")
 
     collated_info_1 = {
