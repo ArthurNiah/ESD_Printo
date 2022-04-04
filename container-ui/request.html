@@ -1,151 +1,106 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create a Request</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Create Request</title>
+
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet'
+        integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous'>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     <style>
-      * {
-      box-sizing: border-box;
+      /* Full-width inputs */
+      input[type=text], input[type=password], input[type=number], input[type=radio] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
       }
-      html, body {
-      min-height: 100vh;
-      padding: 0;
-      margin: 0;
-      font-family: Roboto, Arial, sans-serif;
-      font-size: 14px; 
-      color: #676;
-      }
-      input, textarea { 
-      outline: none;
-      }
-      body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      background: #FFF7E8;
-      }
-      h1 {
-      margin-top: 0;
-      font-weight: 500;
-      }
-      form {
-      position: relative;
-      width: 80%;
-      border-radius: 30px;
-      background: #fff;
-      }
-      .form-left-decoration,
-      .form-right-decoration {
-      content: "";
-      position: absolute;
-      width: 50px;
-      height: 20px;
-      border-radius: 20px;
-      background: #FFF7E8;
-      }
-      .form-left-decoration {
-      bottom: 60px;
-      left: -30px;
-      }
-      .form-right-decoration {
-      top: 60px;
-      right: -30px;
-      }
-      .form-left-decoration:before,
-      .form-left-decoration:after,
-      .form-right-decoration:before,
-      .form-right-decoration:after {
-      content: "";
-      position: absolute;
-      width: 50px;
-      height: 20px;
-      border-radius: 30px;
-      background: #fff;
-      }
-      .form-left-decoration:before {
-      top: -20px;
-      }
-      .form-left-decoration:after {
-      top: 20px;
-      left: 10px;
-      }
-      .form-right-decoration:before {
-      top: -20px;
-      right: 0;
-      }
-      .form-right-decoration:after {
-      top: 20px;
-      right: 10px;
-      }
-      .circle {
-      position: absolute;
-      bottom: 80px;
-      left: -55px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      }
-      .form-inner {
-      padding: 40px;
-      }
-      .form-inner input,
-      .form-inner textarea {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 10px;
-      border: none;
-      border-radius: 20px;
-      background: #f2f2f2;
-      }
-      .form-inner textarea {
-      resize: none;
-      }
+      
+      /* Set a style for all buttons */
       button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-      border-radius: 20px;
-      border: none;
-      border-bottom: 4px solid black;
-      background: #FFF7E8; 
-      font-size: 16px;
-      font-weight: 400;
-      color: black;
+        background-color: #04AA6D;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
       }
+      
+      /* Add a hover effect for buttons */
       button:hover {
-      background: #FFF7E8;
-      } 
-      @media (min-width: 568px) {
-      form {
-      width: 60%;
+        opacity: 0.8;
       }
+      
+      /* Change styles for span and cancel button on extra small screens */
+      @media screen and (max-width: 300px) {
+        span.psw {
+          display: block;
+          float: none;
+        }
+        .cancelbtn {
+          width: 100%;
+        }
       }
     </style>
-  </head>
+</head>
+<script>
+// sessionStorage.clear()
+console.log(sessionStorage.getItem('requestor_id'))
+
+
+</script>
   <body>
-    <form action="fileupload" class="decor" method="post" enctype="multipart/form-data">
-      <div class="form-left-decoration"></div>
-      <div class="form-right-decoration"></div>
-      <div class="circle"></div>
-      <div class="form-inner">
-        <h1>Contact us</h1>
-        <input type="text" placeholder= "Enter your location" name="location" id="location">
-        <input type="number" id="no_of_copies" name="no_of_copies" min="1" max="100">
-        <h2>Printing Options:</h2>
-        <input type="radio" id="bwc" name="bwc" value="Black/White">Black/White
-        <input type="radio" id="bwc" name="bwc" value="Color">Color<br>
-        <input type="radio" id="size" name="size" value="A3">A3
-        <input type="radio" id="size" name="size" value="A4">A4<br>
-        <input type="radio" id="single_or_double" name="single_or_double" value="Single">Single-Sided
-        <input type="radio" id="single_or_double  " name="single_or_double" value="Double">Double-Sided<br>
+
+    <div class="container-fluid">
+      <h1 class="display-4 text-center m-5">Create Request</h1>
+        <div class="container-fluid border p-4 w-75">
+           
+          <form action="fileupload" class="decor" method="post">
+            <div class="form-inner">
+              <input type="hidden" name="requestor_id" value=2> 
+              <h1>Enter Location</h1>
+
+              <input type="text" placeholder= "Enter your location" name="location" id="location">
+              <input type="number" id="no_of_copies" name="no_of_copies" min="1" max="100">
+              
+              <h1>Printing Options:</h1>
+              <h2>Color</h2>
+              <input type="radio" id="color" name="color" value="non_color">Black/White
+              <input type="radio" id="color" name="color" value="color">Color<br>
+
+              <!-- <input type="radio" class="btn-check" name="color" value="non_color" id="success-outlined" autocomplete="off">
+              <label class="btn btn-outline-secondary" for="success-outlined">Black/White</label>
+              
+              <input type="radio" class="btn-check" name="color" value="color" id="danger-outlined" autocomplete="off">
+              <label class="btn btn-outline-success" for="danger-outlined">Color</label> -->
+              
+              <h2>Paper Size</h2>
+              <input type="radio" id="size" name="size" value="A3">A3
+              <input type="radio" id="size" name="size" value="A4">A4<br>
+              <h2>Sides</h2>
+              <input type="radio" id="single_or_double" name="single_or_double" value="Single">Single-Sided
+              <input type="radio" id="single_or_double  " name="single_or_double" value="Double">Double-Sided<br>
         <h2>Additional Remarks</h2>
-        <textarea placeholder="Message..." rows="5"  name="comment" id="comment"></textarea>
+        <textarea placeholder="Message..." rows="5"  name="comments" id="comments"></textarea>
         <input type="file" name="filetoupload"><br>
         <input type="submit">Submit 
       </div>
-    </form>
+    </div>
+  </form>
+  </div>
+</div>
   </body>
 </html>
