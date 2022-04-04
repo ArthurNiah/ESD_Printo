@@ -119,6 +119,11 @@
                                             "provider_id": provider_id}
                                             )
                                         })
+                        console.log(response)
+
+                        html = `
+                        
+                        `
                     }
                     catch (error) {
                         console.log("Problem in placing an order." + error)
@@ -162,7 +167,7 @@
                                     <h2 class="card-title ms-2 text-success">New Request</h2>
                                     <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
                                     <span class="fs-4 text card-text ms-2" style="text-align:center;">${requests[i].comments}</span>
-                                    <a href="#" class="btn btn-success" onclick="accept_request(${requests[i].request_id},1)">Accept Request</a>
+                                    <a href="#" class="btn btn-success" onclick="accept_request(${requests[i].request_id},4)">Accept Request</a>
 
 
                                     <!-- Button trigger modal -->
