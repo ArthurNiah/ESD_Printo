@@ -43,7 +43,6 @@
         overflow: auto;
         }
 
-
         span{
             margin-bottom: 20%;
             margin-top: 20%;
@@ -56,6 +55,11 @@
         .btn{
             margin-left: 10%;
             margin-right: 10%;
+        }
+
+        #request-results{
+            margin-top:100px;
+
         }
 
     </style>
@@ -136,13 +140,13 @@
                         // TODO: find a way to put in provider_id into the function
                         for (const request of requests) {
                             html = `
-                            <div class="col d-flex justify-content-around mt-2" id=${request.request_id} value=${request.request_id}>
+                            <div class="col d-flex justify-content-center text-center mt-2" id=${request.request_id} value=${request.request_id}>
                             <div class="card" style="width: 18rem;>
-                                <div class="card-body ms-3">
+                                <div class="card-body ms-3 ">
                                     <h5 class="card-title ms-2">Request Number ${request.request_id}</h5>
                                     <h5 class="card-title ms-2 text-success">Request ${request.status}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted ms-2">${request.location_name}</h6>
-                                    <span class="card-text ms-2" style="text-align:center;">${request.comments}</span>
+                                    <span class="fs-4 text card-text ms-2" style="text-align:center;">${request.comments}</span>
                                     <a href="#" class="btn btn-success" onclick="accept_request(${request.request_id},1)">Accept Request</a>
 
 
@@ -155,15 +159,16 @@
                                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <div class="modal-header d-flex justify-content-center">
+                                            <h5 class="modal-title" id="exampleModalLabel">Your Request Details</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <span class="card-text ms-2">Color: ${request.color}</span>
-                                            <span class="card-text ms-2">Copies: ${request.no_of_copies}</span>
-                                            <span class="card-text ms-2">Size: ${request.size}</span>
-                                            <span class="card-text ms-2">Side: ${request.single_or_double}</span>
+
+                                        <div class="modal-body d-flex flex-column">
+                                            <h3 class="card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${request.color}</strong></h3>
+                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.no_of_copies}</strong> copies</h3>
+                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.size}</strong> size</h3>
+                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.single_or_double}</strong> sided printing</h3>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
