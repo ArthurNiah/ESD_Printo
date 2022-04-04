@@ -15,7 +15,7 @@ const CLIENT_ID= '424859888376-hvknfsdtc9enfrf45ir85uelqm2flpih.apps.googleuserc
 const CLIENT_SECRET= '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';
 const REDIRECT_URI= 'https://developers.google.com/oauthplayground';
 
-const REFRESH_TOKEN= '1//04nGStAg06cbhCgYIARAAGAQSNwF-L9IrhlAdhweaG1ZvOKivXJoNTMAiczNpB12aYgnmeSCDQ0nY1gD9qyHCfliJLJ3r2qFCa9w';
+const REFRESH_TOKEN= '1//04onaARe0QNjjCgYIARAAGAQSNwF-L9IrP4LhFwRlUX3Oii7-PvH6QisH6qFcBTxz4LgEWZ0JDHCnnfnHolS35H2ZmeeGTm8sp6I';
 
 const oauth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -33,6 +33,7 @@ const drive= google.drive({
 
 async function uploadFile(file_name, mime_type){
     var dir= __dirname + "/temp_files";
+    // var dir= __dirname;
     const filePath= path.join(dir, file_name);
     try{
         const response= await drive.files.create({
@@ -78,8 +79,8 @@ async function generatePublicURL(document_id){
 
 app.route('/get_document')
 .get((req, res, next) => {
-    doc_id= req.body.doc_id
-    var x= generatePublicURL(doc_id)
+    document_id= req.body.document_id
+    var x= generatePublicURL(document_id)
     setTimeout(() =>{
         x.then(function(result){
             res.send(result)
@@ -108,4 +109,3 @@ app.listen(PORT, function(err){
     if (err) console.log(err);
     console.log("Server listening on PORT", PORT);
 });
-
