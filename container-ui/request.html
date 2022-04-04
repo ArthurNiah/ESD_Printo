@@ -68,7 +68,7 @@ console.log(sessionStorage.getItem('requestor_id'))
       <h1 class="display-4 text-center m-5">Create Request</h1>
         <div class="container-fluid border p-4 w-75">
            
-          <form action="fileupload" class="decor" method="post">
+          <form action="fileupload" class="decor" method="post" enctype="multipart/form-data">
             <div class="form-inner">
               <input type="hidden" name="requestor_id" value=2> 
               <h1>Enter Location</h1>
