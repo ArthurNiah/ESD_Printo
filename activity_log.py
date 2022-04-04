@@ -1,6 +1,16 @@
-import json
-import os 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import os, sys
+import requests
+from os import environ
 
+#import internal files
+from invokes import invoke_http
+
+app = Flask(__name__)
+CORS(app)
+
+import json
 import amqp_setup
 
 monitorBindingKey='.success'
@@ -16,13 +26,14 @@ def receiveOrderLog():
     #it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
 
 def callback(channel, method, properties, body): # required signature for the callback; no return
-    print("\nReceived an order log by AMQP LEGIT LEGIT LEGIT LEGIT WORKS " + __file__)
-    processOrderLog(json.loads(body))
-    print() # print a new line feed
+    print("\ SUCCESSFULLY RECEIVED AN ORDER " + __file__)
+    # processOrderLog(json.loads(body))
+    print(json.loads(body))
+    # print() # print a new line feed
 
-def processOrderLog(order):
-    print("Recording an order log:")
-    print(order)
+# def processOrderLog(order):
+#     print("Recording an order log:")
+#     print(order)
 
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')

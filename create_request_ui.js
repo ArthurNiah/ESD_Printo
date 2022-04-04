@@ -59,7 +59,7 @@ http.createServer(function (req, res) {
 
   } else if (req.url == '/fileuploadui'){
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-gdrive/request.html');
+    var html= fs.readFileSync('./request.html');
     res.write(html);
     return res.end();
   }
