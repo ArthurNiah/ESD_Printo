@@ -12,7 +12,7 @@ app.use(express.static(__dirname+'/public'));
 app.get('/home', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./home.html');
+    var html= fs.readFileSync('./container-ui/home.html');
     res.write(html);
     return res.end();
 })
@@ -20,7 +20,7 @@ app.get('/home', (req, res)=>{
 app.get('/requestor_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_login.html');
+    var html= fs.readFileSync('./container-ui/requestor_login.html');
     res.write(html);
     return res.end();
 })
@@ -28,7 +28,7 @@ app.get('/requestor_login', (req, res)=>{
 app.get('/requestor_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_signup.html');
+    var html= fs.readFileSync('./container-ui/requestor_signup.html');
     res.write(html);
     return res.end();
 })
@@ -62,21 +62,21 @@ app.post('/requestor_signup_action', (req, res)=>{
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id
             }
-        })
+        })  
 
     .then((response)=>{
         console.log(response)
     })
 
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_signup_action.html');
+    var html= fs.readFileSync('./container-ui/requestor_signup_action.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/requestor_home', (req, res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_home.html');
+    var html= fs.readFileSync('./container-ui/requestor_home.html');
     res.write(html);
     return res.end();
 })
@@ -84,7 +84,7 @@ app.get('/requestor_home', (req, res)=>{
 app.get('/provider_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_login.html');
+    var html= fs.readFileSync('./container-ui/provider_login.html');
     res.write(html);
     return res.end();
 })
@@ -92,7 +92,7 @@ app.get('/provider_login', (req, res)=>{
 app.get('/provider_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_signup.html');
+    var html= fs.readFileSync('./container-ui/provider_signup.html');
     res.write(html);
     return res.end();
 })
@@ -134,21 +134,21 @@ app.post('/provider_signup_action', (req, res)=>{
     })
 
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_signup_action.html');
+    var html= fs.readFileSync('./container-ui/provider_signup_action.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/provider_home', (req, res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./provider_home.html');
+    var html= fs.readFileSync('./container-ui/provider_home.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/fileuploadui', (req,res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./request.html');
+    var html= fs.readFileSync('./container-ui/request.html');
     res.write(html);
     return res.end();
 })
@@ -158,15 +158,14 @@ app.post('/fileupload',(req,res)=>{
     var form= new formidable.IncomingForm();
 
     form.parse(req, function(err, fields, files){
-        console.log(files)
-        console.log('2')
+        console.log(files)  
         file_name= files.filetoupload.originalFilename;
         mime_type= files.filetoupload.mimetype
         var info= JSON.stringify({
         'location': fields.location, 'requestor_id': fields.requestor_id, 'no_of_copies': fields.no_of_copies, 'color': fields.color, 'size': fields.size, 'single_or_double': fields.single_or_double, 
         'comments': fields.comments, 'file_name': file_name, 'mime_type': mime_type});
-
-        console.log(info)
+        
+        console.log('info', info)
 
         axios({
             method: 'post',
