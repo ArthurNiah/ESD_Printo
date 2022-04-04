@@ -26,7 +26,16 @@
     <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.js'></script>
     <!-- Vue 3: production version, optimized for size and speed -->
     <!-- <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.prod.js'></script> -->
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" >
+
     <style>
+
+        /* All delay classes will take 2x longer to start */
+        :root {
+            --animate-delay: 0.2s;
+        }
 
         .modal-dialog {
         height: 80% !important;
@@ -143,11 +152,11 @@
                         // // for loop to setup all table rows with obtained book data
 
                         // TODO: find a way to put in provider_id into the function
-                        for (let i = 1; i < 6; i++) {
+                        for (let i = 1; i < 5; i++) {
                             html = `
-                            <div class="col d-flex justify-content-center text-center mt-2" id=${requests[i].request_id} value=${requests[i].request_id}>
-                            <div class="card" style="width: 18rem;>
-                                <div class="card-body ms-3 ">
+                            <div class="animate__animated animate__fadeInDown animate__delay-${i}s col d-flex justify-content-center text-center mt-2" id=${requests[i].request_id} value=${requests[i].request_id}>
+                            <div class="card " style="width: 18rem;>
+                                <div class="card-body ms-3">
                                     <h2 class="card-title ms-2 text-success">New Request</h2>
                                     <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
                                     <span class="fs-4 text card-text ms-2" style="text-align:center;">${requests[i].comments}</span>
