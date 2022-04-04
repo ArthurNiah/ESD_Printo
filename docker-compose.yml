@@ -191,6 +191,37 @@ services:
       - "5010:5010"  
 
   ###################################
+  # create_request_ui.js: Micro microservice X
+  ###################################
+  create_request_ui:
+    build:
+      context: ./
+      dockerfile: create_request_ui.dockerfile
+    image: junioralde/create_request_ui:printo
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8080:8080"  
+
+
+  #################################################
+  # Activity Log: The Activity Log microservice
+  #################################################
+  activity_log:
+    build:
+      context: ./
+      dockerfile: activity_log.dockerfile
+    image: junioralde/activity_log:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+  ###################################
   # Tele setup: telesetup microservice
   ###################################
   # tele_setup:
