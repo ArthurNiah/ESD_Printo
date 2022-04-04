@@ -204,6 +204,23 @@ services:
     ports:
       - "8080:8080"  
 
+
+  #################################################
+  # Activity Log: The Activity Log microservice
+  #################################################
+  activity_log:
+    build:
+      context: ./
+      dockerfile: activity_log.dockerfile
+    image: junioralde/activity_log:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
   ###################################
   # Tele setup: telesetup microservice
   ###################################

@@ -170,10 +170,10 @@ def accept_request(request_id):
         )
     #return success of failure code
     #AMQP calls notifications
-    # message = get_request_res['data']['request_id']
-    # print('\n\n-----PUBLISH ) message with accept_request.success-----')
-    # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="accept_request.success", body=message)
-    # print("sucess")
+    message = get_request_res['data']['request_id']
+    print('\n\n-----PUBLISH ) message with accept_request.success-----')
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="accept_request.success", body=message)
+    print("AMQP FUCKING WORKS SUCK MY DICKKK")
     return jsonify(
         
         {

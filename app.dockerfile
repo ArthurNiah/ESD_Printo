@@ -10,10 +10,7 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY app.js ./
 # COPY temp_files/ /usr/src/app/temp_files
-<<<<<<< Updated upstream
-=======
 COPY temp_files/ ./
->>>>>>> Stashed changes
 
 RUN npm install
 CMD [ "node", "./app.js" ]
