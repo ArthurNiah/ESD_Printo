@@ -269,7 +269,13 @@ services:
       - requestor
       - provider 
       - create_request
+      - create_provider
     environment:
+      get_requestor_URL : "http://requestor:5005/find_by_requestor_username/"
+      register_URL : "http://requestor:5005/register/"
+      find_provider_username_URL : "http://provider:5007/find_by_provider_username/"
+      provide_signup_URL : "http://create-provider:5006/create/"
+      create_request_URL : "http://create-request:5001/create_request/"
       # get_request_URL : "http://request:5003/search_request/"
       # update_provider_id_URL : "http://request:5003/update_provider_id/"
       # update_status_URL : "http://request:5003/update_status/"
@@ -283,4 +289,3 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "3030:3030"
-
