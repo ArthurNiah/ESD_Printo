@@ -8,11 +8,11 @@ volumes:
 services:
 
   ###################################
-  # Provider: provider microservice
+  # Provider: provider microservice X
   ###################################
   provider:
     build:
-      context: ./container-create_provider/
+      context: ./
       dockerfile: provider.dockerfile
     image: junioralde/provider:printo
     restart: always
@@ -23,11 +23,11 @@ services:
       - "5007:5007"
 
   ###################################
-  # Google Maps: google_maps microservice
+  # Google Maps: google_maps microservice X
   ###################################
   google_maps:
     build:
-      context: ./container-create_provider/
+      context: ./
       dockerfile: google_maps.dockerfile
     image: junioralde/google_maps:printo
     restart: always
@@ -37,11 +37,11 @@ services:
       - "5002:5002"
 
   ###############################################
-  # Create Provider: create_provider complex microservice
+  # Create Provider: create_provider complex microservice X
   ###############################################
   create_provider:
     build:
-      context: ./container-create_provider/
+      context: ./
       dockerfile: create_provider.dockerfile
     image: junioralde/create_provider:printo
     restart: always
@@ -56,11 +56,11 @@ services:
       - "5006:5006"
 
   ###################################
-  # Request: Request microservice
+  # Request: Request microservice X
   ###################################
   request:
     build:
-      context: ./container-create_request/
+      context: ./
       dockerfile: request.dockerfile
     image: junioralde/request:printo
     restart: always
@@ -71,12 +71,12 @@ services:
       - "5003:5003"
 
   ###################################
-  # Gdrive: GoogleDrive microservice
+  # Gdrive: GoogleDrive microservice X
   ###################################
 
   google_drive:
     build:
-      context: ./container-create_request/container-gdrive/
+      context: ./
       dockerfile: app.dockerfile
     image: junioralde/gdrive:printo
     restart: always
@@ -87,11 +87,11 @@ services:
       - "3000:3000"
 
  ###############################################
-  # Create Request: Create a Request COMPLEX microservice
+  # Create Request: Create a Request COMPLEX microservice X
   ###############################################
   create_request:
     build:
-      context: ./container-create_request/
+      context: ./
       dockerfile: create_request.dockerfile
     image: junioralde/create_request:printo
     restart: always
@@ -113,12 +113,12 @@ services:
       - "5001:5001"
 
   ###################################
-  # Requestor: Requestor microservice
+  # Requestor: Requestor microservice X
   ###################################
 
   requestor:
     build:
-      context: ./container-requestor/
+      context: ./
       dockerfile: requestor.dockerfile
     image: junioralde/requestor:printo
     restart: always
@@ -130,11 +130,11 @@ services:
 
 
   ###################################
-  # Payment: Payment microservice
+  # Payment: Payment microservice X
   ###################################
   payment:
     build:
-      context: ./container-accept_request/
+      context: ./
       dockerfile: payment.dockerfile
     image: junioralde/payment:printo
     restart: always
@@ -144,11 +144,11 @@ services:
       - "5123:5123"  
 
  ###############################################
-  # View requests: View COMPLEX microservice
+  # View requests: View COMPLEX microservice X
   ###############################################
   view_requests:
     build:
-      context: ./container-view_request/
+      context: ./
       dockerfile: view_requests.dockerfile
     image: junioralde/view_request:printo
     restart: always
@@ -164,11 +164,11 @@ services:
 
 
   ###################################
-  # Notifications: Telegram microservice
+  # Notifications: Telegram microservice X
   ###################################
   notification:
     build:
-      context: ./container-tele_bot/
+      context: ./
       dockerfile: notification.dockerfile
     image: junioralde/notification:printo
     restart: always
@@ -197,7 +197,7 @@ services:
 
   accept_request:
     build:
-      context: ./container-accept_request/
+      context: ./
       dockerfile: accept_request.dockerfile
     image: junioralde/accept_request:printo
     restart: always
