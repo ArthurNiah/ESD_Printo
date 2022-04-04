@@ -5,11 +5,17 @@ from requests import api
 from requests.models import encode_multipart_formdata #new
 from api import token, chat_id, puja_id
 
+
+#Import amqp
+import pika
+
 #Flask imports
+
 from flask import Flask, request as req, jsonify  
 from flask_cors import CORS
 import os, sys
 import requests
+import amqp_setup
 
 #Telegram imports
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton, InlineQueryResultArticle, InputTextMessageContent

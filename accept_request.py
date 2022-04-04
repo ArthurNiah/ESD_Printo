@@ -7,7 +7,7 @@ from os import environ
 
 
 # import amqp_setup
-#import pika
+import pika
 import json
 
 #import internal files
