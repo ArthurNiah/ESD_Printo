@@ -1,12 +1,12 @@
 #general imports
 import logging
-from uuid import uuid4
-from requests import api
-from requests.models import encode_multipart_formdata
+from uuid import uuid4 #new
+from requests import api 
+from requests.models import encode_multipart_formdata #new
 from api import token, chat_id, puja_id
 
 #Flask imports
-from flask import Flask, request as req, jsonify
+from flask import Flask, request as req, jsonify  
 from flask_cors import CORS
 import os, sys
 import requests
@@ -112,6 +112,6 @@ def update_provider():
 
 
 if __name__ == "__main__":
-    app.run(port=5010, debug=True)
+    app.run(host='0.0.0.0', port=5010, debug=True)
 
 

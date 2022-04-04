@@ -65,7 +65,8 @@ def filter_requests():
 
 
     print('\n-----Invoking Provider microservice-----')
-    provider_results = invoke_http(get_provider_location_url+str(data['provider_id']), json = data, method="GET")
+    provider_results = invoke_http(get_provider_location_url+"2", method="GET")
+
 
     # Error Handling
     if provider_results['code'] not in range(200,300):
@@ -142,4 +143,4 @@ def filter_requests():
 
 
 if __name__ == '__main__':
-    app.run(port=5008, debug=True)
+    app.run(host='0.0.0.0',port=5008, debug=True)

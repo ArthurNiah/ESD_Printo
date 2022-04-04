@@ -1,5 +1,3 @@
-from glob import escape
-from http.client import REQUEST_ENTITY_TOO_LARGE
 from flask import Flask, request as req, jsonify
 from flask_cors import CORS
 import os, sys
@@ -7,7 +5,7 @@ import requests
 
 
 # import amqp_setup
-import pika
+# import pika
 import json
 
 #import internal files
@@ -62,4 +60,4 @@ def cal_payment():
 
 
 if __name__ == '__main__':
-    app.run(port=5123, debug=True)
+    app.run(host='0.0.0.0', port=5123, debug=True)

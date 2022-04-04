@@ -1,10 +1,9 @@
-from crypt import methods
-from multiprocessing.spawn import get_preparation_data
 from flask import Flask, request as req, jsonify
 from flask_cors import CORS
 import os, sys
 from pkg_resources import get_provider
 import requests
+from os import environ
 
 
 # import amqp_setup
@@ -24,14 +23,14 @@ CORS(app)
 # request_id: 1, 
 # provider_id: 2}
 
-get_request_URL = "http://localhost:5003/search_request/"
-update_provider_id_URL = "http://localhost:5003/update_provider_id/"
-update_status_URL = "http://localhost:5003/update_status/"
-get_provider_URL = "http://localhost:5007/provider/"
-get_requestor_URL = "http://localhost:5005/requestor/"
-notification_update_requestor_URL = "http://localhost:5010/update_requestor"
-notification_update_provider_URL = "http://localhost:5010/update_provider"
-payment_URL = "http://localhost:5123/payment"
+get_request_URL = environ.get('get_request_URL')
+update_provider_id_URL = environ.get('update_provider_id_URL')
+update_status_URL = environ.get('update_status_URL')
+get_provider_URL = environ.get('get_provider_URL')
+get_requestor_URL = environ.get('get_requestor_URL')
+notification_update_requestor_URL = environ.get('notification_update_requestor_URL')
+notification_update_provider_URL = environ.get('notification_update_provider_URL')
+payment_URL = environ.get('payment_URL')
 
 
 
@@ -155,4 +154,4 @@ def accept_request(request_id):
     )
 
 if __name__ == "__main__":
-    app.run(port=5009, debug=True)
+    app.run(host='0.0.0.0',port=5009, debug=True)
