@@ -12,7 +12,7 @@ app.use(express.static(__dirname+'/public'));
 app.get('/home', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./home.html');
+    var html= fs.readFileSync('./container-ui/home.html');
     res.write(html);
     return res.end();
 })
@@ -20,7 +20,7 @@ app.get('/home', (req, res)=>{
 app.get('/requestor_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_login.html');
+    var html= fs.readFileSync('./container-ui/requestor_login.html');
     res.write(html);
     return res.end();
 })
@@ -28,7 +28,7 @@ app.get('/requestor_login', (req, res)=>{
 app.get('/requestor_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./requestor_signup.html');
+    var html= fs.readFileSync('./container-ui/requestor_signup.html');
     res.write(html);
     return res.end();
 })
