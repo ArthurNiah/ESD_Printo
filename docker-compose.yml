@@ -169,8 +169,8 @@ services:
       - request
       - provider
     environment:
-      get_all_request_locations_url : "http://localhost:5003/get_request_by_status"
-      get_provider_location_url : "http://localhost:5007/provider/"
+      get_all_request_locations_url : "http://request:5003/get_request_by_status"
+      get_provider_location_url : "http://provider:5007/provider/"
       PYTHONUNBUFFERED: 1
     ports:
       - "5008:5008"
@@ -189,6 +189,37 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5010:5010"  
+
+  ###################################
+  # create_request_ui.js: Micro microservice X
+  ###################################
+  create_request_ui:
+    build:
+      context: ./
+      dockerfile: create_request_ui.dockerfile
+    image: junioralde/create_request_ui:printo
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8080:8080"  
+
+
+  #################################################
+  # Activity Log: The Activity Log microservice
+  #################################################
+  activity_log:
+    build:
+      context: ./
+      dockerfile: activity_log.dockerfile
+    image: junioralde/activity_log:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
 
   ###################################
   # Tele setup: telesetup microservice

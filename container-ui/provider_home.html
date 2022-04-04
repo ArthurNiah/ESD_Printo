@@ -26,7 +26,16 @@
     <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.js'></script>
     <!-- Vue 3: production version, optimized for size and speed -->
     <!-- <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.prod.js'></script> -->
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" >
+
     <style>
+
+        /* All delay classes will take 2x longer to start */
+        :root {
+            --animate-delay: 0.2s;
+        }
 
         .modal-dialog {
         height: 80% !important;
@@ -69,7 +78,7 @@
 
     <body>
         <div id="main-container" class="container">
-            <h1 class="display-4 text-center">Request Listings Near You</h1>
+            <h1 class="display-4 text-center mt-4">Request Listings Near You</h1>
             <div id="request-results" class="row">
     
             </div>
@@ -121,39 +130,46 @@
             // - using await requires the function that calls it to be async
             $(async () => {
                 // Change serviceURL to your own
-                var serviceURL = "http://0.0.0.0:5003/get_all_request";
+                var serviceURL = `http://127.0.0.1:5008/filter_requests/4`;
 
                 try {
                     console.log('2')
                     const response =
                         await fetch(
-                            serviceURL, { method: 'GET' }
-                        );
+                            serviceURL, 
+                            { method: 'GET', 
+                            headers: {
+                                        "Content-Type": "application/JSON"}});
+
                     const result = await response.json();
-                    // console.log(result)
-                    if (response.status === 200) {
+                    console.log(result)
+                    rand_code = 200
+                    if (rand_code === 200) {
                         // success case
-                        var requests = result.data.request; //the array is in books within data of the returned result
+                        var requests = result; //the array is in books within data of the returned result
+                        console.log(requests.data)
                         sessionStorage.setItem("hello", "bye")
                         // // for loop to setup all table rows with obtained book data
 
                         // TODO: find a way to put in provider_id into the function
-                        for (const request of requests) {
+                        for (let i = 1; i < 5; i++) {
                             html = `
-                            <div class="col d-flex justify-content-center text-center mt-2" id=${request.request_id} value=${request.request_id}>
-                            <div class="card" style="width: 18rem;>
-                                <div class="card-body ms-3 ">
-                                    <h5 class="card-title ms-2">Request Number ${request.request_id}</h5>
-                                    <h5 class="card-title ms-2 text-success">Request ${request.status}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted ms-2">${request.location_name}</h6>
-                                    <span class="fs-4 text card-text ms-2" style="text-align:center;">${request.comments}</span>
-                                    <a href="#" class="btn btn-success" onclick="accept_request(${request.request_id},1)">Accept Request</a>
+                            <div class="col d-flex justify-content-center text-center mt-2" id=${requests[i].request_id} value=${requests[i].request_id}>
+                            
+                            <div >
+                            <div class="animate__animated animate__fadeInDown animate__delay-${i}s card " style="width: 18rem;>
+                                <div class="card-body ms-3">
+                                    <h2 class="card-title ms-2 text-success">New Request</h2>
+                                    <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
+                                    <span class="fs-4 text card-text ms-2" style="text-align:center;">${requests[i].comments}</span>
+                                    <a href="#" class="btn btn-success" onclick="accept_request(${requests[i].request_id},1)">Accept Request</a>
 
 
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     Details
                                     </button>
+                            </div>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -165,14 +181,14 @@
                                         </div>
 
                                         <div class="modal-body d-flex flex-column">
-                                            <h3 class="card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${request.color}</strong></h3>
-                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.no_of_copies}</strong> copies</h3>
-                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.size}</strong> size</h3>
-                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.single_or_double}</strong> sided printing</h3>
+                                            <h3 class="card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${requests[i].color}</strong></h3>
+                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].no_of_copies}</strong> copies</h3>
+                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].size}</strong> size</h3>
+                                            <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].single_or_double}</strong> sided printing</h3>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button href="#" type="button" onclick="accept_request(${request.request_id})" class="btn btn-primary">Accept Request!</button>
+                                            <button href="#" type="button" onclick="accept_request(${requests[i].request_id},4)" class="btn btn-primary">Accept Request!</button>
                                         </div>
                                         </div>
                                     </div>

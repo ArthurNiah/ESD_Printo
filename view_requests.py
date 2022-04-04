@@ -20,18 +20,19 @@ app = Flask(__name__)
 CORS(app)
 
 # URLs for invoke_http
-get_all_request_locations_url = "http://localhost:5003/get_request_by_status"
-get_provider_location_url = "http://localhost:5007/provider/"
+get_all_request_locations_url = environ.get('get_all_request_locations_url')
+get_provider_location_url = environ.get('get_provider_location_url')
 
 
-@app.route("/filter_requests", methods=['GET'])
-def filter_requests():
+@app.route("/filter_requests/<string:provider_id>", methods=['GET'])
+def filter_requests(provider_id):
 
-    data = req.get_json()
+    # data = req.get_json()
     
     # 1. Get location_name, request_id, place_id of all requests in database
     print('\n-----Invoking Request microservice-----')
     resp = invoke_http(get_all_request_locations_url, method="GET")
+    print(resp)
 
     # Error Handling
     if resp['code'] not in range(200,300):
@@ -49,10 +50,17 @@ def filter_requests():
     # 2. Store in obtained details in list
     all_req = []
     for i in range(len(resp["data"]["request"])):
+        resp["data"]["request"][i]
         single_request = { 
             "request_id": resp["data"]["request"][i]["request_id"], 
             "location_name": resp["data"]["request"][i]["location_name"], 
-            "place_id": resp["data"]["request"][i]["place_id"]
+            "place_id": resp["data"]["request"][i]["place_id"], 
+            "color": resp["data"]["request"][i]["color"],
+            "single_or_double": resp["data"]["request"][i]["single_or_double"], 
+            "comments": resp["data"]["request"][i]["comments"], 
+            "size": resp["data"]["request"][i]["size"], 
+            "no_of_copies": resp["data"]["request"][i]["no_of_copies"],
+            "status": resp["data"]["request"][i]["status"]
             }
         all_req.append(single_request)
 
@@ -65,8 +73,8 @@ def filter_requests():
 
 
     print('\n-----Invoking Provider microservice-----')
-    provider_results = invoke_http(get_provider_location_url+"2", method="GET")
-
+    provider_results = invoke_http(get_provider_location_url+provider_id, method="GET")
+    print(provider_results)
 
     # Error Handling
     if provider_results['code'] not in range(200,300):
