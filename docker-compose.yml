@@ -191,6 +191,20 @@ services:
       - "5010:5010"  
 
   ###################################
+  # create_request_ui.js: Micro microservice X
+  ###################################
+  create_request_ui:
+    build:
+      context: ./
+      dockerfile: create_request_ui.dockerfile
+    image: junioralde/create_request_ui:printo
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8080:8080"  
+
+  ###################################
   # Tele setup: telesetup microservice
   ###################################
   # tele_setup:
