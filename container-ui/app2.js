@@ -158,15 +158,14 @@ app.post('/fileupload',(req,res)=>{
     var form= new formidable.IncomingForm();
 
     form.parse(req, function(err, fields, files){
-        console.log(files)
-        console.log('2')
+        console.log(files)  
         file_name= files.filetoupload.originalFilename;
         mime_type= files.filetoupload.mimetype
         var info= JSON.stringify({
         'location': fields.location, 'requestor_id': fields.requestor_id, 'no_of_copies': fields.no_of_copies, 'color': fields.color, 'size': fields.size, 'single_or_double': fields.single_or_double, 
         'comments': fields.comments, 'file_name': file_name, 'mime_type': mime_type});
-
-        console.log(info)
+        
+        console.log('info', info)
 
         axios({
             method: 'post',
