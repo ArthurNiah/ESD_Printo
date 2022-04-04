@@ -75,7 +75,7 @@ def processProvider(provider_details):
     #update to provider_details
     provider_details['coordinates'] = locationResults['data']['coordinates']
     provider_details['place_id'] = locationResults['data']['place_id']
-    provider_details['location'] = locationResults['data']['location']
+    provider_details['location'] = locationResults['data']['location_name']
 
     #Step 2: Invoking Provider microservice (Update to be done in the Provider Microservice)
     print('\n-----Invoking Provider microservice-----')
