@@ -169,8 +169,8 @@ services:
       - request
       - provider
     environment:
-      get_all_request_locations_url : "http://localhost:5003/get_request_by_status"
-      get_provider_location_url : "http://localhost:5007/provider/"
+      get_all_request_locations_url : "http://request:5003/get_request_by_status"
+      get_provider_location_url : "http://provider:5007/provider/"
       PYTHONUNBUFFERED: 1
     ports:
       - "5008:5008"

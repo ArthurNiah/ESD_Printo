@@ -20,8 +20,8 @@ app = Flask(__name__)
 CORS(app)
 
 # URLs for invoke_http
-get_all_request_locations_url = "http://localhost:5003/get_request_by_status"
-get_provider_location_url = "http://localhost:5007/provider/"
+get_all_request_locations_url = environ.get('get_all_request_locations_url')
+get_provider_location_url = environ.get('get_provider_location_url')
 
 
 @app.route("/filter_requests", methods=['GET'])
@@ -32,6 +32,7 @@ def filter_requests():
     # 1. Get location_name, request_id, place_id of all requests in database
     print('\n-----Invoking Request microservice-----')
     resp = invoke_http(get_all_request_locations_url, method="GET")
+    print(resp)
 
     # Error Handling
     if resp['code'] not in range(200,300):
@@ -65,8 +66,8 @@ def filter_requests():
 
 
     print('\n-----Invoking Provider microservice-----')
-    provider_results = invoke_http(get_provider_location_url+"2", method="GET")
-
+    provider_results = invoke_http(get_provider_location_url+str(data['provider_id']), method="GET")
+    print(provider_results)
 
     # Error Handling
     if provider_results['code'] not in range(200,300):
