@@ -405,7 +405,7 @@ def update_print_status(request_id):
 def get_all_request_by_id(requestor_id):
 
     try:
-        requestList = Request.query.filter_by(requestor_id=2)
+        requestList = Request.query.filter_by(requestor_id=requestor_id)
     
         if requestList:
             # all_request: []
