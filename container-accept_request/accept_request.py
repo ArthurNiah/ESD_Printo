@@ -56,24 +56,10 @@ def accept_request(request_id):
             }
         )
  
-    #STEP 2: Get request Info
-    get_request_res = invoke_http(get_request_URL + str(request_id), json = data)
-    print('\n-----Invoking Request microservice-----')
-    print(get_request_res)
-    if get_request_res['code'] not in range(200,300):
-        
-        print("\n-----FAILED: Invoking Request microservice-----")
 
-        return jsonify(
-            {
-                "code": 500, 
-                "message": "Failed to invoke request microservice."
-            }
-        )
-
-    #STEP 3: Update request with provider_id + status + print_details
+    #STEP 2: Update request with provider_id + status + print_details
     #TODO: Update request with print details
-    print('\n-----Invoking Update Provider microservice-----')
+    print('\n-----Invoking Update Request microservice-----')
     update_provider_id_res= invoke_http(update_provider_id_URL + str(data['request_id']), json = data, method='PUT')
     update_status= invoke_http(update_status_URL + str(data['request_id']), json = {"status":"Accepted"}, method='PUT')
     print(update_provider_id_res)
@@ -85,6 +71,22 @@ def accept_request(request_id):
             {
                 "code": 500, 
                 "message": "Failed to update provider microservice."
+            }
+        )
+
+
+    #STEP 3: Get request Info
+    get_request_res = invoke_http(get_request_URL + str(request_id), json = data)
+    print('\n-----Invoking Request microservice-----')
+    print(get_request_res)
+    if get_request_res['code'] not in range(200,300):
+        
+        print("\n-----FAILED: Invoking Request microservice-----")
+
+        return jsonify(
+            {
+                "code": 500, 
+                "message": "Failed to invoke request microservice."
             }
         )
 
@@ -105,7 +107,6 @@ def accept_request(request_id):
         )
 
     #STEP 5: Collate info and invoke Notification.py
-    print("\n-----Invoking Telegram Notification microservice-----")
 
     collated_info_1 = {
         "request": {
@@ -120,6 +121,8 @@ def accept_request(request_id):
     payment_res = invoke_http(payment_URL, json= collated_info_1['request']['data'])
     print("\n-----END: Invoking Payment microservice-----")
     print(payment_res)
+
+    print("\n-----Invoking Telegram Notification microservice-----")
     collated_info = {
         "request": {
             "request_id": get_request_res['data']['request_id'], 
