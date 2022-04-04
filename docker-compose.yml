@@ -8,13 +8,13 @@ volumes:
 services:
 
   ###################################
-  # Provider: provider microservice
+  # Provider: provider microservice X
   ###################################
   provider:
     build:
-      context: ./container-create_provider/
+      context: ./
       dockerfile: provider.dockerfile
-    image: jinloh/provider:printo
+    image: junioralde/provider:printo
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/provider
@@ -23,13 +23,13 @@ services:
       - "5007:5007"
 
   ###################################
-  # Google Maps: google_maps microservice
+  # Google Maps: google_maps microservice X
   ###################################
   google_maps:
     build:
-      context: ./container-create_provider/
+      context: ./
       dockerfile: google_maps.dockerfile
-    image: jinloh/google_maps:printo
+    image: junioralde/google_maps:printo
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -37,13 +37,13 @@ services:
       - "5002:5002"
 
   ###############################################
-  # Create Provider: create_provider complex microservice
+  # Create Provider: create_provider complex microservice X
   ###############################################
   create_provider:
     build:
-      context: ./container-create_provider/
+      context: ./
       dockerfile: create_provider.dockerfile
-    image: jinloh/create_provider:printo
+    image: junioralde/create_provider:printo
     restart: always
     depends_on:
       - provider
@@ -56,13 +56,13 @@ services:
       - "5006:5006"
 
   ###################################
-  # Request: Request microservice
+  # Request: Request microservice X
   ###################################
   request:
     build:
-      context: ./container-create_request/
+      context: ./
       dockerfile: request.dockerfile
-    image: jinloh/request:printo
+    image: junioralde/request:printo
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
@@ -71,14 +71,14 @@ services:
       - "5003:5003"
 
   ###################################
-  # Gdrive: GoogleDrive microservice
+  # Gdrive: GoogleDrive microservice X
   ###################################
 
   google_drive:
     build:
-      context: ./container-create_request/container-gdrive/
+      context: ./
       dockerfile: app.dockerfile
-    image: jinloh/gdrive:printo
+    image: junioralde/gdrive:printo
     restart: always
     environment:
       #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
@@ -87,13 +87,13 @@ services:
       - "3000:3000"
 
  ###############################################
-  # Create Request: Create a Request COMPLEX microservice
+  # Create Request: Create a Request COMPLEX microservice X
   ###############################################
   create_request:
     build:
-      context: ./container-create_request/
+      context: ./
       dockerfile: create_request.dockerfile
-    image: jinloh/create_request:printo
+    image: junioralde/create_request:printo
     restart: always
     #networks:
     #  - kong-net
@@ -111,3 +111,114 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5001:5001"
+
+  ###################################
+  # Requestor: Requestor microservice X
+  ###################################
+
+  requestor:
+    build:
+      context: ./
+      dockerfile: requestor.dockerfile
+    image: junioralde/requestor:printo
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/requestor
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5005:5005"  
+
+
+  ###################################
+  # Payment: Payment microservice X
+  ###################################
+  payment:
+    build:
+      context: ./
+      dockerfile: payment.dockerfile
+    image: junioralde/payment:printo
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5123:5123"  
+
+ ###############################################
+  # View requests: View COMPLEX microservice X
+  ###############################################
+  view_requests:
+    build:
+      context: ./
+      dockerfile: view_requests.dockerfile
+    image: junioralde/view_request:printo
+    restart: always
+    depends_on:
+      - request
+      - provider
+    environment:
+      get_all_request_locations_url : "http://localhost:5003/get_request_by_status"
+      get_provider_location_url : "http://localhost:5007/provider/"
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5008:5008"
+
+
+  ###################################
+  # Notifications: Telegram microservice X
+  ###################################
+  notification:
+    build:
+      context: ./
+      dockerfile: notification.dockerfile
+    image: junioralde/notification:printo
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5010:5010"  
+
+  ###################################
+  # Tele setup: telesetup microservice
+  ###################################
+  # tele_setup:
+  #   build:
+  #     context: ./container-tele_bot/
+  #     dockerfile: notification.dockerfile
+  #   image: junioralde/notification:printo
+  #   restart: always
+  #   environment:
+  #     PYTHONUNBUFFERED: 1
+  #   ports:
+  #     - "5010:5010"  
+
+  # ###################################
+  # # Accept Request: Accept request Microservice
+  # ###################################
+
+  accept_request:
+    build:
+      context: ./
+      dockerfile: accept_request.dockerfile
+    image: junioralde/accept_request:printo
+    restart: always
+    depends_on:
+      - notification
+      - requestor
+      - provider 
+      - payment
+      - request
+    environment:
+      get_request_URL : "http://request:5003/search_request/"
+      update_provider_id_URL : "http://request:5003/update_provider_id/"
+      update_status_URL : "http://request:5003/update_status/"
+      get_provider_URL : "http://provider:5007/provider/"
+      get_requestor_URL : "http://requestor:5005/requestor/"
+      notification_update_requestor_URL : "http://notification:5010/update_requestor"
+      notification_update_provider_URL : "http://notification:5010/update_provider"
+      payment_URL : "http://payment:5123/payment"
+      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5009:5009"
+
+
