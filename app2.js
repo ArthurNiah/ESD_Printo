@@ -2,7 +2,6 @@ const express= require('express')
 const axios= require('axios')
 const formidable= require('formidable')
 const app= express()
-const path = require('path');
 var fs = require('fs');
 
 app.use(express.json())
@@ -197,7 +196,9 @@ app.post('/fileupload',(req,res)=>{
         })
     
     });
-    return res.end()
+
+    res.redirect('/requestor_home' + '?requestor_id=' + fields.requestor_id)
+    return res.end();
 })
 
 })
