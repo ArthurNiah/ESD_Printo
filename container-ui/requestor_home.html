@@ -6,8 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
  
-    <title>All Requests</title>
-
+    <title>Bookstore</title>
+ 
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Bootstrap libraries -->
     <meta name="viewport" 
         content="width=device-width, initial-scale=1, shrink-to-fit=no">
  
@@ -21,11 +26,6 @@
     <script
        src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
        <style>
-
-        /* All delay classes will take 2x longer to start */
-        :root {
-            --animate-delay: 0.2s;
-        }        
 
         .modal-dialog {
         height: 80% !important;
@@ -65,22 +65,18 @@
     </style>
 </head>
  
-
+<body>
     
     <body>
-
-        <div class="d-flex mt-1">
-            <a class="btn btn btn-outline-danger" href="fileuploadui" role="button">Create New Request</a>
-
-            <form action="requestor_login" method="get">
-                <button class="btn btn-outline-warning" onclick="signout()">Signout</button>        
-            </form>
-            
-        </div>
-
+        <form action="fileuploadui" method="get">
+            <button onclick="">Create New Request</button>
+        </form>
+        <form action="requestor_login" method="get">
+            <button onclick="signout()">Signout</button>
+        </form>
         <div id="main-container" class="container">
-            <h1 class="display-4 text-center mt-5">Your Current Requests</h1>
-            <div id="request-results" class="row justify-content-center mt-0">
+            <h1 class="display-4 text-center">Your Current Requests!</h1>
+            <div id="request-results" class="row justify-content-center">
     
             </div>
         </div>
@@ -126,9 +122,8 @@
                         for (const request of requests) {
                             html = `
                             <div class="col d-flex justify-content-center text-center mt-2" id=${request.request_id} value=${request.request_id}>
-                            
-                            <div class="animate__animated animate__fadeInDown animate__delay-${i}s card" style="width: 18rem;>
-                                <div class="card-body ms-3">
+                            <div class="card" style="width: 18rem;>
+                                <div class="card-body ms-3 ">
                                     <h2 class="card-title ms-2 text-success">New Request</h2>
                                     <h6 class="card-subtitle mb-2 text-muted ms-2">${request.location_name}</h6>
                                     <span class="fs-4 text card-text ms-2" style="text-align:center;">${request.comments}</span>
@@ -175,7 +170,7 @@
                     // Errors when calling the service; such as network error, 
                     // service offline, etc
                     showError
-        ('There was a problem retrieving your requests, please try again later.<br />' + error);
+        ('There is a problem retrieving books data, please try again later.<br />' + error);
                 } // error
         });
 
