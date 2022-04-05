@@ -119,17 +119,17 @@
                         var requests = result.data.request; //the array is in books within data of the returned result
                         // // for loop to setup all table rows with obtained book data
 
-                        for (const request of requests) {
+                        for (let i = 1; i < size+1; i++) {
                             html = `
-                            <div class="col d-flex justify-content-center text-center mt-2" id=${request.request_id} value=${request.request_id}>
-                            <div class="card" style="width: 18rem;>
+                            <div class="col d-flex justify-content-center text-center mt-2" id=${requests[i].request_id} value=${requests[i].request_id}>
+                            <div class="animate__animated animate__fadeInDown animate__delay-${i}s card" style="width: 18rem;>
                                 <div class="card-body ms-3">
                                     <div class="mt-2">
                                         <h2 class="card-title mx-auto text-success">New Request</h2>
                                     </div>
                                     
-                                    <h6 class="card-subtitle mb-2 text-muted ms-2">${request.location_name}</h6>
-                                    <span class="lead fs-4 card-text mx-auto" style="text-align:center;">${request.comments}</span>
+                                    <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
+                                    <span class="lead fs-4 card-text mx-auto" style="text-align:center;">${requests[i].comments}</span>
 
 
                                     <!-- Button trigger modal -->
@@ -147,10 +147,10 @@
                                         </div>
 
                                         <div class="modal-body d-flex flex-column">
-                                            <h3 class="lead card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${request.color}</strong></h3>
-                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.no_of_copies}</strong> copies</h3>
-                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.size}</strong> size</h3>
-                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${request.single_or_double}</strong> sided printing</h3>
+                                            <h3 class="lead card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${requests[i].color}</strong></h3>
+                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].no_of_copies}</strong> copies</h3>
+                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].size}</strong> size</h3>
+                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].single_or_double}</strong> sided printing</h3>
                                         </div>
                                         <div class="modal-footer d-flex justify-content-center">
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
