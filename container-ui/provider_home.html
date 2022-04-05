@@ -79,9 +79,9 @@
 </head>
 
 <body>
-    <div class="mt-1 justify-content-end">
+    <div class=" d-flex mt-1 justify-content-end">
         <form action="provider_login" method="get">
-            <button class="btn btn-outline-warning" onclick="signout()">Signout</button>
+            <button class="btn btn-outline-danger" onclick="signout()">Signout</button>
         </form>
     </div>
 
@@ -190,7 +190,7 @@
                             <div class="animate__animated animate__fadeInDown animate__delay-${i}s card lead" style="width: 18rem;>
                                 <div class="card-body ms-3">
                                     <div class="mt-2">
-                                        <h2 class="card-title ms-2 text-success lead">New Request</h2>
+                                        <h2 class="card-title ms-2 text-success">New Request</h2>
                                     </div>
 
                                     <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
@@ -219,9 +219,14 @@
                                             <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].size}</strong> size</h3>
                                             <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].single_or_double}</strong> sided printing</h3>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button href="#" type="button" onclick="accept_request(${requests[i].request_id},${sessionStorage.getItem('provider_id')})" class="btn btn-primary">Accept Request!</button>
+                                        <div class="modal-footer d-flex m-0 flex-row">
+                                            <div class="d-grid col-6">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+
+                                            <div class="d-grid col-6">
+                                                <button href="#" type="button" onclick="accept_request(${requests[i].request_id},${sessionStorage.getItem('provider_id')})" class="btn btn-primary">Accept Request!</button>
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
