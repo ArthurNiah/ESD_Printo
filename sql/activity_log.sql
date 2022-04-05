@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `activity_log` (
 -- Dumping data for table `data`
 --
 --  DOESNT WORK
-INSERT INTO `activity_log` (`log_id`, `request_id') VALUES
+INSERT INTO `activity_log` (`log_id`, `request_id`) VALUES
 (1, 2);
 
 
