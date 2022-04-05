@@ -9,8 +9,10 @@ WORKDIR /usr/src/app2
 COPY package.json ./
 COPY package-lock.json ./
 COPY app2.js ./
-COPY temp_files/ /usr/src/app/temp_files
-COPY container-ui/ /usr/src/app/container-ui
+# COPY ./temp_files/ /usr/src/app/temp_files ./
+# COPY ./container-ui/ /usr/src/app/container-ui ./
+COPY temp_files/ ./
+COPY container-ui/ ./
 
 RUN npm install
 CMD [ "node", "./app2.js" ]

@@ -33,7 +33,7 @@ const drive= google.drive({
 
 async function uploadFile(file_name, mime_type){
     var dir= __dirname + "/temp_files";
-    console.log(dir)
+    // console.log(dir)
     const filePath= path.join(dir, file_name);
     try{
         const response= await drive.files.create({

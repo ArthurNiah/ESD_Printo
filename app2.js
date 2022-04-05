@@ -2,6 +2,7 @@ const express= require('express')
 const axios= require('axios')
 const formidable= require('formidable')
 const app= express()
+const path = require('path');
 var fs = require('fs');
 
 app.use(express.json())
@@ -12,7 +13,9 @@ app.use(express.static(__dirname+'/public'));
 app.get('/home', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/home.html');
+    var dir= "./home.html";
+    // console.log(dir)
+    var html= fs.readFileSync(dir);
     res.write(html);
     return res.end();
 })
@@ -20,7 +23,7 @@ app.get('/home', (req, res)=>{
 app.get('/requestor_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/requestor_login.html');
+    var html= fs.readFileSync('./requestor_login.html');
     res.write(html);
     return res.end();
 })
@@ -28,7 +31,7 @@ app.get('/requestor_login', (req, res)=>{
 app.get('/requestor_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/requestor_signup.html');
+    var html= fs.readFileSync('./requestor_signup.html');
     res.write(html);
     return res.end();
 })
@@ -36,14 +39,16 @@ app.get('/requestor_signup', (req, res)=>{
 app.post('/requestor_login_action', (req, res)=>{
     console.log(req.body)
     var username= req.body.username
+    console.log(username)
 
     const getRequests = async() => {
         return await axios({
-            url: 'http://localhost:5005/find_by_requestor_username/' + username
+            url: 'http://requestor:5005/find_by_requestor_username/' + username
         })
     }
     
     (async()=>{
+        console.log('5')
         const requests= await getRequests()
         console.log(requests.data)
         console.log(requests.data.data.requestor_id)
@@ -58,7 +63,7 @@ app.post('/requestor_signup_action', (req, res)=>{
 
     axios({
             method: 'post',
-            url: 'http://localhost:5005/register',
+            url: 'http://requestor:5005/register',
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id
             }
@@ -69,14 +74,14 @@ app.post('/requestor_signup_action', (req, res)=>{
     })
 
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/requestor_signup_action.html');
+    var html= fs.readFileSync('./requestor_signup_action.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/requestor_home', (req, res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/requestor_home.html');
+    var html= fs.readFileSync('./requestor_home.html');
     res.write(html);
     return res.end();
 })
@@ -84,7 +89,7 @@ app.get('/requestor_home', (req, res)=>{
 app.get('/provider_login', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/provider_login.html');
+    var html= fs.readFileSync('./provider_login.html');
     res.write(html);
     return res.end();
 })
@@ -92,7 +97,7 @@ app.get('/provider_login', (req, res)=>{
 app.get('/provider_signup', (req, res)=>{
     // res.sendFile(__dirname + '/requestor_login.html')
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/provider_signup.html');
+    var html= fs.readFileSync('./provider_signup.html');
     res.write(html);
     return res.end();
 })
@@ -103,7 +108,7 @@ app.post('/provider_login_action', (req, res)=>{
     console.log(username)
     const getRequests = async() => {
         return await axios({
-            url: 'http://localhost:5007/find_by_provider_username/' + username
+            url: 'http://provider:5007/find_by_provider_username/' + username
         })
     }
     
@@ -118,11 +123,10 @@ app.post('/provider_login_action', (req, res)=>{
 })
 
 app.post('/provider_signup_action', (req, res)=>{
-    console.log('AMONGUS', req.body)
 
     axios({
             method: 'post',
-            url: 'http://localhost:5006/create_provider',
+            url: 'http://create_provider:5006/create_provider',
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id, 
             'location': req.body.location
@@ -134,21 +138,21 @@ app.post('/provider_signup_action', (req, res)=>{
     })
 
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/provider_signup_action.html');
+    var html= fs.readFileSync('./provider_signup_action.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/provider_home', (req, res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/provider_home.html');
+    var html= fs.readFileSync('./provider_home.html');
     res.write(html);
     return res.end();
 })
 
 app.get('/fileuploadui', (req,res)=>{
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var html= fs.readFileSync('./container-ui/request.html');
+    var html= fs.readFileSync('./request.html');
     res.write(html);
     return res.end();
 })
@@ -169,7 +173,7 @@ app.post('/fileupload',(req,res)=>{
 
         axios({
             method: 'post',
-            url: 'http://localhost:5001/create_request',
+            url: 'http://create_request:5001/create_request',
             data: {
                 'location': fields.location, 'requestor_id': fields.requestor_id, 'no_of_copies': fields.no_of_copies, 'color': fields.color, 'size': fields.size, 'single_or_double': fields.single_or_double, 
                 'comments': fields.comments, 'file_name': file_name, 'mime_type': mime_type}

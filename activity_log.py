@@ -51,9 +51,11 @@ def receiveOrderLog():
 
 def callback(channel, method, properties, body): # required signature for the callback; no return
     print("\ SUCCESSFULLY RECEIVED AN ORDER " + __file__)
+
     print("BODY RETURN", body)
     # print(json.loads(body))
     processActivityLog(body)
+
     # print() # print a new line feed
 
 def processActivityLog(body):
