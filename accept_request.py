@@ -156,6 +156,7 @@ def accept_request(request_id):
     notify_requestor_res = invoke_http(notification_update_requestor_URL, json = collated_info, method = 'POST')
     notify_provider_res = invoke_http(notification_update_provider_URL, json=collated_info, method = 'POST')
     print(notify_provider_res)
+    print('HELLO')
     print(notify_requestor_res['code'])
     if notify_provider_res['code'] not in range(200,300) or notify_requestor_res['code'] not in range(200, 300):
         print("\n-----FAILED: Invoking Telegram Notification microservice-----")
@@ -172,9 +173,12 @@ def accept_request(request_id):
     #AMQP calls notifications
 
     #message is requestor ID
-    message = get_request_res['data']['request_id']
+    # message = get_request_res['data']['request_id']
+    message = get_request_res['data']
+    message_cont = message['request_id']
+    print(message_cont)
     print('\n\n-----PUBLISH ) message with accept_request.success-----')
-    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="accept_request.success", body=message)
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="accept_request.success", body=message_cont)
     return jsonify(
         
         {

@@ -27,7 +27,7 @@ class Activity_log(db.Model):
     request_id = db.Column(db.Integer, nullable= False)
     # create_datetime = db.Column(db.Integer, nullable= True)
 
-
+#log id self increment
 def __init__(self, request_id, log_id = None):
     self.log_id = log_id
     self.request_id = request_id
@@ -50,10 +50,7 @@ def receiveOrderLog():
     #it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
 
 def callback(channel, method, properties, body): # required signature for the callback; no return
-    print("\ SUCCESSFULLY RECEIVED AN ORDER " + __file__)
-
-    print("BODY RETURN", body)
-    # print(json.loads(body))
+    print("\ RECEIVED MESSAGE FROM ACCEPT_REQUEST AND SUCCESSFULLY ACCEPTED A REQUEST N " + __file__)
     processActivityLog(body)
 
     # print() # print a new line feed
@@ -63,7 +60,7 @@ def processActivityLog(body):
 
 
     print("=====START: Insert Log Activity into DB======")
-    log = Activity_log("body")
+    log = Activity_log(body)
 
     db.session.add(log)
     db.session.commit()

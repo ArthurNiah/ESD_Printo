@@ -206,20 +206,6 @@ services:
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
 
-  ###################################
-  # Tele setup: telesetup microservice
-  ###################################
-  # tele_setup:
-  #   build:
-  #     context: ./container-tele_bot/
-  #     dockerfile: notification.dockerfile
-  #   image: junioralde/notification:printo
-  #   restart: always
-  #   environment:
-  #     PYTHONUNBUFFERED: 1
-  #   ports:
-  #     - "5010:5010"  
-
   # ###################################
   # # Accept Request: Accept request Microservice
   # ###################################
@@ -249,7 +235,6 @@ services:
       notification_update_provider_URL : "http://notification:5010/update_provider"
       payment_URL : "http://payment:5123/payment"
       get_gdrive_URL : "http://google_drive:3000/get_document"
-      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
       PYTHONUNBUFFERED: 1
     ports:
       - "5009:5009"
@@ -276,16 +261,6 @@ services:
       find_provider_username_URL : "http://provider:5007/find_by_provider_username/"
       provide_signup_URL : "http://create-provider:5006/create/"
       create_request_URL : "http://create-request:5001/create_request/"
-      # get_request_URL : "http://request:5003/search_request/"
-      # update_provider_id_URL : "http://request:5003/update_provider_id/"
-      # update_status_URL : "http://request:5003/update_status/"
-      # get_provider_URL : "http://provider:5007/provider/"
-      # get_requestor_URL : "http://requestor:5005/requestor/"
-      # notification_update_requestor_URL : "http://notification:5010/update_requestor"
-      # notification_update_provider_URL : "http://notification:5010/update_provider"
-      # payment_URL : "http://payment:5123/payment"
-      # get_gdrive_URL : "http://google_drive:3000/get_document"
-      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/request
       PYTHONUNBUFFERED: 1
     ports:
       - "3030:3030"
