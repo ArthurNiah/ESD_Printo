@@ -75,7 +75,7 @@
     </div>
 
         <div id="main-container" class="container">
-            <h1 class="display-4 text-center mt-4">Your Current Requests!</h1>
+            <h1 class="display-4 text-center mt-4">Your Current Requests</h1>
             <div id="request-results" class="row justify-content-center mt-0">
     
             </div>
@@ -123,8 +123,11 @@
                             html = `
                             <div class="col d-flex justify-content-center text-center mt-2" id=${request.request_id} value=${request.request_id}>
                             <div class="card" style="width: 18rem;>
-                                <div class="card-body ms-3 ">
-                                    <h2 class="card-title mx-auto text-success mt-2">New Request</h2>
+                                <div class="card-body ms-3">
+                                    <div class="mt-2">
+                                        <h2 class="card-title mx-auto text-success">New Request</h2>
+                                    </div>
+                                    
                                     <h6 class="card-subtitle mb-2 text-muted ms-2">${request.location_name}</h6>
                                     <span class="lead fs-4 card-text mx-auto" style="text-align:center;">${request.comments}</span>
 
