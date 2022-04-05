@@ -100,16 +100,11 @@
      
         // anonymous async function 
         // - using await requires the function that calls it to be async
-        var URL= window.location.href
-        var INDEX= URL.lastIndexOf('=')
-        console.log(INDEX)
-        var requestor_id= URL.slice(INDEX+1)
-        console.log(requestor_id)
-        sessionStorage.setItem('requestor_id', requestor_id)    
-        console.log(sessionStorage.getItem('requestor_id'))
+        var requestor_id= get_requestor_id();
+
         $(async() => {          
             // Change serviceURL to your own
-            var serviceURL = "http://localhost:5003/get_all_request_by_id/" + sessionStorage.requestor_id;
+            var serviceURL = "http://localhost:5003/get_all_request_by_id/" + requestor_id;
             // var serviceURL = "http://localhost:5003/get_request_by_status";
             try {
                 const response =
@@ -183,6 +178,14 @@
         function signout(){
             sessionStorage.clear()
         }
+        function get_requestor_id(){
+            var URL= window.location.href
+            var INDEX= URL.lastIndexOf('=')
+            var requestor_id= URL.slice(INDEX+1)
+            sessionStorage.setItem('requestor_id', requestor_id)  
+            console.log(sessionStorage.getItem('requestor_id'))
+            return requestor_id
+        }  
     </script>
     
 </body>

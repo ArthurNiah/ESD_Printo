@@ -101,7 +101,7 @@
   <script>
     // sessionStorage.clear()
     console.log(sessionStorage.getItem('requestor_id'))
-    document.getElementById('requestor_id').value = 10
+    document.getElementById('requestor_id').value = sessionStorage.getItem('requestor_id')
     
     </script>
 </html>
