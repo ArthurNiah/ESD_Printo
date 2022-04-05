@@ -48,11 +48,11 @@ app.post('/requestor_login_action', (req, res)=>{
     }
     
     (async()=>{
-        console.log('5')
         const requests= await getRequests()
         console.log(requests.data)
         console.log(requests.data.data.requestor_id)
         requestor_id= requests.data.data.requestor_id
+        first_name= requests.data.data.first_name
         res.redirect('/requestor_home' + '?requestor_id =' + requestor_id)
     })()
 
