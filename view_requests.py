@@ -94,6 +94,8 @@ def filter_requests(provider_id):
     # ------------------------------------------------------------------------------ #
     origin = provider_location
     destinations = request_locations
+    print("ORGIN", origin)
+    print("DESTINATION", destinations)
 
     url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={destinations}&mode=walking&key={api_key}"
     
@@ -117,6 +119,7 @@ def filter_requests(provider_id):
             nearby_requests = {} 
 
             # list of distance and travel duration for all requests
+            print(output_json)
             dist_dur_elements = output_json["rows"][0]["elements"]
             
             # reiterate through list to get distance and index of locations that are nearby
