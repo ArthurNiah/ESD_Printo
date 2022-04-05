@@ -114,7 +114,7 @@ app.post('/provider_login_action', (req, res)=>{
     
     (async()=>{
         const requests= await getRequests()
-        console.log(requests.data)
+        console.log('LOOK HERE', requests.data)
         provider_id= requests.data.data.provider_id
         res.redirect('/provider_home' + '?provider_id =' + provider_id)
     })() 
@@ -196,7 +196,7 @@ app.post('/fileupload',(req,res)=>{
         res.end();
         })
     
-        });
+    });
     return res.end()
 })
 

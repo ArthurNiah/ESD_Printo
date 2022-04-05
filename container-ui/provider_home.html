@@ -93,6 +93,13 @@
             crossorigin='anonymous'></script>
 
         <script>
+            var URL= window.location.href
+
+            var INDEX= URL.lastIndexOf('=')
+            console.log(INDEX)
+            console.log(provider_id)
+            sessionStorage.setItem('provider_id', provider_id)    
+            console.log(sessionStorage.getItem('provider_id'))
             // Helper function to display error message
             const get_all_request_URL = "http://127.0.0.1:5003/search_request/31"
             const accept_request_URL = "http://127.0.0.1:5009/accept_request"
