@@ -182,10 +182,8 @@ app.post('/fileupload',(req,res)=>{
     
         .then((response)=>{
             console.log(response)
-        })
-    
-
-        var dir= __dirname + "/temp_files"
+            var dir= __dirname + "/temp_files"
+        console.log(dir, "LOOK HEREE!")
         if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
         }
@@ -196,6 +194,8 @@ app.post('/fileupload',(req,res)=>{
         if (err) throw err;
         res.write('Your request has been posted!');
         res.end();
+        })
+    
         });
     return res.end()
 })
