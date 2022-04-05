@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "formidable": "^2.0.1",
-    "googleapis": "^100.0.0"
-  }
-}
