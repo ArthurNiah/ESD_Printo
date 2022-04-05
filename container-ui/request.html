@@ -55,7 +55,7 @@
 
 <div class="container-fluid">
   <h1 class="display-4 text-center m-5">Create a Request</h1>
-    <div class="container-fluid border p-4 w-75" style="background-color: rgb(135,206,250,0.2);">
+    <div class="container-fluid border p-4 w-75 mb-5" style="background-color: rgb(135,206,250,0.2);">
        
       <form action="fileupload" class="decor" method="post" enctype="multipart/form-data">
         <div class="form-inner">
@@ -76,16 +76,11 @@
           <!-- NEW OPTIONS -->
             
             <div class="display-6 mb-2" style="font-size: 22px;"><strong>Options</strong></div>
-            <div class="display-6 mb-0 mt-1" style="font-size: 20px;">Colour</div>
+            <div class="display-6 mb-0 mt-3" style="font-size: 20px;">Colour</div>
 
-            <div class="form-check d-flex justify-content-start">
-              <div class="col-1">
-                <input class="form-check-input" type="radio" name="color" id="black/white">
-              </div>
-
-              <div class="col-11 d-flex align-items-center">
-                <label class="form-check-label" for="black/white" style="font-size: 15px;">Black/White</label>
-              </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="color" id="black/white">
+              <label class="form-check-label" for="black/white" style="font-size: 15px;">Black/White</label>
             </div>
             
             <div class="form-check">
@@ -93,20 +88,19 @@
               <label class="form-check-label" for="color" style="font-size: 15px;">Colour</label>
             </div>
 
-          
-              <div class="display-6 mb-0" style="font-size: 20px;">Paper Size</div>
+            <div class="display-6 mb-0 mt-3" style="font-size: 20px;">Paper Size</div>
               
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="size" id="A3">
-                <label class="form-check-label" for="A3" style="font-size: 15px;">A3</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="size" id="A4">
-                <label class="form-check-label" for="A4" style="font-size: 15px;">A4</label>
-              </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="size" id="A3">
+              <label class="form-check-label" for="A3" style="font-size: 15px;">A3</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="size" id="A4">
+              <label class="form-check-label" for="A4" style="font-size: 15px;">A4</label>
+            </div>
 
 
-            <div class="display-6 mb-0" style="font-size: 20px;">Sides</div>
+          <div class="display-6 mb-0 mt-3" style="font-size: 20px;">Sides</div>
             
             <div class="form-check">
               <input class="form-check-input" type="radio" name="single_or_double" id="Single">
