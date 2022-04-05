@@ -43,7 +43,7 @@ app.post('/requestor_login_action', (req, res)=>{
 
     const getRequests = async() => {
         return await axios({
-            url: 'http://localhost:5005/find_by_requestor_username/' + username
+            url: 'http://requestor:5005/find_by_requestor_username/' + username
         })
     }
     
@@ -63,7 +63,7 @@ app.post('/requestor_signup_action', (req, res)=>{
 
     axios({
             method: 'post',
-            url: 'http://localhost:5005/register',
+            url: 'http://requestor:5005/register',
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id
             }
@@ -108,7 +108,7 @@ app.post('/provider_login_action', (req, res)=>{
     console.log(username)
     const getRequests = async() => {
         return await axios({
-            url: 'http://localhost:5007/find_by_provider_username/' + username
+            url: 'http://provider:5007/find_by_provider_username/' + username
         })
     }
     
@@ -123,11 +123,10 @@ app.post('/provider_login_action', (req, res)=>{
 })
 
 app.post('/provider_signup_action', (req, res)=>{
-    console.log('AMONGUS', req.body)
 
     axios({
             method: 'post',
-            url: 'http://localhost:5006/create_provider',
+            url: 'http://create_provider:5006/create_provider',
             data: {'first_name': req.body.first_name, 'last_name': req.body.last_name, 
             'username': req.body.username, 'tele_id': req.body.tele_id, 'chat_id': req.body.chat_id, 
             'location': req.body.location
@@ -174,7 +173,7 @@ app.post('/fileupload',(req,res)=>{
 
         axios({
             method: 'post',
-            url: 'http://localhost:5001/create_request',
+            url: 'http://create_request:5001/create_request',
             data: {
                 'location': fields.location, 'requestor_id': fields.requestor_id, 'no_of_copies': fields.no_of_copies, 'color': fields.color, 'size': fields.size, 'single_or_double': fields.single_or_double, 
                 'comments': fields.comments, 'file_name': file_name, 'mime_type': mime_type}
