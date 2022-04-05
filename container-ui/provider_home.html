@@ -100,6 +100,7 @@
             var URL= window.location.href
             var INDEX= URL.lastIndexOf('=')
             console.log(INDEX)
+            var provider_id= URL.slice(INDEX+1)
             console.log(provider_id)
             sessionStorage.setItem('provider_id', provider_id)    
             console.log(sessionStorage.getItem('provider_id'))
