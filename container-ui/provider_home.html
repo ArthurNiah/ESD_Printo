@@ -79,176 +79,178 @@
 </head>
 
 <body>
-
-    <body>
+    <div class="mt-1 justify-content-end">
         <form action="provider_login" method="get">
-            <button onclick="signout()">Signout</button>
+            <button class="btn btn-outline-warning" onclick="signout()">Signout</button>
         </form>
+    </div>
 
-        <div id="main-container" class="container">
-            <h1 class="display-4 text-center mt-4">Request Listings Near You</h1>
-            <div id="request-results" class="row">
-    
-            </div>
+
+    <div id="main-container" class="container">
+        <h1 class="display-4 text-center mt-4">Request Listings Near You</h1>
+        <div id="request-results" class="row">
+
         </div>
-        <!-- Bootstrap Javascript; at the end of the <body> -->
-        <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
-            integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
-            crossorigin='anonymous'></script>
+    </div>
+    <!-- Bootstrap Javascript; at the end of the <body> -->
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+        integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
+        crossorigin='anonymous'></script>
 
-        <script>
-            var URL= window.location.href
-            var INDEX= URL.lastIndexOf('=')
-            console.log(INDEX)
-            var provider_id= URL.slice(INDEX+1)
-            console.log(provider_id)
-            sessionStorage.setItem('provider_id', provider_id)    
-            console.log(sessionStorage.getItem('provider_id'))
-            // Helper function to display error message
-            const get_all_request_URL = "http://127.0.0.1:5003/search_request/31"
-            const accept_request_URL = "http://127.0.0.1:5009/accept_request"
-            function showError(message) {
-                // Hide the table and button in the event of error
-                $('#requestTable').hide();
-                $('#addRequestBtn').hide();
+    <script>
+        var URL= window.location.href
+        var INDEX= URL.lastIndexOf('=')
+        console.log(INDEX)
+        var provider_id= URL.slice(INDEX+1)
+        console.log(provider_id)
+        sessionStorage.setItem('provider_id', provider_id)    
+        console.log(sessionStorage.getItem('provider_id'))
+        // Helper function to display error message
+        const get_all_request_URL = "http://127.0.0.1:5003/search_request/31"
+        const accept_request_URL = "http://127.0.0.1:5009/accept_request"
+        function showError(message) {
+            // Hide the table and button in the event of error
+            $('#requestTable').hide();
+            $('#addRequestBtn').hide();
 
-                // Display an error under the main container
-                $('#main-container')
-                    .append("<label>" + message + "</label>");
-            }
+            // Display an error under the main container
+            $('#main-container')
+                .append("<label>" + message + "</label>");
+        }
 
-            function accept_request(request_id, provider_id) {
-                $(async() => {
-                    var accept_request_URL = `http://127.0.0.1:5009/accept_request/${request_id}`
-                    try {
-                        const response = 
-                            await fetch(
-                                accept_request_URL, 
-                                {
-                                    method: 'POST',
-                                    headers: {
-                                        "Content-Type": "application/json"}, 
-                                        body: JSON.stringify(
-                                            {"request_id": request_id, 
-                                            "provider_id": provider_id}
-                                            )
-                                        })
-                    }
-                    catch (error) {
-                        console.log("Problem in placing an order." + error)
-                    }
-                })}
-
-
-            // anonymous async function 
-            // - using await requires the function that calls it to be async
-            $(async () => {
-                // Change serviceURL to your own
-                var serviceURL = `http://127.0.0.1:5008/filter_requests/${sessionStorage.getItem('provider_id')}`;
-
+        function accept_request(request_id, provider_id) {
+            $(async() => {
+                var accept_request_URL = `http://127.0.0.1:5009/accept_request/${request_id}`
                 try {
-                    console.log('2')
-                    const response =
+                    const response = 
                         await fetch(
-                            serviceURL, 
-                            { method: 'GET', 
-                            headers: {
-                                        "Content-Type": "application/JSON"}});
+                            accept_request_URL, 
+                            {
+                                method: 'POST',
+                                headers: {
+                                    "Content-Type": "application/json"}, 
+                                    body: JSON.stringify(
+                                        {"request_id": request_id, 
+                                        "provider_id": provider_id}
+                                        )
+                                    })
+                }
+                catch (error) {
+                    console.log("Problem in placing an order." + error)
+                }
+            })}
 
-                    const result = await response.json();
-                    console.log(result)
-                    rand_code = 200
-                    if (rand_code === 200) {
-                        // success case
-                        var requests = result; //the array is in books within data of the returned result
-                        console.log(requests[1])
 
-                        var size = Object.keys(requests).length;
-                        console.log(size)
-                        sessionStorage.setItem("hello", "bye")
-                        // // for loop to setup all table rows with obtained book data
-                        if (size== 0){
+        // anonymous async function 
+        // - using await requires the function that calls it to be async
+        $(async () => {
+            // Change serviceURL to your own
+            var serviceURL = `http://127.0.0.1:5008/filter_requests/${sessionStorage.getItem('provider_id')}`;
+
+            try {
+                console.log('2')
+                const response =
+                    await fetch(
+                        serviceURL, 
+                        { method: 'GET', 
+                        headers: {
+                                    "Content-Type": "application/JSON"}});
+
+                const result = await response.json();
+                console.log(result)
+                rand_code = 200
+                if (rand_code === 200) {
+                    // success case
+                    var requests = result; //the array is in books within data of the returned result
+                    console.log(requests[1])
+
+                    var size = Object.keys(requests).length;
+                    console.log(size)
+                    sessionStorage.setItem("hello", "bye")
+                    // // for loop to setup all table rows with obtained book data
+                    if (size== 0){
+                        html = `
+                            <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-center">No Request Found</h5>
+                                <p class="card-text d-flex justify-content-center">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary d-flex justify-content-center">Button</a>
+                            </div>
+                            </div>
+                                `
+                    document.getElementById("request-results").innerHTML = html
+                    }
+                    // TODO: find a way to put in provider_id into the function
+                    else{
+                        for (let i = 1; i < size+1; i++) {
                             html = `
-                        <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title d-flex justify-content-center">No Request Found</h5>
-                            <p class="card-text d-flex justify-content-center">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary d-flex justify-content-center">Button</a>
-                        </div>
-                        </div>
-                            `
-                        document.getElementById("request-results").innerHTML = html
-                        }
-                        // TODO: find a way to put in provider_id into the function
-                        else{
-                            for (let i = 1; i < size+1; i++) {
-                                html = `
-                                <div class="col d-flex justify-content-center text-center mt-2" id=${requests[i].request_id} value=${requests[i].request_id}>
-                                
-                                <div >
-                                <div class="animate__animated animate__fadeInDown animate__delay-${i}s card " style="width: 18rem;>
-                                    <div class="card-body ms-3">
-                                        <h2 class="card-title ms-2 text-success">New Request</h2>
-                                        <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
-                                        <span class="fs-4 text card-text ms-2" style="text-align:center;">${requests[i].comments}</span>
-                                        <a href="#" class="btn btn-success" onclick="accept_request(${requests[i].request_id},${sessionStorage.getItem('provider_id')})">Accept Request</a>
-    
-    
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        Details
-                                        </button>
-                                </div>
-    
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                            <div class="modal-header d-flex justify-content-center">
-                                                <h5 class="modal-title" id="exampleModalLabel">Your Request Details</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-    
-                                            <div class="modal-body d-flex flex-column">
-                                                <h3 class="card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${requests[i].color}</strong></h3>
-                                                <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].no_of_copies}</strong> copies</h3>
-                                                <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].size}</strong> size</h3>
-                                                <h3 class="card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].single_or_double}</strong> sided printing</h3>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button href="#" type="button" onclick="accept_request(${requests[i].request_id},${sessionStorage.getItem('provider_id')})" class="btn btn-primary">Accept Request!</button>
-                                            </div>
-                                            </div>
+                            <div class="col d-flex justify-content-center text-center mt-2 lead" id=${requests[i].request_id} value=${requests[i].request_id}>
+                            
+                            <div >
+                            <div class="animate__animated animate__fadeInDown animate__delay-${i}s card lead" style="width: 18rem;>
+                                <div class="card-body ms-3">
+                                    <div class="mt-2">
+                                        <h2 class="card-title ms-2 text-success lead">New Request</h2>
+                                    </div>
+
+                                    <h6 class="card-subtitle mb-2 text-muted ms-2">${requests[i].location_name}</h6>
+                                    <span class="fs-4 text card-text ms-2 lead" style="text-align:center;">${requests[i].comments}</span>
+                                    <a href="#" class="btn btn-success" onclick="accept_request(${requests[i].request_id},${sessionStorage.getItem('provider_id')})">Accept Request</a>
+
+
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Details
+                                    </button>
+                            </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header d-flex justify-content-center">
+                                            <h5 class="modal-title" id="exampleModalLabel">Your Request Details</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body d-flex flex-column">
+                                            <h3 class="lead card-text p-2 ms-3 mt-3">Print to contain <strong style="color:green;">${requests[i].color}</strong></h3>
+                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].no_of_copies}</strong> copies</h3>
+                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].size}</strong> size</h3>
+                                            <h3 class="lead card-text p-2 ms-3 mt-3"><strong style="color:green;">${requests[i].single_or_double}</strong> sided printing</h3>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button href="#" type="button" onclick="accept_request(${requests[i].request_id},${sessionStorage.getItem('provider_id')})" class="btn btn-primary">Accept Request!</button>
                                         </div>
                                         </div>
                                     </div>
-                                    </div>`
-                                document.getElementById("request-results").innerHTML += html
-                                console.log(sessionStorage.getItem('provider_id'))
-                            }
+                                    </div>
+                                </div>
+                                </div>`
+                            document.getElementById("request-results").innerHTML += html
+                            console.log(sessionStorage.getItem('provider_id'))
                         }
-                        // add all the rows to the table
-                        // $('#requestTable').append(rows);
-                    } else if (response.status == 404) {
-                        // No books
-                        showError(result.message);
-                    } else {
-                        // unexpected outcome, throw the error
-                        throw response.status;
                     }
-                } catch (error) {
-                    // Errors when calling the service; such as network error, 
-                    // service offline, etc
-                    showError('There is a problem retrieving requests, please try again later.<br />' + error);
-                } // error
-            });
+                    // add all the rows to the table
+                    // $('#requestTable').append(rows);
+                } else if (response.status == 404) {
+                    // No books
+                    showError(result.message);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError('There is a problem retrieving requests, please try again later.<br />' + error);
+            } // error
+        });
 
-            function signout(){
-            sessionStorage.clear()
-        }
-        </script>
-
-    </body>
-
+        function signout(){
+        sessionStorage.clear()
+    }
+    </script>
+</body>
 </html>
