@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `activity_log` (
 -- Dumping data for table `data`
 --
 --  DOESNT WORK
-INSERT INTO `activity_log` (`log_id`, `requestor_id`, 'create_datetime') VALUES
-(1, 2, 3,);
+INSERT INTO `activity_log` (`log_id`, `request_id') VALUES
+(1, 2);
 
 
 -- --------------------------------------------------------
