@@ -81,6 +81,10 @@
 <body>
 
     <body>
+        <form action="provider_login" method="get">
+            <button onclick="signout()">Signout</button>
+        </form>
+
         <div id="main-container" class="container">
             <h1 class="display-4 text-center mt-4">Request Listings Near You</h1>
             <div id="request-results" class="row">
@@ -94,7 +98,6 @@
 
         <script>
             var URL= window.location.href
-
             var INDEX= URL.lastIndexOf('=')
             console.log(INDEX)
             console.log(provider_id)
@@ -238,6 +241,10 @@
                     showError('There is a problem retrieving requests, please try again later.<br />' + error);
                 } // error
             });
+
+            function signout(){
+            sessionStorage.clear()
+        }
         </script>
 
     </body>
